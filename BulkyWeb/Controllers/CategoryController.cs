@@ -37,6 +37,7 @@ public class CategoryController : Controller
 		if (ModelState.IsValid)
 		{
 			_dbContext.Categories.Add(category);
+			TempData["success"] = "Category created successfully";
 			_dbContext.SaveChanges();
 			return RedirectToAction("Index");
 		}
@@ -78,6 +79,7 @@ public class CategoryController : Controller
 		{
 			_dbContext.Categories.Remove(category);
 			TempData["danger"] = "Category deleted successfully";
+			TempData["dangerText"] = $"Category name: {category.Name}";
 			_dbContext.SaveChanges();
 		}
 

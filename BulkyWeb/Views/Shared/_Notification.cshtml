@@ -55,3 +55,24 @@
 	//	}
 	//})
 </script>
+
+@if (TempData["success"] is not null)
+{
+	<script>
+		Toast.fire({
+			icon: 'success',
+			title: '@TempData["success"]'
+		})
+	</script>
+}
+
+@if (TempData["danger"] is not null)
+{
+	<script>
+		DeleteToast.fire({
+			icon: 'error',
+			title: '@TempData["danger"]',
+			text: '@TempData["dangerText"]'
+		})
+	</script>
+}
