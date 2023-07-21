@@ -20,3 +20,37 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* #region Custom SweetAlert2 */
+.colored-toast.swal2-icon-success {
+    background-color: var(--bs-success) !important;
+}
+
+.colored-toast.swal2-icon-error {
+    background-color: var(--bs-danger) !important;
+}
+
+.colored-toast.swal2-icon-warning {
+    background-color: var(--bs-warning) !important;
+}
+
+.colored-toast.swal2-icon-info {
+    background-color: var(--bs-info) !important;
+}
+
+.colored-toast.swal2-icon-question {
+    background-color: #87adbd !important;
+}
+
+.colored-toast .swal2-title {
+    color: white;
+}
+
+.colored-toast .swal2-close {
+    color: white;
+}
+
+.colored-toast .swal2-html-container {
+    color: white;
+}
+/* #endregion Custom SweetAlert2 */
