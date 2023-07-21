@@ -22,6 +22,10 @@ body {
 }
 
 /* #region Custom SweetAlert2 */
+.no-border{
+    border: 0 !important;
+}
+
 .colored-toast.swal2-icon-success {
     background-color: var(--bs-success) !important;
 }
