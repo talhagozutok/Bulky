@@ -23,26 +23,45 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var obj in Model.OrderBy(u => u.DisplayOrder))
+			@foreach (var category in Model.OrderBy(u => u.DisplayOrder))
 			{
 				<tr>
-					<td>@obj.Name</td>
+					<td>@category.Name</td>
 					<td>
-						@obj.DisplayOrder
+						@category.DisplayOrder
 					</td>
 					<td>
-						<div class="w-75 btn-group" role="group">
-							<a asp-controller="Category" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-outline-primary">
-								<i class="bi bi-pencil-square"></i> Edit
-							</a>
-							<a asp-controller="Category" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-outline-danger">
-								<i class="bi bi-trash-fill"></i> Delete
-							</a>
+						<div class="w-75" role="group">
+							<form id="myForm" method="get" asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id" class="btn-group" onsubmit="sendForm(event, '@category.Name')">
+								<a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-outline-primary">
+									<i class="bi bi-pencil-square"></i> Edit
+								</a>
+								<button type="submit" class="btn btn-outline-danger">
+									<i class="bi bi-trash-fill"></i> Delete
+								</button>
+							</form>
 						</div>
 					</td>
 				</tr>
 			}
 		</tbody>
 	</table>
-
 </div>
+
+@section Scripts{
+	<script>
+		function sendForm(e, categoryName){
+			e.preventDefault();
+
+			DeleteAlert.fire({
+				title: 'Are you sure?',
+				html: `The category '<strong>${categoryName}</strong>' will be deleted.`
+			}).then((result) => {
+				if(result.isConfirmed){
+					const myForm = document.getElementById('myForm');
+					myForm.submit();
+				}
+			})
+		}
+	</script>
+}

@@ -1,78 +1,13 @@
-﻿<script>
-	const Toast = Swal.mixin({
-		toast: true,
-		position: 'top-right',
-		showConfirmButton: false,
-		timer: 1500,
-		timerProgressBar: true,
-		iconColor: 'white',
-		customClass: {
-			popup: 'colored-toast'
-		},
-		showClass: {
-			popup: 'animate__animated animate__fadeInDown'
-		},
-		hideClass: {
-			popup: 'animate__animated animate__fadeOutUp'
-		},
-		didOpen: (toast) => {
-			toast.addEventListener('mouseenter', Swal.stopTimer)
-			toast.addEventListener('mouseleave', Swal.resumeTimer)
-		}
-	})
-
-	const DeleteToast = Toast.mixin({
-		icon: 'error',
-		iconHtml: '<i class="bi bi-trash"></i>',
-		timer: 3000,
-		customClass: {
-			popup: 'colored-toast',
-			icon: 'no-border'
-		},
-	})
-
-	const DeleteSwal = Swal.mixin({
-		icon: 'warning',
-		showCancelButton: true,
-		reverseButtons: true,
-		buttonsStyling: false,
-		confirmButtonText: '<i class="bi bi-trash"></i> Delete',
-		customClass: {
-			cancelButton: 'btn btn-outline-secondary mx-2',
-			confirmButton: 'btn btn-danger mx-2'
-		}
-	})
-
-	//DeleteSwal.fire({
-	//	title: 'Are you sure?',
-	//	text: "Object is going to be deleted!",
-	//}).then((result) => {
-	//	if (result.isConfirmed) {
-	//		DeleteToast.fire({
-	//			title: 'Object deleted.',
-	//			text: 'Object properties.',
-	//		})
-	//	}
-	//})
-</script>
-
-@if (TempData["success"] is not null)
+﻿@if (TempData["success"] is not null)
 {
 	<script>
-		Toast.fire({
-			icon: 'success',
-			title: '@TempData["success"]'
-		})
+		fireToast('success', '@TempData["success"]', '')
 	</script>
 }
 
-@if (TempData["danger"] is not null)
+@if (TempData["delete"] is not null)
 {
 	<script>
-		DeleteToast.fire({
-			icon: 'error',
-			title: '@TempData["danger"]',
-			text: '@TempData["dangerText"]'
-		})
+		fireToastDelete('@TempData["delete"]', '@TempData["deleteText"]')
 	</script>
 }
