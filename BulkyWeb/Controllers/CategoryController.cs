@@ -64,24 +64,20 @@ public class CategoryController : Controller
 		return View();
 	}
 
-	public IActionResult Delete(int? id)
-	{
-		var category = _dbContext.Categories.Find(id);
-		return category is not null ? View(category) : NotFound();
-	}
-
-	[HttpPost, ActionName("Delete")]
-	public IActionResult DeletePOST(int? id)
+	[HttpGet]
+	public IActionResult Delete([FromRoute(Name = "id")] int id)
 	{
 		var category = _dbContext.Categories.Find(id);
 
-		if (category is not null)
+		if (category is null)
 		{
-			_dbContext.Categories.Remove(category);
-			TempData["danger"] = "Category deleted successfully";
-			TempData["dangerText"] = $"Category name: {category.Name}";
-			_dbContext.SaveChanges();
+			return NotFound();
 		}
+
+		_dbContext.Categories.Remove(category);
+		TempData["delete"] = "Category deleted successfully";
+		TempData["deleteText"] = $"Category name: {category.Name}";
+		_dbContext.SaveChanges();
 
 		return RedirectToAction("Index");
 	}
