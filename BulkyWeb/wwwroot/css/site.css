@@ -22,6 +22,16 @@ body {
 }
 
 /* #region Custom SweetAlert2 */
+
+/* Use blurred backdrop */
+body.swal2-shown > [aria-hidden="true"] {
+    transition: 0.1s filter;
+    filter: blur(10px);
+}
+
+/* Use no ellipse border
+    this is useful when invoking custom icon
+*/
 .no-border{
     border: 0 !important;
 }
