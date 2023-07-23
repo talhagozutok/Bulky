@@ -37,12 +37,13 @@ public class CategoryController : Controller
 		if (ModelState.IsValid)
 		{
 			_dbContext.Categories.Add(category);
-			TempData["success"] = "Category created successfully";
 			_dbContext.SaveChanges();
+			TempData["success"] = "Category created successfully";
+
 			return RedirectToAction("Index");
 		}
-		return View();
 
+		return View();
 	}
 
 	public IActionResult Edit(int? id)
@@ -59,8 +60,10 @@ public class CategoryController : Controller
 			_dbContext.Categories.Update(category);
 			_dbContext.SaveChanges();
 			TempData["success"] = "Category updated successfully";
+
 			return RedirectToAction("Index");
 		}
+
 		return View();
 	}
 
@@ -74,16 +77,16 @@ public class CategoryController : Controller
 
 		var category = _dbContext.Categories.Find(id);
 
-		if (category is null)
+		if (category is not null)
 		{
-			return NotFound();
+			_dbContext.Categories.Remove(category);
+			_dbContext.SaveChanges();
+			TempData["delete"] = "Category deleted successfully";
+			TempData["deleteText"] = $"Category name: {category.Name}";
+
+			return RedirectToAction("Index");
 		}
 
-		_dbContext.Categories.Remove(category);
-		TempData["delete"] = "Category deleted successfully";
-		TempData["deleteText"] = $"Category name: {category.Name}";
-		_dbContext.SaveChanges();
-
-		return RedirectToAction("Index");
+		return NotFound();
 	}
 }
