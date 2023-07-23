@@ -68,3 +68,13 @@ body.swal2-shown > [aria-hidden="true"] {
     color: white;
 }
 /* #endregion Custom SweetAlert2 */
+
+/* #region jquery-validate */
+
+.field-validation-error {
+/*    color: red;*/
+    font-size: smaller;
+    font-weight: bold;
+}
+
+/* #endregion jquery-validate */
