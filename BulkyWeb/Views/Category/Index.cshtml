@@ -32,14 +32,12 @@
 					</td>
 					<td>
 						<div class="w-75" role="group">
-							<form id="myForm" method="get" asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id" class="btn-group" onsubmit="sendForm(event, '@category.Name')">
-								<a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-outline-primary">
-									<i class="bi bi-pencil-square"></i> Edit
-								</a>
-								<button type="submit" class="btn btn-outline-danger">
-									<i class="bi bi-trash-fill"></i> Delete
-								</button>
-							</form>
+							<a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-outline-primary">
+								<i class="bi bi-pencil-square"></i> Edit
+							</a>
+							<a asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-outline-danger" onclick="deleteObject(event, '@category.Name')">
+								<i class="bi bi-trash-fill"></i> Delete
+							</a>
 						</div>
 					</td>
 				</tr>
@@ -50,16 +48,18 @@
 
 @section Scripts{
 	<script>
-		function sendForm(e, categoryName){
+		function deleteObject(e, categoryName) {
+			// preventing default event which is redirect for anchor tag.
 			e.preventDefault();
 
+			// do my commands
 			DeleteAlert.fire({
 				title: 'Are you sure?',
 				html: `The category '<strong>${categoryName}</strong>' will be deleted.`
 			}).then((result) => {
-				if(result.isConfirmed){
-					const myForm = document.getElementById('myForm');
-					myForm.submit();
+				if (result.isConfirmed) {
+					// then redirect
+					window.location.href = e.target.href;
 				}
 			})
 		}
