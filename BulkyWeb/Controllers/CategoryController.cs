@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using BulkyWeb.Data;
-using BulkyWeb.Models;
+using Bulky.Models.Entities;
+using Bulky.DataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Controllers;
