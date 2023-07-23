@@ -65,8 +65,13 @@ public class CategoryController : Controller
 	}
 
 	[HttpGet]
-	public IActionResult Delete([FromRoute(Name = "id")] int id)
+	public IActionResult Delete([FromRoute(Name = "id")] int? id)
 	{
+		if (id is null)
+		{
+			return NotFound();
+		}
+
 		var category = _dbContext.Categories.Find(id);
 
 		if (category is null)
