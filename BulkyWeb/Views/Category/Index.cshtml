@@ -1,49 +1,61 @@
 ﻿@model List<Category>
 
-<div class="container">
-	<div class="row pt-4 pb-3">
-		<div class="col-6">
-			<h2 class="text-primary">
-				Category List
-			</h2>
-		</div>
-		<div class="col-6 text-end">
-			<a asp-controller="Category" asp-action="Create" class="btn btn-primary">
-				<i class="bi bi-plus"></i>  Create
-			</a>
+<div class="card shadow border-top-0 mt-4">
+	<div class="card-header bg-primary bg-gradient bg-opacity-75 m-lg-0 py-3 border-0 rounded-2 rounded-bottom-0">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h2 class="text-white">Category List</h2>
+			</div>
 		</div>
 	</div>
-
-	<table class="table table-hover table-striped">
-		<thead>
-			<tr>
-				<th>Category Name</th>
-				<th>Display Order</th>
-				<th>Operations</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var category in Model.OrderBy(u => u.DisplayOrder))
+	<div class="card-body p-4">
+		<div class="container">
+			<div class="row">
+				<div class="text-end">
+					<a asp-controller="Category" asp-action="Create" class="btn btn-primary">
+						<i class="bi bi-plus"></i>  Create
+					</a>
+				</div>
+			</div>
+			@if(Model.Count > 0)
 			{
-				<tr>
-					<td>@category.Name</td>
-					<td>
-						@category.DisplayOrder
-					</td>
-					<td>
-						<div class="w-75" role="group">
-							<a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-outline-primary">
-								<i class="bi bi-pencil-square"></i> Edit
-							</a>
-							<a asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-outline-danger" onclick="deleteObject(event, '@category.Name')">
-								<i class="bi bi-trash-fill"></i> Delete
-							</a>
-						</div>
-					</td>
-				</tr>
+				<table class="table table-hover table-striped">
+					<thead>
+						<tr>
+							<th>Category Name</th>
+							<th>Display Order</th>
+							<th>Operations</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var category in Model.OrderBy(u => u.DisplayOrder))
+						{
+							<tr>
+								<td>@category.Name</td>
+								<td>
+									@category.DisplayOrder
+								</td>
+								<td>
+									<div class="w-75" role="group">
+										<a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-outline-primary">
+											<i class="bi bi-pencil-square"></i> Edit
+										</a>
+										<a asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-outline-danger" onclick="deleteObject(event, '@category.Name')">
+											<i class="bi bi-trash-fill"></i> Delete
+										</a>
+									</div>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
 			}
-		</tbody>
-	</table>
+			else
+			{
+				<p>There aren't any category in the database.</p>
+			}
+		</div>
+	</div>
 </div>
 
 @section Scripts{
