@@ -1,0 +1,13 @@
+﻿@if (TempData["success"] is not null)
+{
+	<script>
+		fireToast('success', '@TempData["success"]', '')
+	</script>
+}
+
+@if (TempData["delete"] is not null)
+{
+	<script>
+		fireToastDelete('@TempData["delete"]', '@TempData["deleteText"]')
+	</script>
+}
