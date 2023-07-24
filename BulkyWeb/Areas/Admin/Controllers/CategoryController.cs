@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Controllers;
 
+[Area(areaName: "Admin")]
 public class CategoryController : Controller
 {
 	private readonly IUnitOfWork _unitOfWork;
