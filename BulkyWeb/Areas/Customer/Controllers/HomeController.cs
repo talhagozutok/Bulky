@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Controllers;
 
+[Area(areaName: "Customer")]
 public class HomeController : Controller
 {
 	private readonly ILogger<HomeController> _logger;
@@ -15,6 +16,7 @@ public class HomeController : Controller
 
 	public IActionResult Index()
 	{
+		_logger.LogWarning("Navigated to /Home/Index");
 		return View();
 	}
 
