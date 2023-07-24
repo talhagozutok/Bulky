@@ -5,6 +5,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>04b778e6-5466-4685-8a82-48c09673f1ad</UserSecretsId>
+	
+	<!-- Disable CSS isolation https://learn.microsoft.com/en-us/aspnet/core/blazor/components/css-isolation#disable-css-isolation -->
+	<ScopedCssEnabled>false</ScopedCssEnabled>
   </PropertyGroup>
 
   <ItemGroup>
