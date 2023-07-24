@@ -1,22 +1,24 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
-using Bulky.DataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Controllers;
 
 public class CategoryController : Controller
 {
-	private readonly ApplicationDbContext _dbContext;
-	public CategoryController(ApplicationDbContext dbContext)
+	private readonly IUnitOfWork _unitOfWork;
+
+	public CategoryController(IUnitOfWork unitOfWork)
 	{
-		_dbContext = dbContext;
+		_unitOfWork = unitOfWork;
 	}
+
 	public IActionResult Index()
 	{
-		List<Category> objCategoryList = _dbContext.Categories.ToList();
-		return View(objCategoryList);
+		var categoryList = _unitOfWork.CategoryRepository.GetAll();
+		return View(categoryList);
 	}
 
 	public IActionResult Create()
@@ -36,8 +38,8 @@ public class CategoryController : Controller
 
 		if (ModelState.IsValid)
 		{
-			_dbContext.Categories.Add(category);
-			_dbContext.SaveChanges();
+			_unitOfWork.CategoryRepository.Add(category);
+			_unitOfWork.Save();
 			TempData["success"] = "Category created successfully";
 
 			return RedirectToAction("Index");
@@ -48,7 +50,7 @@ public class CategoryController : Controller
 
 	public IActionResult Edit(int? id)
 	{
-		var category = _dbContext.Categories.Find(id);
+		var category = _unitOfWork.CategoryRepository.Get(c => c.Id.Equals(id));
 		return category is not null ? View(category) : NotFound();
 	}
 
@@ -57,8 +59,8 @@ public class CategoryController : Controller
 	{
 		if (ModelState.IsValid)
 		{
-			_dbContext.Categories.Update(category);
-			_dbContext.SaveChanges();
+			_unitOfWork.CategoryRepository.Update(category);
+			_unitOfWork.Save();
 			TempData["success"] = "Category updated successfully";
 
 			return RedirectToAction("Index");
@@ -75,12 +77,12 @@ public class CategoryController : Controller
 			return NotFound();
 		}
 
-		var category = _dbContext.Categories.Find(id);
+		var category = _unitOfWork.CategoryRepository.Get(c => c.Id.Equals(id));
 
 		if (category is not null)
 		{
-			_dbContext.Categories.Remove(category);
-			_dbContext.SaveChanges();
+			_unitOfWork.CategoryRepository.Remove(category);
+			_unitOfWork.Save();
 			TempData["delete"] = "Category deleted successfully";
 			TempData["deleteText"] = $"Category name: {category.Name}";
 
