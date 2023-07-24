@@ -24,6 +24,10 @@ body {
   flex-direction: column;
 }
 
+tbody > tr:last-child > td {
+    border-bottom: 0;
+}
+
 /* #region Custom SweetAlert2 */
 
 /* Use blurred backdrop */
