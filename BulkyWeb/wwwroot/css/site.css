@@ -18,7 +18,10 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  /* margin-bottom: 60px; */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* #region Custom SweetAlert2 */
