@@ -8,80 +8,87 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-/*  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;*/
-}
-
 html {
   position: relative;
   min-height: 100%;
 }
 
 body {
-  /* margin-bottom: 60px; */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
+.footer {
+  margin-top: auto;
+  padding: 1rem;
+}
+
+#coloredFooterText {
+    background: linear-gradient(195deg, rgb(237, 236, 255) 15%, rgb(220, 212, 246) 70%);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    font-weight: 600;
+    font-size: 18px!important;
+}
+
 tbody > tr:last-child > td {
-    border-bottom: 0;
+  border-bottom: 0;
 }
 
 /* #region Custom SweetAlert2 */
 
 /* Use blurred backdrop */
 body.swal2-shown > [aria-hidden="true"] {
-    transition: 0.1s filter;
-    filter: blur(10px);
+  transition: 0.1s filter;
+  filter: blur(10px);
 }
 
 /* Use no ellipse border
     this is useful when invoking custom icon
 */
-.no-border{
-    border: 0 !important;
+.no-border {
+  border: 0 !important;
 }
 
 .colored-toast.swal2-icon-success {
-    background-color: var(--bs-success) !important;
+  background-color: var(--bs-success) !important;
 }
 
 .colored-toast.swal2-icon-error {
-    background-color: var(--bs-danger) !important;
+  background-color: var(--bs-danger) !important;
 }
 
 .colored-toast.swal2-icon-warning {
-    background-color: var(--bs-warning) !important;
+  background-color: var(--bs-warning) !important;
 }
 
 .colored-toast.swal2-icon-info {
-    background-color: var(--bs-info) !important;
+  background-color: var(--bs-info) !important;
 }
 
 .colored-toast.swal2-icon-question {
-    background-color: #87adbd !important;
+  background-color: #87adbd !important;
 }
 
 .colored-toast .swal2-title {
-    color: white;
+  color: white;
 }
 
 .colored-toast .swal2-close {
-    color: white;
+  color: white;
 }
 
 .colored-toast .swal2-html-container {
-    color: white;
+  color: white;
 }
 /* #endregion Custom SweetAlert2 */
 
 /* #region jquery-validate */
 
 .field-validation-error {
-/*    color: red;*/
-    font-size: smaller;
-    font-weight: bold;
+  font-size: smaller;
+  font-weight: bold;
 }
 
 /* #endregion jquery-validate */
