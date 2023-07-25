@@ -1,10 +1,10 @@
-﻿@model List<Category>
+﻿@model List<Product>
 
 <div class="card shadow border-top-0 mt-4">
 	<div class="card-header bg-primary bg-gradient bg-opacity-75 m-lg-0 py-3 border-0 rounded-2 rounded-bottom-0">
 		<div class="row">
 			<div class="col-12 text-center">
-				<h2 class="text-white">Category List</h2>
+				<h2 class="text-white">Product List</h2>
 			</div>
 		</div>
 	</div>
@@ -12,35 +12,39 @@
 		<div class="container">
 			<div class="row">
 				<div class="text-end">
-					<a asp-controller="Category" asp-action="Create" class="btn btn-primary">
+					<a asp-controller="Product" asp-action="Create" class="btn btn-primary">
 						<i class="bi bi-plus"></i> Create
 					</a>
 				</div>
 			</div>
-			@if(Model.Count > 0)
+			@if (Model.Count > 0)
 			{
 				<table class="table table-hover table-striped mt-2">
 					<thead>
 						<tr>
-							<th>Category Name</th>
-							<th>Display Order</th>
+							<th>Title</th>
+							<th>ISBN</th>
+							<th>Author</th>
+							<th>Category</th>
+							<th>List Price</th>
 							<th>Operations</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach (var category in Model.OrderBy(u => u.DisplayOrder))
+						@foreach (var product in Model)
 						{
 							<tr>
-								<td>@category.Name</td>
-								<td>
-									@category.DisplayOrder
-								</td>
+								<td>@product.Title</td>
+								<td>@product.ISBN</td>
+								<td>@product.Author</td>
+								<td>Add category name here</td>
+								<td>@product.ListPrice.ToString("c")</td>
 								<td>
 									<div class="w-75" role="group">
-										<a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-outline-primary">
+										<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-outline-primary">
 											<i class="bi bi-pencil-square"></i> Edit
 										</a>
-										<a asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-outline-danger" onclick="deleteObject(event, '@category.Name')">
+										<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-outline-danger" onclick="deleteObject(event, '@product.Title')">
 											<i class="bi bi-trash-fill"></i> Delete
 										</a>
 									</div>
@@ -52,7 +56,7 @@
 			}
 			else
 			{
-				<p>There aren't any category in the database.</p>
+				<p>There aren't any product in the database.</p>
 			}
 		</div>
 	</div>
@@ -60,14 +64,14 @@
 
 @section Scripts{
 	<script>
-		function deleteObject(e, categoryName) {
+		function deleteObject(e, productName) {
 			// preventing default event which is redirect for anchor tag.
 			e.preventDefault();
 
 			// do my commands
 			DeleteAlert.fire({
 				title: 'Are you sure?',
-				html: `The category '<strong>${categoryName}</strong>' will be deleted.`
+				html: `The product '<strong>${productName}</strong>' will be deleted.`
 			}).then((result) => {
 				if (result.isConfirmed) {
 					// then redirect
