@@ -32,7 +32,8 @@ public class ApplicationDbContext : DbContext
 				ListPrice = 100,
 				PriceFifty = 70,
 				PriceHundredOrMore = 60,
-				CategoryId = 1
+				CategoryId = 1,
+				ImageUrl = ""
 			}
 			,
 			new Product
@@ -44,7 +45,8 @@ public class ApplicationDbContext : DbContext
 				ListPrice = 150,
 				PriceFifty = 80,
 				PriceHundredOrMore = 70,
-				CategoryId = 2
+				CategoryId = 2,
+				ImageUrl = ""
 			}
 		);
 	}
