@@ -49,7 +49,7 @@ public class CategoryController : Controller
 		return View();
 	}
 
-	public IActionResult Edit(int? id)
+	public IActionResult Edit([FromRoute(Name = "id")] int? id)
 	{
 		var category = _unitOfWork.CategoryRepository.Get(c => c.Id.Equals(id));
 		return category is not null ? View(category) : NotFound();

@@ -11,11 +11,11 @@ public class UnitOfWork : IUnitOfWork
 
 	public UnitOfWork(ApplicationDbContext dbContext,
 		ICategoryRepository categoryRepository,
-		IProductRepository product)
+		IProductRepository productRepository)
 	{
 		_dbContext = dbContext;
 		Category = categoryRepository;
-		Product = product;
+		Product = productRepository;
 	}
 
 	public ICategoryRepository CategoryRepository => Category;
