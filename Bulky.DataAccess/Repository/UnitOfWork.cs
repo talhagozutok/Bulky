@@ -1,25 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Bulky.DataAccess.Data;
+﻿using Bulky.DataAccess.Data;
 using Bulky.DataAccess.Repository.Contracts;
 
 namespace Bulky.DataAccess.Repository;
 public class UnitOfWork : IUnitOfWork
 {
 	private readonly ApplicationDbContext _dbContext;
+
 	private ICategoryRepository Category { get; }
+	private IProductRepository Product { get; }
 
 	public UnitOfWork(ApplicationDbContext dbContext,
-		ICategoryRepository categoryRepository)
+		ICategoryRepository categoryRepository,
+		IProductRepository product)
 	{
 		_dbContext = dbContext;
 		Category = categoryRepository;
+		Product = product;
 	}
 
 	public ICategoryRepository CategoryRepository => Category;
+	public IProductRepository ProductRepository => Product;
 
 	public void Save()
 	{
