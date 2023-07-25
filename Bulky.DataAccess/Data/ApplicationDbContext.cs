@@ -31,7 +31,8 @@ public class ApplicationDbContext : DbContext
 				ISBN = Guid.NewGuid().ToString(),
 				ListPrice = 100,
 				PriceFifty = 70,
-				PriceHundredOrMore = 60
+				PriceHundredOrMore = 60,
+				CategoryId = 1
 			}
 			,
 			new Product
@@ -42,7 +43,8 @@ public class ApplicationDbContext : DbContext
 				ISBN = Guid.NewGuid().ToString(),
 				ListPrice = 150,
 				PriceFifty = 80,
-				PriceHundredOrMore = 70
+				PriceHundredOrMore = 70,
+				CategoryId = 2
 			}
 		);
 	}
