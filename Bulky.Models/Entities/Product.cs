@@ -1,21 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Bulky.Models.Entities;
+
 public class Product
 {
-
 	public int Id { get; set; }
 
 	[Required(ErrorMessage = "{0} is required.")]
-	[StringLength(50, ErrorMessage = "{0} can have a max of {1} characters.")]
+	[StringLength(100, ErrorMessage = "{0} can have a max of {1} characters.")]
 	public string Title { get; set; } = string.Empty;
 
+	[StringLength(550, ErrorMessage = "{0} can have a max of {1} characters.")]
 	public string Description { get; set; } = string.Empty;
 
 	[Required]
 	public string ISBN { get; set; } = string.Empty;
 
 	[Required]
+	[StringLength(100, ErrorMessage = "{0} can have a max of {1} characters.")]
 	public string Author { get; set; } = string.Empty;
 
 	[Required]

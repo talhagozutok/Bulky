@@ -18,9 +18,11 @@
 					<span asp-validation-for="Title" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
-					<input asp-for="Author" class="form-control">
-					<label asp-for="Author"></label>
-					<span asp-validation-for="Author" class="text-danger"></span>
+					<textarea asp-for="Description"
+							  class="form-control"
+							  style="resize: vertical; height: 120px; max-height: 120px;"></textarea>
+					<label asp-for="Description"></label>
+					<span asp-validation-for="Description" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
 					<input asp-for="ISBN" value="@Guid.NewGuid().ToString()" class="form-control">
@@ -28,17 +30,22 @@
 					<span asp-validation-for="ISBN" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
-					<input asp-for="ListPrice" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 200, minValue: 150) / 10.0)) * 10)" class="form-control">
+					<input asp-for="Author" class="form-control">
+					<label asp-for="Author"></label>
+					<span asp-validation-for="Author" class="text-danger"></span>
+				</div>
+				<div class="form-floating mb-3">
+					<input asp-for="ListPrice" class="form-control" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 200, minValue: 150) / 10.0)) * 10)">
 					<label asp-for="ListPrice"></label>
 					<span asp-validation-for="ListPrice" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
-					<input asp-for="PriceFifty" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 150 - 6, minValue: 90) / 10.0)) * 10)" class="form-control">
+					<input asp-for="PriceFifty" class="form-control" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 150 - 6, minValue: 90) / 10.0)) * 10)">
 					<label asp-for="PriceFifty"></label>
 					<span asp-validation-for="PriceFifty" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
-					<input asp-for="PriceHundredOrMore" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 90 - 6, minValue: 60) / 10.0)) * 10)" class="form-control">
+					<input asp-for="PriceHundredOrMore" class="form-control" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 90 - 6, minValue: 60) / 10.0)) * 10)">
 					<label asp-for="PriceHundredOrMore"></label>
 					<span asp-validation-for="PriceHundredOrMore" class="text-danger"></span>
 				</div>
