@@ -1,6 +1,8 @@
 ﻿using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
+using Bulky.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BulkyWeb.Areas.Admin.Controllers;
 
@@ -22,22 +24,42 @@ public class ProductController : Controller
 
 	public IActionResult Create()
 	{
-		return View(new Product());
+		ProductViewModel viewModel = new()
+		{
+			Product = new Product(),
+			CategoryList = _unitOfWork.CategoryRepository
+				.GetAll().Select(c => new SelectListItem
+				{
+					Text = c.Name,
+					Value = c.Id.ToString(),
+				})
+		};
+
+		return View(viewModel);
 	}
 
 	[HttpPost]
-	public IActionResult Create(Product product)
+	public IActionResult Create(ProductViewModel viewModel)
 	{
 		if (ModelState.IsValid)
 		{
-			_unitOfWork.ProductRepository.Add(product);
+			_unitOfWork.ProductRepository.Add(viewModel.Product);
 			_unitOfWork.Save();
 			TempData["success"] = "Product created successfully";
 
 			return RedirectToAction("Index");
 		}
+		else
+		{
+			viewModel.CategoryList = _unitOfWork.CategoryRepository
+				.GetAll().Select(c => new SelectListItem
+				{
+					Text = c.Name,
+					Value = c.Id.ToString(),
+				});
 
-		return View();
+			return View(viewModel);
+		}
 	}
 
 	public IActionResult Edit([FromRoute(Name = "id")] int? id)

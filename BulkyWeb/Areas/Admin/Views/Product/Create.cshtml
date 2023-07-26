@@ -1,4 +1,4 @@
-﻿@model Product
+﻿@model ProductViewModel
 
 <div class="card shadow border-top-0 mt-4">
 	<div class="card-header bg-primary bg-gradient bg-opacity-75 m-lg-0 py-3 border-0 rounded-2 rounded-bottom-0">
@@ -13,41 +13,53 @@
 			<div class="p-3">
 				<div asp-validation-summary="ModelOnly"></div>
 				<div class="form-floating mb-3">
-					<input asp-for="Title" class="form-control">
-					<label asp-for="Title"></label>
-					<span asp-validation-for="Title" class="text-danger"></span>
+					<input asp-for="Product.Title" class="form-control">
+					<label asp-for="Product.Title"></label>
+					<span asp-validation-for="Product.Title" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
-					<textarea asp-for="Description"
+					<textarea asp-for="Product.Description"
 							  class="form-control"
 							  style="resize: vertical; height: 120px; max-height: 120px;"></textarea>
-					<label asp-for="Description"></label>
-					<span asp-validation-for="Description" class="text-danger"></span>
+					<label asp-for="Product.Description"></label>
+					<span asp-validation-for="Product.Description" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
-					<input asp-for="ISBN" value="@Guid.NewGuid().ToString()" class="form-control">
-					<label asp-for="ISBN"></label>
-					<span asp-validation-for="ISBN" class="text-danger"></span>
+					<input asp-for="Product.ISBN" value="@Guid.NewGuid().ToString()" class="form-control">
+					<label asp-for="Product.ISBN"></label>
+					<span asp-validation-for="Product.ISBN" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
-					<input asp-for="Author" class="form-control">
-					<label asp-for="Author"></label>
-					<span asp-validation-for="Author" class="text-danger"></span>
+					<input asp-for="Product.Author" class="form-control">
+					<label asp-for="Product.Author"></label>
+					<span asp-validation-for="Product.Author" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
-					<input asp-for="ListPrice" class="form-control" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 200, minValue: 150) / 10.0)) * 10)">
-					<label asp-for="ListPrice"></label>
-					<span asp-validation-for="ListPrice" class="text-danger"></span>
+					<input asp-for="Product.ListPrice" class="form-control" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 200, minValue: 150) / 10.0)) * 10)">
+					<label asp-for="Product.ListPrice"></label>
+					<span asp-validation-for="Product.ListPrice" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
-					<input asp-for="PriceFifty" class="form-control" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 150 - 6, minValue: 90) / 10.0)) * 10)">
-					<label asp-for="PriceFifty"></label>
-					<span asp-validation-for="PriceFifty" class="text-danger"></span>
+					<input asp-for="Product.PriceFifty" class="form-control" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 150 - 6, minValue: 90) / 10.0)) * 10)">
+					<label asp-for="Product.PriceFifty"></label>
+					<span asp-validation-for="Product.PriceFifty" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
-					<input asp-for="PriceHundredOrMore" class="form-control" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 90 - 6, minValue: 60) / 10.0)) * 10)">
-					<label asp-for="PriceHundredOrMore"></label>
-					<span asp-validation-for="PriceHundredOrMore" class="text-danger"></span>
+					<input asp-for="Product.PriceHundredOrMore" class="form-control" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 90 - 6, minValue: 60) / 10.0)) * 10)">
+					<label asp-for="Product.PriceHundredOrMore"></label>
+					<span asp-validation-for="Product.PriceHundredOrMore" class="text-danger"></span>
+				</div>
+				<div class="form-floating mb-3">
+					<select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select">
+						<option disabled selected class="text-muted">-- Select category --</option>
+					</select>
+					<label asp-for="Product.CategoryId"></label>
+					<span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+				</div>
+				<div class="form-floating mb-3">
+					<input asp-for="Product.ImageUrl" class="form-control">
+					<label asp-for="Product.ImageUrl"></label>
+					<span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
 				</div>
 				<div class="row">
 					<div class="col-6">
