@@ -36,6 +36,23 @@ tbody > tr:last-child > td {
   border-bottom: 0;
 }
 
+.custom-file-button input[type="file"] {
+  margin-left: -2px !important;
+}
+
+.custom-file-button input[type="file"]::-webkit-file-upload-button {
+  display: none;
+}
+
+.custom-file-button input[type="file"]::file-selector-button {
+  display: none;
+}
+
+.custom-file-button:hover label {
+  background-color: inherit;
+  cursor: pointer;
+}
+
 /* #region Custom SweetAlert2 */
 
 /* Use blurred backdrop */

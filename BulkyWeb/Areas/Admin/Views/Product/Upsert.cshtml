@@ -1,15 +1,23 @@
 ﻿@model ProductViewModel
 
+@{
+	if (Model.Product is not null)
+	{
+		ViewBag.CurrentProcess = (Model.Product.Id! == 0 ? "Create" : "Update");
+	}
+}
+
 <div class="card shadow border-top-0 mt-4">
 	<div class="card-header bg-primary bg-gradient bg-opacity-75 m-lg-0 py-3 border-0 rounded-2 rounded-bottom-0">
 		<div class="row">
 			<div class="col-12 text-center">
-				<h2 class="text-white">Create Product</h2>
+				<h2 class="text-white">@ViewBag.CurrentProcess Product</h2>
 			</div>
 		</div>
 	</div>
 	<div class="card-body p-4">
-		<form method="post" class="row">
+		<form method="post" class="row" enctype="multipart/form-data">
+			<input asp-for="Product.Id" hidden />
 			<div class="p-3">
 				<div asp-validation-summary="ModelOnly"></div>
 				<div class="form-floating mb-3">
@@ -20,7 +28,7 @@
 				<div class="form-floating mb-3">
 					<textarea asp-for="Product.Description"
 							  class="form-control"
-							  style="resize: vertical; height: 120px; max-height: 120px;"></textarea>
+							  style="resize: vertical; max-height: 120px;"></textarea>
 					<label asp-for="Product.Description"></label>
 					<span asp-validation-for="Product.Description" class="text-danger"></span>
 				</div>
@@ -35,17 +43,17 @@
 					<span asp-validation-for="Product.Author" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
-					<input asp-for="Product.ListPrice" class="form-control" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 200, minValue: 150) / 10.0)) * 10)">
+					<input asp-for="Product.ListPrice" class="form-control" min="0">
 					<label asp-for="Product.ListPrice"></label>
 					<span asp-validation-for="Product.ListPrice" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
-					<input asp-for="Product.PriceFifty" class="form-control" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 150 - 6, minValue: 90) / 10.0)) * 10)">
+					<input asp-for="Product.PriceFifty" class="form-control" min="0">
 					<label asp-for="Product.PriceFifty"></label>
 					<span asp-validation-for="Product.PriceFifty" class="text-danger"></span>
 				</div>
 				<div class="form-floating mb-3">
-					<input asp-for="Product.PriceHundredOrMore" class="form-control" min="0" value="@(Math.Round((Random.Shared.Next(maxValue: 90 - 6, minValue: 60) / 10.0)) * 10)">
+					<input asp-for="Product.PriceHundredOrMore" class="form-control" min="0">
 					<label asp-for="Product.PriceHundredOrMore"></label>
 					<span asp-validation-for="Product.PriceHundredOrMore" class="text-danger"></span>
 				</div>
@@ -56,10 +64,13 @@
 					<label asp-for="Product.CategoryId"></label>
 					<span asp-validation-for="Product.CategoryId" class="text-danger"></span>
 				</div>
-				<div class="form-floating mb-3">
-					<input asp-for="Product.ImageUrl" class="form-control">
-					<label asp-for="Product.ImageUrl"></label>
-					<span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
+				<div class="form-group my-3">
+					<div class="input-group custom-file-button">
+						<label asp-for="Product.ImageUrl" class="input-group-text" >
+							Image:&nbsp;
+						</label>
+						<input class="form-control form-control-lg" name="file" type="file"/>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-6">
@@ -68,9 +79,20 @@
 						</a>
 					</div>
 					<div class="col-6">
-						<button type="submit" class="btn btn-primary form-control">
-							<i class="bi bi-plus-circle"></i> Create
-						</button>
+						@{
+							if (ViewBag.CurrentProcess == "Create")
+							{
+								<button type="submit" class="btn btn-primary form-control">
+									<i class="bi bi-plus-circle"></i> Create
+								</button>
+							}
+							else
+							{
+								<button type="submit" class="btn btn-primary form-control">
+									<i class="bi bi-pencil-square"></i> Update
+								</button>
+							}
+						}
 					</div>
 				</div>
 			</div>

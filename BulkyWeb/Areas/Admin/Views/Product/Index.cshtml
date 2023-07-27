@@ -12,7 +12,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="text-end">
-					<a asp-controller="Product" asp-action="Create" class="btn btn-primary">
+					<a asp-controller="Product" asp-action="Upsert" class="btn btn-primary">
 						<i class="bi bi-plus"></i> Create
 					</a>
 				</div>
@@ -20,39 +20,6 @@
 			@if (Model.Count > 0)
 			{
 				<partial name="_ProductTable" />
-					<thead>
-						<tr>
-							<th>Title</th>
-							<th>ISBN</th>
-							<th>Author</th>
-							<th>Category</th>
-							<th>List Price</th>
-							<th>Operations</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (var product in Model)
-						{
-							<tr>
-								<td>@product.Title</td>
-								<td>@product.ISBN</td>
-								<td>@product.Author</td>
-								<td>Add category name here</td>
-								<td>@product.ListPrice.ToString("c")</td>
-								<td>
-									<div class="w-75" role="group">
-										<a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-outline-primary">
-											<i class="bi bi-pencil-square"></i> Edit
-										</a>
-										<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-outline-danger" onclick="deleteObject(event, '@product.Title')">
-											<i class="bi bi-trash-fill"></i> Delete
-										</a>
-									</div>
-								</td>
-							</tr>
-						}
-					</tbody>
-				</table>
 			}
 			else
 			{

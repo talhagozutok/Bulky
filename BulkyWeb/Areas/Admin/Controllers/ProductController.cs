@@ -1,4 +1,5 @@
-﻿using Bulky.DataAccess.Repository.Contracts;
+﻿using System.Reflection.Metadata;
+using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 using Bulky.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,8 @@ public class ProductController : Controller
 		return View(productList);
 	}
 
-	public IActionResult Create()
+	// [UP]date and in[SERT] functionality.
+	public IActionResult Upsert([FromRoute(Name = "id")]int? id)
 	{
 		ProductViewModel viewModel = new()
 		{
@@ -35,17 +37,40 @@ public class ProductController : Controller
 				})
 		};
 
-		return View(viewModel);
+		if (id is null || id == 0)
+		{
+			// Create
+			return View(viewModel);
+		}
+
+		// Update
+		Product? product = _unitOfWork.ProductRepository.Get(p => p.Id.Equals(id));
+		if (product is not null)
+		{
+			viewModel.Product = product;
+			return View(viewModel);
+		}
+
+		return NotFound();
 	}
 
 	[HttpPost]
-	public IActionResult Create(ProductViewModel viewModel)
+	public IActionResult Upsert(ProductViewModel viewModel, IFormFile? file)
 	{
 		if (ModelState.IsValid)
 		{
-			_unitOfWork.ProductRepository.Add(viewModel.Product);
-			_unitOfWork.Save();
-			TempData["success"] = "Product created successfully";
+			if (viewModel.Product.Id == 0)
+			{
+				_unitOfWork.ProductRepository.Add(viewModel.Product);
+				_unitOfWork.Save();
+				TempData["success"] = "Product created successfully";
+			}
+			else
+			{
+				_unitOfWork.ProductRepository.Update(viewModel.Product);
+				_unitOfWork.Save();
+				TempData["success"] = "Product updated successfully";
+			}
 
 			return RedirectToAction("Index");
 		}
@@ -66,21 +91,6 @@ public class ProductController : Controller
 	{
 		var product = _unitOfWork.ProductRepository.Get(p => p.Id.Equals(id));
 		return product is not null ? View(product) : NotFound();
-	}
-
-	[HttpPost]
-	public IActionResult Edit(Product product)
-	{
-		if (ModelState.IsValid)
-		{
-			_unitOfWork.ProductRepository.Update(product);
-			_unitOfWork.Save();
-			TempData["success"] = "Product updated successfully";
-
-			return RedirectToAction("Index");
-		}
-
-		return View();
 	}
 
 	[HttpGet]
