@@ -35,7 +35,10 @@ function loadDataTable() {
                 "orderable": false,
                 "width": "25%"
             },
-        ]
+        ],
+        "language": {
+            "emptyTable": "There aren't any product in the database."
+        }
     });
 }
 
