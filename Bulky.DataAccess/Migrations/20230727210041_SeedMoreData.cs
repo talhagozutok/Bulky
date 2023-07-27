@@ -17,14 +17,14 @@ namespace Bulky.DataAccess.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "ISBN",
-                value: "3681a4b8-d9a1-43f4-b939-dc8f1aabf50b");
+                value: "FE8F2C43-471");
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "ISBN",
-                value: "46278f02-b8e4-4916-b59e-4c92c15cde04");
+                value: "B63399D1-7DC");
 
             migrationBuilder.InsertData(
                 table: "Products",

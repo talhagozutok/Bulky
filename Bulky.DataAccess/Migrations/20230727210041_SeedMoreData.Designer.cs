@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bulky.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230727201405_SeedMoreData")]
+    [Migration("20230727210041_SeedMoreData")]
     partial class SeedMoreData
     {
         /// <inheritdoc />
@@ -120,7 +120,7 @@ namespace Bulky.DataAccess.Migrations
                             Author = "Stephen King",
                             CategoryId = 1,
                             Description = "",
-                            ISBN = "3681a4b8-d9a1-43f4-b939-dc8f1aabf50b",
+                            ISBN = "FE8F2C43-471",
                             ImageUrl = "",
                             ListPrice = 100.0,
                             PriceFifty = 70.0,
@@ -133,7 +133,7 @@ namespace Bulky.DataAccess.Migrations
                             Author = "Vladimir Bartol",
                             CategoryId = 2,
                             Description = "",
-                            ISBN = "46278f02-b8e4-4916-b59e-4c92c15cde04",
+                            ISBN = "B63399D1-7DC",
                             ImageUrl = "",
                             ListPrice = 150.0,
                             PriceFifty = 80.0,

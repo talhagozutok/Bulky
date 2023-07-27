@@ -36,7 +36,7 @@
 							<span asp-validation-for="Product.Description" class="text-danger"></span>
 						</div>
 						<div class="form-floating mb-3">
-							<input asp-for="Product.ISBN" value="@Guid.NewGuid().ToString()" class="form-control">
+							<input asp-for="Product.ISBN" value="@Guid.NewGuid().ToString().Substring(0, 12).ToUpper()" class="form-control">
 							<label asp-for="Product.ISBN"></label>
 							<span asp-validation-for="Product.ISBN" class="text-danger"></span>
 						</div>
