@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata;
-using Bulky.DataAccess.Repository.Contracts;
+﻿using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 using Bulky.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -11,20 +10,23 @@ namespace BulkyWeb.Areas.Admin.Controllers;
 public class ProductController : Controller
 {
 	private readonly IUnitOfWork _unitOfWork;
+	private readonly IWebHostEnvironment _webHostEnvironment;
 
-	public ProductController(IUnitOfWork unitOfWork)
+	public ProductController(IUnitOfWork unitOfWork,
+		IWebHostEnvironment webHostEnvironment)
 	{
 		_unitOfWork = unitOfWork;
+		_webHostEnvironment = webHostEnvironment;
 	}
 
 	public IActionResult Index()
 	{
-		var productList = _unitOfWork.ProductRepository.GetAll().ToList();
+		var productList = _unitOfWork.ProductRepository.GetAll(includeProperties: nameof(Category)).ToList();
 		return View(productList);
 	}
 
 	// [UP]date and in[SERT] functionality.
-	public IActionResult Upsert([FromRoute(Name = "id")]int? id)
+	public IActionResult Upsert([FromRoute(Name = "id")] int? id)
 	{
 		ProductViewModel viewModel = new()
 		{
