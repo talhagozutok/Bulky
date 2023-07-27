@@ -122,7 +122,7 @@ public class ProductController : Controller
 		return product is not null ? View(product) : NotFound();
 	}
 
-	[HttpGet]
+	[HttpDelete]
 	public IActionResult Delete([FromRoute(Name = "id")] int? id)
 	{
 		if (id is null)
@@ -136,12 +136,21 @@ public class ProductController : Controller
 		{
 			_unitOfWork.ProductRepository.Remove(product);
 			_unitOfWork.Save();
-			TempData["delete"] = "Product deleted successfully.";
-			TempData["deleteText"] = $"Product title: {product.Title}";
 
 			return RedirectToAction("Index");
 		}
 
 		return NotFound();
 	}
+
+	#region API
+
+	[HttpGet]
+	public IActionResult GetAll()
+	{
+		var productList = _unitOfWork.ProductRepository.GetAll(includeProperties: nameof(Category)).ToList();
+		return Json(new { data = productList });
+	}
+
+	#endregion
 }
