@@ -1,34 +1,16 @@
-﻿<table class="table table-hover table-striped mt-2">
+﻿<table id="productTable" class="hover order-column row-border table-striped mt-2" style="width: 100%">
 	<thead>
 		<tr>
 			<th>Title</th>
 			<th>ISBN</th>
+			<th>List Price</th>
 			<th>Author</th>
 			<th>Category</th>
-			<th>List Price</th>
-			<th>Operations</th>
+			<th>@* Operations *@</th>
 		</tr>
 	</thead>
-	<tbody>
-		@foreach (var product in Model)
-		{
-			<tr>
-				<td>@product.Title</td>
-				<td>@product.ISBN</td>
-				<td>@product.Author</td>
-				<td>@product.Category.Name</td>
-				<td>@product.ListPrice.ToString("c")</td>
-				<td>
-					<div class="w-75" role="group">
-						<a asp-controller="Product" asp-action="Upsert" asp-route-id="@product.Id" class="btn btn-outline-primary">
-							<i class="bi bi-pencil-square"></i> Edit
-						</a>
-						<a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-outline-danger" onclick="deleteObject(event, '@product.Title')">
-							<i class="bi bi-trash-fill"></i> Delete
-						</a>
-					</div>
-				</td>
-			</tr>
-		}
-	</tbody>
 </table>
+
+@section Scripts{
+	<script src="~/js/product.js"></script>
+}
