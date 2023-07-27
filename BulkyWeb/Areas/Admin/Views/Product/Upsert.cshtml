@@ -18,81 +18,91 @@
 	<div class="card-body p-4">
 		<form method="post" class="row" enctype="multipart/form-data">
 			<input asp-for="Product.Id" hidden />
-			<div class="p-3">
-				<div asp-validation-summary="ModelOnly"></div>
-				<div class="form-floating mb-3">
-					<input asp-for="Product.Title" class="form-control">
-					<label asp-for="Product.Title"></label>
-					<span asp-validation-for="Product.Title" class="text-danger"></span>
-				</div>
-				<div class="form-floating mb-3">
-					<textarea asp-for="Product.Description"
-							  class="form-control"
-							  style="resize: vertical; max-height: 120px;"></textarea>
-					<label asp-for="Product.Description"></label>
-					<span asp-validation-for="Product.Description" class="text-danger"></span>
-				</div>
-				<div class="form-floating mb-3">
-					<input asp-for="Product.ISBN" value="@Guid.NewGuid().ToString()" class="form-control">
-					<label asp-for="Product.ISBN"></label>
-					<span asp-validation-for="Product.ISBN" class="text-danger"></span>
-				</div>
-				<div class="form-floating mb-3">
-					<input asp-for="Product.Author" class="form-control">
-					<label asp-for="Product.Author"></label>
-					<span asp-validation-for="Product.Author" class="text-danger"></span>
-				</div>
-				<div class="form-floating mb-3">
-					<input asp-for="Product.ListPrice" class="form-control" min="0">
-					<label asp-for="Product.ListPrice"></label>
-					<span asp-validation-for="Product.ListPrice" class="text-danger"></span>
-				</div>
-				<div class="form-floating mb-3">
-					<input asp-for="Product.PriceFifty" class="form-control" min="0">
-					<label asp-for="Product.PriceFifty"></label>
-					<span asp-validation-for="Product.PriceFifty" class="text-danger"></span>
-				</div>
-				<div class="form-floating mb-3">
-					<input asp-for="Product.PriceHundredOrMore" class="form-control" min="0">
-					<label asp-for="Product.PriceHundredOrMore"></label>
-					<span asp-validation-for="Product.PriceHundredOrMore" class="text-danger"></span>
-				</div>
-				<div class="form-floating mb-3">
-					<select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select">
-						<option disabled selected class="text-muted">-- Select category --</option>
-					</select>
-					<label asp-for="Product.CategoryId"></label>
-					<span asp-validation-for="Product.CategoryId" class="text-danger"></span>
-				</div>
-				<div class="form-group my-3">
-					<div class="input-group custom-file-button">
-						<label asp-for="Product.ImageUrl" class="input-group-text" >
-							Image:&nbsp;
-						</label>
-						<input class="form-control form-control-lg" name="file" type="file"/>
+			<input asp-for="Product.ImageUrl" hidden />
+			<div class="row">
+				<div class="col-10">
+					<div class="p-3">
+						<div asp-validation-summary="ModelOnly"></div>
+						<div class="form-floating mb-3">
+							<input asp-for="Product.Title" class="form-control">
+							<label asp-for="Product.Title"></label>
+							<span asp-validation-for="Product.Title" class="text-danger"></span>
+						</div>
+						<div class="form-floating mb-3">
+							<textarea asp-for="Product.Description"
+									  class="form-control"
+									  style="resize: vertical; max-height: 120px;"></textarea>
+							<label asp-for="Product.Description"></label>
+							<span asp-validation-for="Product.Description" class="text-danger"></span>
+						</div>
+						<div class="form-floating mb-3">
+							<input asp-for="Product.ISBN" value="@Guid.NewGuid().ToString()" class="form-control">
+							<label asp-for="Product.ISBN"></label>
+							<span asp-validation-for="Product.ISBN" class="text-danger"></span>
+						</div>
+						<div class="form-floating mb-3">
+							<input asp-for="Product.Author" class="form-control">
+							<label asp-for="Product.Author"></label>
+							<span asp-validation-for="Product.Author" class="text-danger"></span>
+						</div>
+						<div class="form-floating mb-3">
+							<input asp-for="Product.ListPrice" class="form-control" min="0">
+							<label asp-for="Product.ListPrice"></label>
+							<span asp-validation-for="Product.ListPrice" class="text-danger"></span>
+						</div>
+						<div class="form-floating mb-3">
+							<input asp-for="Product.PriceFifty" class="form-control" min="0">
+							<label asp-for="Product.PriceFifty"></label>
+							<span asp-validation-for="Product.PriceFifty" class="text-danger"></span>
+						</div>
+						<div class="form-floating mb-3">
+							<input asp-for="Product.PriceHundredOrMore" class="form-control" min="0">
+							<label asp-for="Product.PriceHundredOrMore"></label>
+							<span asp-validation-for="Product.PriceHundredOrMore" class="text-danger"></span>
+						</div>
+						<div class="form-floating mb-3">
+							<select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select">
+								<option disabled selected class="text-muted">-- Select category --</option>
+							</select>
+							<label asp-for="Product.CategoryId"></label>
+							<span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+						</div>
+						<div class="form-group my-3">
+							<div class="input-group custom-file-button">
+								<label asp-for="Product.ImageUrl" class="input-group-text">
+									Image:&nbsp;
+								</label>
+								<input class="form-control form-control-lg" name="file" type="file" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-6">
+								<a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary form-control">
+									<i class="bi bi-arrow-left"></i> Back to List
+								</a>
+							</div>
+							<div class="col-6">
+								@{
+									if (ViewBag.CurrentProcess == "Create")
+									{
+										<button type="submit" class="btn btn-primary form-control">
+											<i class="bi bi-plus-circle"></i> Create
+										</button>
+									}
+									else
+									{
+										<button type="submit" class="btn btn-primary form-control">
+											<i class="bi bi-pencil-square"></i> Update
+										</button>
+									}
+								}
+							</div>
+						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-6">
-						<a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary form-control">
-							<i class="bi bi-arrow-left"></i> Back to List
-						</a>
-					</div>
-					<div class="col-6">
-						@{
-							if (ViewBag.CurrentProcess == "Create")
-							{
-								<button type="submit" class="btn btn-primary form-control">
-									<i class="bi bi-plus-circle"></i> Create
-								</button>
-							}
-							else
-							{
-								<button type="submit" class="btn btn-primary form-control">
-									<i class="bi bi-pencil-square"></i> Update
-								</button>
-							}
-						}
+				<div class="col-2">
+					<div class="p-3">
+						<img src="@Model.Product?.ImageUrl" style="width: 100%; border-radius: 5px; border: 1px solid #bbb" />
 					</div>
 				</div>
 			</div>

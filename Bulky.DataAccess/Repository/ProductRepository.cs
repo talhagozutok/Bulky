@@ -14,6 +14,24 @@ public class ProductRepository : Repository<Product>, IProductRepository
 
 	public void Update(Product product)
 	{
-		_dbContext.Products.Update(product);
+		var productFromDb = _dbContext.Products.Find(product.Id);
+
+		if (productFromDb is not null)
+		{
+			productFromDb.Title = product.Title;
+			productFromDb.ISBN = product.ISBN;
+			productFromDb.ListPrice = product.ListPrice;
+			productFromDb.PriceFifty = product.PriceFifty;
+			productFromDb.PriceHundredOrMore = product.PriceHundredOrMore;
+			productFromDb.Description = product.Description;
+			productFromDb.CategoryId = product.CategoryId;
+			productFromDb.Author = product.Author;
+
+			if (productFromDb.ImageUrl != null)
+			{
+				productFromDb.ImageUrl = product.ImageUrl;
+			}
+		}
+
 	}
 }
