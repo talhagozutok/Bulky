@@ -28,20 +28,19 @@ public class ApplicationDbContext : DbContext
 				Id = 1,
 				Title = "22/11/63",
 				Author = "Stephen King",
-				ISBN = Guid.NewGuid().ToString(),
+				ISBN = Guid.NewGuid().ToString()[..12].ToUpper(),
 				ListPrice = 100,
 				PriceFifty = 70,
 				PriceHundredOrMore = 60,
 				CategoryId = 1,
 				ImageUrl = ""
-			}
-			,
+			},
 			new Product
 			{
 				Id = 2,
 				Title = "Alamut",
 				Author = "Vladimir Bartol",
-				ISBN = Guid.NewGuid().ToString(),
+				ISBN = Guid.NewGuid().ToString()[..12].ToUpper(),
 				ListPrice = 150,
 				PriceFifty = 80,
 				PriceHundredOrMore = 70,
