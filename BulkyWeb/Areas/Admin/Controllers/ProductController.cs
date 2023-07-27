@@ -59,6 +59,33 @@ public class ProductController : Controller
 	{
 		if (ModelState.IsValid)
 		{
+			string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+			if (file is not null)
+			{
+				string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+				string productImagesPath = Path.Combine(wwwRootPath, @"images\product");
+
+				if (!string.IsNullOrEmpty(viewModel.Product.ImageUrl))
+				{
+					// Delete the old image
+					var oldImagePath =
+						Path.Combine(wwwRootPath, viewModel.Product.ImageUrl.TrimStart('\\'));
+
+					if (System.IO.File.Exists(oldImagePath))
+					{
+						System.IO.File.Delete(oldImagePath);
+					}
+				}
+
+				using (var fileStream = new FileStream(Path.Combine(productImagesPath, fileName), FileMode.Create))
+				{
+					file.CopyTo(fileStream);
+				}
+
+				viewModel.Product.ImageUrl = @"\images\product\" + fileName;
+			}
+
 			if (viewModel.Product.Id == 0)
 			{
 				_unitOfWork.ProductRepository.Add(viewModel.Product);
