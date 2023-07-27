@@ -13,12 +13,16 @@
   <ItemGroup>
     <Compile Remove="Areas\Customer\Data\**" />
     <Compile Remove="Areas\Customer\Models\**" />
+    <Compile Remove="Controllers\**" />
     <Content Remove="Areas\Customer\Data\**" />
     <Content Remove="Areas\Customer\Models\**" />
+    <Content Remove="Controllers\**" />
     <EmbeddedResource Remove="Areas\Customer\Data\**" />
     <EmbeddedResource Remove="Areas\Customer\Models\**" />
+    <EmbeddedResource Remove="Controllers\**" />
     <None Remove="Areas\Customer\Data\**" />
     <None Remove="Areas\Customer\Models\**" />
+    <None Remove="Controllers\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,10 +53,6 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
