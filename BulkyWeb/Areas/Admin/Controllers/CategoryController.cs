@@ -22,13 +22,20 @@ public class CategoryController : Controller
 		return View(categoryList);
 	}
 
-	public IActionResult Create()
+	public IActionResult Upsert([FromRoute(Name = "id")] int? id)
 	{
-		return View(new Category());
+		if (id is null)
+		{
+			return View(new Category());
+		}
+
+		var category = _unitOfWork.CategoryRepository.Get(c => c.Id.Equals(id));
+
+		return category is not null ? View(category) : NotFound();
 	}
 
 	[HttpPost]
-	public IActionResult Create(Category category)
+	public IActionResult Upsert(Category category)
 	{
 		if (string.Equals(category.Name, "test", StringComparison.OrdinalIgnoreCase))
 		{
@@ -39,32 +46,22 @@ public class CategoryController : Controller
 
 		if (ModelState.IsValid)
 		{
-			_unitOfWork.CategoryRepository.Add(category);
-			_unitOfWork.Save();
-			TempData["success"] = "Category created successfully";
+			if (category.Id == 0)
+			{
+				_unitOfWork.CategoryRepository.Add(category);
+				_unitOfWork.Save();
+				TempData["success"] = "Category created successfully";
 
-			return RedirectToAction("Index");
-		}
+				return RedirectToAction("Index");
+			}
+			else
+			{
+				_unitOfWork.CategoryRepository.Update(category);
+				_unitOfWork.Save();
+				TempData["success"] = "Category updated successfully";
 
-		return View();
-	}
-
-	public IActionResult Edit([FromRoute(Name = "id")] int? id)
-	{
-		var category = _unitOfWork.CategoryRepository.Get(c => c.Id.Equals(id));
-		return category is not null ? View(category) : NotFound();
-	}
-
-	[HttpPost]
-	public IActionResult Edit(Category category)
-	{
-		if (ModelState.IsValid)
-		{
-			_unitOfWork.CategoryRepository.Update(category);
-			_unitOfWork.Save();
-			TempData["success"] = "Category updated successfully";
-
-			return RedirectToAction("Index");
+				return RedirectToAction("Index");
+			}
 		}
 
 		return View();

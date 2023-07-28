@@ -12,7 +12,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="text-end">
-					<a asp-controller="Category" asp-action="Create" class="btn btn-primary">
+					<a asp-controller="Category" asp-action="Upsert" class="btn btn-primary">
 						<i class="bi bi-plus"></i> Create
 					</a>
 				</div>
@@ -37,7 +37,7 @@
 								</td>
 								<td>
 									<div class="w-75" role="group">
-										<a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-outline-primary">
+										<a asp-controller="Category" asp-action="Upsert" asp-route-id="@category.Id" class="btn btn-outline-primary">
 											<i class="bi bi-pencil-square"></i> Edit
 										</a>
 										<a asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-outline-danger" onclick="deleteObject(event, '@category.Name')">
