@@ -1,16 +1,19 @@
 ﻿@model Category
 
+@{
+	ViewBag.CurrentProcess = Model.Id == 0 ? "Create" : "Update";
+}
+
 <div class="card shadow border-top-0 mt-4">
 	<div class="card-header bg-primary bg-gradient bg-opacity-75 m-lg-0 py-3 border-0 rounded-2 rounded-bottom-0">
 		<div class="row">
 			<div class="col-12 text-center">
-				<h2 class="text-white">Update Category</h2>
+				<h2 class="text-white">@ViewBag.CurrentProcess Category</h2>
 			</div>
 		</div>
 	</div>
 	<div class="card-body p-4">
 		<form method="post" class="row">
-			<input asp-for="Id" type="hidden" />
 			<div class="p-3">
 				<div asp-validation-summary="ModelOnly"></div>
 				<div class="form-floating mb-3">
@@ -29,11 +32,24 @@
 							<i class="bi bi-arrow-left"></i> Back to List
 						</a>
 					</div>
-					<div class="col-6">
-						<button type="submit" class="btn btn-primary form-control">
-							<i class="bi bi-pencil-fill"></i> Update
-						</button>
-					</div>
+					@{
+						if (ViewBag.CurrentProcess.Equals("Create"))
+						{
+							<div class="col-6">
+								<button type="submit" class="btn btn-primary form-control">
+									<i class="bi bi-plus-circle"></i> Create
+								</button>
+							</div>
+						}
+						else
+						{
+							<div class="col-6">
+								<button type="submit" class="btn btn-primary form-control">
+									<i class="bi bi-pencil-square"></i> Update
+								</button>
+							</div>
+						}
+					}
 				</div>
 			</div>
 		</form>
@@ -41,7 +57,5 @@
 </div>
 
 @section Scripts{
-	@{
-		<partial name="_ValidationScriptsPartial" />
-	}
+	<partial name="_ValidationScriptsPartial" />
 }
