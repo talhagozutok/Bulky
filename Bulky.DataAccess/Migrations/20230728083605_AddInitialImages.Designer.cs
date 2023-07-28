@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bulky.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230727210041_SeedMoreData")]
-    partial class SeedMoreData
+    [Migration("20230728083605_AddInitialImages")]
+    partial class AddInitialImages
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -119,9 +119,9 @@ namespace Bulky.DataAccess.Migrations
                             Id = 1,
                             Author = "Stephen King",
                             CategoryId = 1,
-                            Description = "",
-                            ISBN = "FE8F2C43-471",
-                            ImageUrl = "",
+                            Description = "11/22/63 is a novel by Stephen King about a time traveller who attempts to prevent the assassination of United States President John F. Kennedy, which occurred on November 22, 1963.",
+                            ISBN = "1119FCB5-A4E",
+                            ImageUrl = "\\images\\product\\initial\\22-11-63.jpg",
                             ListPrice = 100.0,
                             PriceFifty = 70.0,
                             PriceHundredOrMore = 60.0,
@@ -132,9 +132,9 @@ namespace Bulky.DataAccess.Migrations
                             Id = 2,
                             Author = "Vladimir Bartol",
                             CategoryId = 2,
-                            Description = "",
-                            ISBN = "B63399D1-7DC",
-                            ImageUrl = "",
+                            Description = "Alamut is a novel by Vladimir Bartol, first published in 1938 in Slovenian, dealing with the story of Hassan-i Sabbah and the Hashshashin, and named after their Alamut fortress. The maxim of the novel is \"Nothing is an absolute reality; all is permitted\". This book was one of the inspirations for the video game series Assassin's Creed.",
+                            ISBN = "9F964FBB-AAD",
+                            ImageUrl = "\\images\\product\\initial\\alamut.jpg",
                             ListPrice = 150.0,
                             PriceFifty = 80.0,
                             PriceHundredOrMore = 70.0,
@@ -147,6 +147,7 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "SWD9999001",
+                            ImageUrl = "\\images\\product\\initial\\fortune of time.jpg",
                             ListPrice = 99.0,
                             PriceFifty = 85.0,
                             PriceHundredOrMore = 80.0,
@@ -159,6 +160,7 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "CAW777777701",
+                            ImageUrl = "\\images\\product\\initial\\dark skies.jpg",
                             ListPrice = 40.0,
                             PriceFifty = 25.0,
                             PriceHundredOrMore = 20.0,
@@ -171,6 +173,7 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "RITO5555501",
+                            ImageUrl = "\\images\\product\\initial\\vanish in the sunset.jpg",
                             ListPrice = 55.0,
                             PriceFifty = 40.0,
                             PriceHundredOrMore = 35.0,
@@ -183,6 +186,7 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "WS3333333301",
+                            ImageUrl = "\\images\\product\\initial\\cotton candy.jpg",
                             ListPrice = 70.0,
                             PriceFifty = 60.0,
                             PriceHundredOrMore = 55.0,
@@ -195,6 +199,7 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "SOTJ1111111101",
+                            ImageUrl = "\\images\\product\\initial\\rock in the ocean.jpg",
                             ListPrice = 30.0,
                             PriceFifty = 25.0,
                             PriceHundredOrMore = 20.0,
@@ -207,6 +212,7 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "FOT000000001",
+                            ImageUrl = "\\images\\product\\initial\\leaves and wonders.jpg",
                             ListPrice = 25.0,
                             PriceFifty = 22.0,
                             PriceHundredOrMore = 20.0,
