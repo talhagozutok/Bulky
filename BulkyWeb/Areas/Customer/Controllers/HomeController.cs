@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,16 +9,33 @@ namespace BulkyWeb.Controllers;
 public class HomeController : Controller
 {
 	private readonly ILogger<HomeController> _logger;
+	private readonly IUnitOfWork _unitOfWork;
 
-	public HomeController(ILogger<HomeController> logger)
+	public HomeController(ILogger<HomeController> logger,
+		IUnitOfWork unitOfWork)
 	{
 		_logger = logger;
+		_unitOfWork = unitOfWork;
 	}
 
 	public IActionResult Index()
 	{
 		_logger.LogWarning("Navigated to /Home/Index");
-		return View();
+
+		IEnumerable<Product> productList = _unitOfWork.ProductRepository.GetAll(includeProperties: nameof(Category));
+		return View(productList);
+	}
+
+	public IActionResult Details([FromRoute(Name = "id")]int? id)
+	{
+		Product? product = _unitOfWork.ProductRepository.Get(p => p.Id.Equals(id), includeProperties: nameof(Category)); ;
+
+		if (product is null)
+		{
+			return NotFound();
+		}
+
+		return View(product);
 	}
 
 	public IActionResult Privacy()
