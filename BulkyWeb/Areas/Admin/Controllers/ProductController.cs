@@ -76,7 +76,10 @@ public class ProductController : Controller
 
 					if (System.IO.File.Exists(oldImagePath))
 					{
-						System.IO.File.Delete(oldImagePath);
+						if (!oldImagePath.Contains("initial"))
+						{
+							System.IO.File.Delete(oldImagePath);
+						}
 					}
 				}
 
@@ -139,7 +142,10 @@ public class ProductController : Controller
 
 			if (System.IO.File.Exists(oldImagePath))
 			{
-				System.IO.File.Delete(oldImagePath);
+				if (!oldImagePath.Contains("initial"))
+				{
+					System.IO.File.Delete(oldImagePath);
+				}
 			}
 
 			_unitOfWork.ProductRepository.Remove(product);
