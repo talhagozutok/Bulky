@@ -134,6 +134,14 @@ public class ProductController : Controller
 
 		if (product is not null)
 		{
+			var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath,
+				product.ImageUrl.TrimStart('\\'));
+
+			if (System.IO.File.Exists(oldImagePath))
+			{
+				System.IO.File.Delete(oldImagePath);
+			}
+
 			_unitOfWork.ProductRepository.Remove(product);
 			_unitOfWork.Save();
 
