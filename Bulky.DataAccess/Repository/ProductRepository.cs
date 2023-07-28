@@ -27,11 +27,7 @@ public class ProductRepository : Repository<Product>, IProductRepository
 			productFromDb.CategoryId = product.CategoryId;
 			productFromDb.Author = product.Author;
 
-			if (productFromDb.ImageUrl != null)
-			{
-				productFromDb.ImageUrl = product.ImageUrl;
-			}
+			productFromDb.ImageUrl = product.ImageUrl;
 		}
-
 	}
 }
