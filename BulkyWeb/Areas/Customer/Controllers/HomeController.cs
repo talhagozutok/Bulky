@@ -30,12 +30,12 @@ public class HomeController : Controller
 	{
 		Product? product = _unitOfWork.ProductRepository.Get(p => p.Id.Equals(id), includeProperties: nameof(Category)); ;
 
-		if (product is null)
+		if (product is not null)
 		{
-			return NotFound();
+			return View(product);
 		}
 
-		return View(product);
+		return NotFound();
 	}
 
 	public IActionResult Privacy()
