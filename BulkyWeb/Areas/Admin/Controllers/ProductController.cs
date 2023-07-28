@@ -76,7 +76,7 @@ public class ProductController : Controller
 
 					if (System.IO.File.Exists(oldImagePath))
 					{
-						if (!oldImagePath.Contains("initial"))
+						if (!viewModel.Product.ImageUrl.Contains("initial"))
 						{
 							System.IO.File.Delete(oldImagePath);
 						}
@@ -137,13 +137,13 @@ public class ProductController : Controller
 
 		if (product is not null)
 		{
+			if (product.ImageUrl is not null && !product.ImageUrl.Contains("initial"))
+			{
 			var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath,
 				product.ImageUrl.TrimStart('\\'));
 
 			if (System.IO.File.Exists(oldImagePath))
 			{
-				if (!oldImagePath.Contains("initial"))
-				{
 					System.IO.File.Delete(oldImagePath);
 				}
 			}
