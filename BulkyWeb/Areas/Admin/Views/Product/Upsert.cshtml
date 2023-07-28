@@ -21,6 +21,13 @@
 			<input asp-for="Product.ImageUrl" hidden />
 			<div class="row">
 				<div class="col-10">
+					<div class="px-3">
+						<a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary form-control">
+							<i class="bi bi-arrow-left"></i> Back to List
+						</a>
+					</div>
+				</div>
+				<div class="col-10">
 					<div class="p-3">
 						<div asp-validation-summary="ModelOnly"></div>
 						<div class="form-floating mb-3">
