@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bulky.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230728083605_AddInitialImages")]
-    partial class AddInitialImages
+    [Migration("20230728093603_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,6 +96,9 @@ namespace Bulky.DataAccess.Migrations
                     b.Property<double>("ListPrice")
                         .HasColumnType("float");
 
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
                     b.Property<double>("PriceFifty")
                         .HasColumnType("float");
 
@@ -120,9 +123,10 @@ namespace Bulky.DataAccess.Migrations
                             Author = "Stephen King",
                             CategoryId = 1,
                             Description = "11/22/63 is a novel by Stephen King about a time traveller who attempts to prevent the assassination of United States President John F. Kennedy, which occurred on November 22, 1963.",
-                            ISBN = "1119FCB5-A4E",
+                            ISBN = "06A2B06C-2CC",
                             ImageUrl = "\\images\\product\\initial\\22-11-63.jpg",
                             ListPrice = 100.0,
+                            Price = 80.0,
                             PriceFifty = 70.0,
                             PriceHundredOrMore = 60.0,
                             Title = "22/11/63"
@@ -133,9 +137,10 @@ namespace Bulky.DataAccess.Migrations
                             Author = "Vladimir Bartol",
                             CategoryId = 2,
                             Description = "Alamut is a novel by Vladimir Bartol, first published in 1938 in Slovenian, dealing with the story of Hassan-i Sabbah and the Hashshashin, and named after their Alamut fortress. The maxim of the novel is \"Nothing is an absolute reality; all is permitted\". This book was one of the inspirations for the video game series Assassin's Creed.",
-                            ISBN = "9F964FBB-AAD",
+                            ISBN = "BF16868D-B8D",
                             ImageUrl = "\\images\\product\\initial\\alamut.jpg",
                             ListPrice = 150.0,
+                            Price = 100.0,
                             PriceFifty = 80.0,
                             PriceHundredOrMore = 70.0,
                             Title = "Alamut"
@@ -149,6 +154,7 @@ namespace Bulky.DataAccess.Migrations
                             ISBN = "SWD9999001",
                             ImageUrl = "\\images\\product\\initial\\fortune of time.jpg",
                             ListPrice = 99.0,
+                            Price = 90.0,
                             PriceFifty = 85.0,
                             PriceHundredOrMore = 80.0,
                             Title = "Fortune of Time"
@@ -162,6 +168,7 @@ namespace Bulky.DataAccess.Migrations
                             ISBN = "CAW777777701",
                             ImageUrl = "\\images\\product\\initial\\dark skies.jpg",
                             ListPrice = 40.0,
+                            Price = 30.0,
                             PriceFifty = 25.0,
                             PriceHundredOrMore = 20.0,
                             Title = "Dark Skies"
@@ -175,6 +182,7 @@ namespace Bulky.DataAccess.Migrations
                             ISBN = "RITO5555501",
                             ImageUrl = "\\images\\product\\initial\\vanish in the sunset.jpg",
                             ListPrice = 55.0,
+                            Price = 50.0,
                             PriceFifty = 40.0,
                             PriceHundredOrMore = 35.0,
                             Title = "Vanish in the Sunset"
@@ -188,6 +196,7 @@ namespace Bulky.DataAccess.Migrations
                             ISBN = "WS3333333301",
                             ImageUrl = "\\images\\product\\initial\\cotton candy.jpg",
                             ListPrice = 70.0,
+                            Price = 65.0,
                             PriceFifty = 60.0,
                             PriceHundredOrMore = 55.0,
                             Title = "Cotton Candy"
@@ -201,6 +210,7 @@ namespace Bulky.DataAccess.Migrations
                             ISBN = "SOTJ1111111101",
                             ImageUrl = "\\images\\product\\initial\\rock in the ocean.jpg",
                             ListPrice = 30.0,
+                            Price = 27.0,
                             PriceFifty = 25.0,
                             PriceHundredOrMore = 20.0,
                             Title = "Rock in the Ocean"
@@ -214,6 +224,7 @@ namespace Bulky.DataAccess.Migrations
                             ISBN = "FOT000000001",
                             ImageUrl = "\\images\\product\\initial\\leaves and wonders.jpg",
                             ListPrice = 25.0,
+                            Price = 23.0,
                             PriceFifty = 22.0,
                             PriceHundredOrMore = 20.0,
                             Title = "Leaves and Wonders"

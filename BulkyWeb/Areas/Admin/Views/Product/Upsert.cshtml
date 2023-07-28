@@ -51,6 +51,11 @@
 							<span asp-validation-for="Product.ListPrice" class="text-danger"></span>
 						</div>
 						<div class="form-floating mb-3">
+							<input asp-for="Product.Price" class="form-control" min="0">
+							<label asp-for="Product.Price"></label>
+							<span asp-validation-for="Product.Price" class="text-danger"></span>
+						</div>
+						<div class="form-floating mb-3">
 							<input asp-for="Product.PriceFifty" class="form-control" min="0">
 							<label asp-for="Product.PriceFifty"></label>
 							<span asp-validation-for="Product.PriceFifty" class="text-danger"></span>
