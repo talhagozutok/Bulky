@@ -1,7 +1,10 @@
 ﻿@model Category
 
 @{
-	ViewBag.CurrentProcess = Model.Id == 0 ? "Create" : "Update";
+	if (Model is not null)
+	{
+		ViewBag.CurrentProcess = (Model.Id == 0 ? "Create" : "Update");
+	}
 }
 
 <div class="card shadow border-top-0 mt-4">

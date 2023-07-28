@@ -64,7 +64,7 @@ public class CategoryController : Controller
 			}
 		}
 
-		return View();
+		return View(category);
 	}
 
 	[HttpGet]
