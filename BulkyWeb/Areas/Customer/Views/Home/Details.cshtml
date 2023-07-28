@@ -30,10 +30,10 @@
 							<span class="badge rounded-pill text-bg-warning">@Model.Category.Name</span>
 						</div>
 						<div class="row ps-2">
-							<h6 class="text-secondary">ISBN : @Model.ISBN</h6>
+							<h6 class="text-light text-opacity-50">ISBN : @Model.ISBN</h6>
 						</div>
 						<div class="row ps-2">
-							<h6 class="text-secondary pb-2">
+							<h6 class="text-light text-opacity-50 pb-2">
 								List Price:
 								<span class="text-decoration-line-through">
 									@Model.ListPrice.ToString("c", CultureInfo.CreateSpecificCulture("en-US"))
@@ -45,31 +45,31 @@
 								<div class="text-success fw-semibold">Quantity</div>
 							</div>
 							<div class="p-1 col-3 col-lg-2 bg-dark border-bottom">
-								<div class="text-light fw-semibold">1-50</div>
+								<div class="text-light text-opacity-50 fw-semibold">1-50</div>
 							</div>
 							<div class="p-1 col-3 col-lg-2 bg-dark border-bottom">
-								<div class="text-light fw-semibold">51-100</div>
+								<div class="text-light text-opacity-50 fw-semibold">51-100</div>
 							</div>
 							<div class="p-1 col-3 col-lg-2 bg-dark border-bottom">
-								<div class="text-light fw-semibold">100+</div>
+								<div class="text-light text-opacity-50 fw-semibold">100+</div>
 							</div>
 						</div>
 						<div class="row text-center ps-2">
 							<div class="p-1 col-3 col-lg-2 bg-dark text-success fw-bold">
 								<div>Price</div>
 							</div>
-							<div class="p-1 col-3 col-lg-2 bg-dark text-light fw-bold">
+							<div class="p-1 col-3 col-lg-2 bg-dark text-light text-opacity-50 fw-bold">
 								<div>@Model.Price.ToString("c", CultureInfo.CreateSpecificCulture("en-US"))</div>
 							</div>
-							<div class="p-1 col-3 col-lg-2 bg-dark text-light fw-bold">
+							<div class="p-1 col-3 col-lg-2 bg-dark text-light text-opacity-50 fw-bold">
 								<div>@Model.PriceFifty.ToString("c", CultureInfo.CreateSpecificCulture("en-US"))</div>
 							</div>
-							<div class="p-1 col-3 col-lg-2 bg-dark text-light fw-bold">
+							<div class="p-1 col-3 col-lg-2 bg-dark text-light text-opacity-50 fw-bold">
 								<div>@Model.PriceHundredOrMore.ToString("c", CultureInfo.CreateSpecificCulture("en-US"))</div>
 							</div>
 						</div>
 						<div class="row pl-2 my-3">
-							<p class="text-secondary lh-sm">@Model.Description</p>
+							<p class="text-light text-opacity-75 lh-sm">@Model.Description</p>
 						</div>
 						<div class="row pl-2 mb-3">
 							<div class="col-md-4">
@@ -78,9 +78,8 @@
 										  id="inputGroup-sizing-default">
 										Count
 									</span>
-									<input type="number" value="1" class="form-control text-end"
+									<input type="number" min="1" value="1" class="form-control text-end"
 										   aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-
 								</div>
 							</div>
 						</div>
