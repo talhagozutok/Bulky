@@ -42,6 +42,7 @@ public class Product
 	[Range(minimum: 1, maximum: 100_000, ErrorMessage = "{0} must be between {1} and {2}.")]
 	public double PriceHundredOrMore { get; set; }
 
+	[Display(Name = "Category")]
 	public int CategoryId { get; set; }
 
 	[ForeignKey(nameof(CategoryId))]

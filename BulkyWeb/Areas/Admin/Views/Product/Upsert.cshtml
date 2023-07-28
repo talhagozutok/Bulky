@@ -74,7 +74,7 @@
 						</div>
 						<div class="form-floating mb-3">
 							<select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select">
-								<option disabled selected class="text-muted">-- Select category --</option>
+								<option disabled selected class="text-muted">Select category</option>
 							</select>
 							<label asp-for="Product.CategoryId"></label>
 							<span asp-validation-for="Product.CategoryId" class="text-danger"></span>
