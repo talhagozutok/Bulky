@@ -25,11 +25,15 @@ body {
 }
 
 #coloredFooterText {
-    background: linear-gradient(195deg, rgb(237, 236, 255) 15%, rgb(220, 212, 246) 70%);
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-    font-weight: 600;
-    font-size: 18px!important;
+  background: linear-gradient(
+    195deg,
+    rgb(237, 236, 255) 15%,
+    rgb(220, 212, 246) 70%
+  );
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  font-weight: 600;
+  font-size: 1.125rem !important;
 }
 
 tbody > tr:last-child > td {
@@ -109,3 +113,13 @@ body.swal2-shown > [aria-hidden="true"] {
 }
 
 /* #endregion jquery-validate */
+
+/* #region DataTables */
+
+/* `Show N entries` selection background and text color */
+div.dataTables_length select {
+  color: var(--bs-body-color) !important;
+  background-color: var(--bs-body-bg) !important;
+}
+
+/* #endregion DataTables */
