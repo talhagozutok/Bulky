@@ -1,12 +1,16 @@
 ﻿using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 using Bulky.Models.ViewModels;
+using Bulky.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
 
 namespace BulkyWeb.Areas.Admin.Controllers;
 
 [Area(areaName: "Admin")]
+[Authorize(Roles = StaticDetails.Role_Admin)]
 public class ProductController : Controller
 {
 	private readonly IUnitOfWork _unitOfWork;
