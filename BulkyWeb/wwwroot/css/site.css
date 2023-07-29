@@ -57,6 +57,27 @@ tbody > tr:last-child > td {
   cursor: pointer;
 }
 
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--bs-secondary);
+}
+
+.separator:not(:empty)::before {
+    margin-right: .25em;
+}
+
+.separator:not(:empty)::after {
+    margin-left: .25em;
+}
+
 /* #region Custom SweetAlert2 */
 
 /* Use blurred backdrop */
@@ -66,7 +87,7 @@ body.swal2-shown > [aria-hidden="true"] {
 }
 
 /* Use no ellipse border
-    this is useful when invoking custom icon
+    useful when invoking toast alert with custom icon
 */
 .no-border {
   border: 0 !important;
@@ -103,6 +124,7 @@ body.swal2-shown > [aria-hidden="true"] {
 .colored-toast .swal2-html-container {
   color: white;
 }
+
 /* #endregion Custom SweetAlert2 */
 
 /* #region jquery-validate */

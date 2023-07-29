@@ -117,6 +117,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             Input = new()
             {
                 RoleList = _roleManager.Roles
+                    .OrderBy(role => role.Name)
                     .Select(role => role.Name)
                     .Select(selectListItem => new SelectListItem
                     {
