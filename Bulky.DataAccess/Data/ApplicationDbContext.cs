@@ -10,8 +10,9 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 	public DbSet<Category> Categories { get; set; }
 
 	public DbSet<Product> Products { get; set; }
+	public DbSet<Company> Companies { get; set; }
 
-	public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
 	public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
 	{
@@ -35,7 +36,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 				Title = "22/11/63",
 				Author = "Stephen King",
 				Description = "11/22/63 is a novel by Stephen King about a time traveller who attempts to prevent the assassination of United States President John F. Kennedy, which occurred on November 22, 1963.",
-				ISBN = Guid.NewGuid().ToString()[..12].ToUpper(),
+				ISBN = "74BCFEA0-209",
 				ListPrice = 100,
 				Price = 80,
 				PriceFifty = 70,
@@ -49,7 +50,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 				Title = "Alamut",
 				Author = "Vladimir Bartol",
 				Description = "Alamut is a novel by Vladimir Bartol, first published in 1938 in Slovenian, dealing with the story of Hassan-i Sabbah and the Hashshashin, and named after their Alamut fortress. The maxim of the novel is \"Nothing is an absolute reality; all is permitted\". This book was one of the inspirations for the video game series Assassin's Creed.",
-				ISBN = Guid.NewGuid().ToString()[..12].ToUpper(),
+				ISBN = "C35256A1-420",
 				ListPrice = 150,
 				Price = 100,
 				PriceFifty = 80,
@@ -142,5 +143,38 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 				ImageUrl = "\\images\\product\\initial\\leaves and wonders.jpg"
 			}
 		);
+
+		modelBuilder.Entity<Company>().HasData(
+			new Company()
+			{
+				Id = 1,
+				Name = "Tech Solution",
+				City = "Tech City",
+				State = "IL",
+				StreetAddress = "123 Tech St",
+				PostalCode = "12121",
+				PhoneNumber = "6669990000"
+			},
+			new Company()
+			{
+				Id = 2,
+				Name = "Vivid Books",
+				City = "Tech City",
+				State = "IL",
+				StreetAddress = "999 Vid St",
+				PostalCode = "3333",
+				PhoneNumber = "7779990000"
+			},
+			new Company()
+			{
+				Id = 3,
+				Name = "Readers Club",
+				City = "Lala land",
+				State = "NY",
+				StreetAddress = "999 Main St",
+				PostalCode = "89999",
+				PhoneNumber = "1113335555"
+			}
+			);
 	}
 }
