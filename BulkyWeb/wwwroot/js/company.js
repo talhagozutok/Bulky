@@ -6,12 +6,12 @@ $(document).ready(function () {
 
 function loadDataTable() {
     dataTable = $('#companyTable').DataTable({
-        "ajax": {
+        ajax: {
             url: '/admin/company/getall',
             type: 'GET'
         },
         columnDefs: [{
-            targets: "_all",
+            targets: '_all',
             render: function (data, type, row) {
                 return type === 'display' && data.length > 20 ?
                     data.substr(0, 20) + '...' :
@@ -19,11 +19,11 @@ function loadDataTable() {
             }
         }],
         columns: [
-            { data: 'name', "width": "15%" },
-            { data: 'city', "width": "15%" },
-            { data: 'state', "width": "15%" },
-            { data: 'streetAddress', "width": "15%" },
-            { data: 'phoneNumber', "width": "15%" },
+            { data: 'name', width: '15%' },
+            { data: 'city', width: '15%' },
+            { data: 'state', width: '15%' },
+            { data: 'streetAddress', width: '15%' },
+            { data: 'phoneNumber', width: '15%' },
             {
                 data: 'id',
 
@@ -39,14 +39,14 @@ function loadDataTable() {
 						        </a>
 					        </div>`
                 },
-                "title": "Operations",
-                "orderable": false,
-                "width": "25%"
+                title: 'Operations',
+                orderable: false,
+                width: '25%'
             },
         ],
-        "language": {
+        language: {
              //url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/tr.json',
-            "emptyTable": "There aren't any company in the database."
+            emptyTable: "There aren't any company in the database."
         }
     });
 }
