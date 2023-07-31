@@ -5,6 +5,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
+using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 using Bulky.Utilities;
 using Microsoft.AspNetCore.Authentication;
@@ -28,29 +29,32 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
-        {
-            _userManager = userManager;
-            _userStore = userStore;
-            _emailStore = GetEmailStore();
-            _signInManager = signInManager;
-            _logger = logger;
-            _emailSender = emailSender;
-            _roleManager = roleManager;
-        }
+		public RegisterModel(
+			UserManager<IdentityUser> userManager,
+			IUserStore<IdentityUser> userStore,
+			SignInManager<IdentityUser> signInManager,
+			ILogger<RegisterModel> logger,
+			IEmailSender emailSender,
+			RoleManager<IdentityRole> roleManager,
+			IUnitOfWork unitOfWork)
+		{
+			_userManager = userManager;
+			_userStore = userStore;
+			_emailStore = GetEmailStore();
+			_signInManager = signInManager;
+			_logger = logger;
+			_emailSender = emailSender;
+			_roleManager = roleManager;
+			_unitOfWork = unitOfWork;
+		}
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
-        [BindProperty]
+		/// <summary>
+		///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+		///     directly from your code. This API may change or be removed in future releases.
+		/// </summary>
+		[BindProperty]
         public InputModel Input { get; set; }
 
         /// <summary>
@@ -111,7 +115,13 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             public string? State { get; set; }
             public string? PostalCode { get; set; }
             public string? PhoneNumber { get; set; }
-        }
+
+            [Display(Name="Company")]
+            public int? CompanyId { get; set; }
+
+			[ValidateNever]
+			public IEnumerable<SelectListItem> CompanyList { get; set; }
+		}
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -132,8 +142,16 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                     {
                         Text = selectListItem,
                         Value = selectListItem
+                    }),
+
+				CompanyList = _unitOfWork.CompanyRepository.GetAll()
+                    .OrderBy(company => company.Id)
+                    .Select(selectListItem => new SelectListItem
+                    {
+                        Text = selectListItem.Name,
+                        Value = selectListItem.Id.ToString()
                     })
-            };
+			};
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -157,8 +175,12 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                 user.PostalCode = Input.PostalCode;
                 user.PhoneNumber = Input.PhoneNumber;
 
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                if ( Input.Roles.Contains(StaticDetails.Role_Company))
+                {
+                    user.CompanyId = Input.CompanyId;
+                }
 
+                var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
@@ -204,12 +226,20 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             Input = new()
             {
                 RoleList = _roleManager.Roles
-                .Select(role => role.Name)
-                .Select(selectListItem => new SelectListItem
-                {
-                    Text = selectListItem,
-                    Value = selectListItem
-                })
+                    .Select(role => role.Name)
+                    .Select(selectListItem => new SelectListItem
+                    {
+                        Text = selectListItem,
+                        Value = selectListItem
+                    }),
+
+                CompanyList = _unitOfWork.CompanyRepository.GetAll()
+                    .OrderBy(company => company.Id)
+                    .Select(selectListItem => new SelectListItem()
+                    {
+                        Text = selectListItem.Name,
+                        Value = selectListItem.Id.ToString()
+                    })
             };
 
             // If we got this far, something failed, redisplay form

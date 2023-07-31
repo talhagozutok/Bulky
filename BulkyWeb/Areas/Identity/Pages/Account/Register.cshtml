@@ -63,10 +63,17 @@
                         <label asp-for="Input.PostalCode" class="text-muted" style="left: unset;">Postal Code</label>
                         <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
                     </div>
-                    <div class="form-group mb-3 col-md-12">
+                    <div class="form-group mb-3 col-md-6">
                         <select asp-for="Input.Roles" asp-items="@Model.Input.RoleList" class="form-select multiple">
                             <option disabled>Select roles</option>
                         </select>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6" style="display: none;">
+                        <select asp-for="Input.CompanyId" asp-items="@Model.Input.CompanyList" class="form-select multiple">
+                            <option disabled selected class="text-muted">Select company</option>
+                        </select>
+                        <label asp-for="Input.CompanyId" style="left: unset;"></label>
+                        <span asp-validation-for="Input.CompanyId" class="text-danger"></span>
                     </div>
                     <div class="col-12">
                         <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
@@ -111,4 +118,21 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        // If selected roles contains 'Company' then show company selection dropdown.
+        $(document).ready(function () {
+            $('#Input_Roles').change(function () {
+                var selection = $('#Input_Roles Option:Selected').text();
+
+                if (selection.indexOf('Company') >= 0) {
+                    $('#Input_CompanyId').parent().show();
+                }
+                else {
+                    $('#Input_CompanyId').parent().hide();
+                }
+            })
+        });
+    </script>
 }
