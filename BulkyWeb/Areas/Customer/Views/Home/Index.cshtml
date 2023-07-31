@@ -1,5 +1,4 @@
-﻿@using System.Globalization;
-@model IEnumerable<Product>
+﻿@model IEnumerable<Product>
 
 @{
 	ViewData["Title"] = "Home Page";
@@ -36,7 +35,7 @@
 							</div>
 						</div>
 						<div>
-							<a asp-action="Details" asp-route-id="@product.Id" class="btn btn-primary bg-gradient form-control">
+							<a asp-action="Details" asp-route-productId="@product.Id" class="btn btn-primary bg-gradient form-control">
 								<i class="bi bi-arrow-return-right"></i> Details
 							</a>
 						</div>
