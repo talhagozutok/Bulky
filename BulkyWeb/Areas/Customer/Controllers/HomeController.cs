@@ -45,8 +45,8 @@ public class HomeController : Controller
         return NotFound();
     }
 
-    // A user must be login and authorized before invoking this post method.
-    [HttpPost]
+	// Only authorized users are able to access
+	[HttpPost]
     [Authorize]
     public IActionResult Details(ShoppingCart cart)
     {
