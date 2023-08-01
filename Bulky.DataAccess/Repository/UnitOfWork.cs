@@ -11,29 +11,39 @@ public class UnitOfWork : IUnitOfWork
     private ICompanyRepository Company { get; }
     private IShoppingCartRepository ShoppingCart { get; }
     private IApplicationUserRepository ApplicationUser { get; }
+    private IOrderHeaderRepository OrderHeader { get; }
+    private IOrderDetailRepository OrderDetail { get; }
 
-    public UnitOfWork(ApplicationDbContext dbContext,
-        ICategoryRepository categoryRepository,
-        IProductRepository productRepository,
-        ICompanyRepository companyRepository,
-        IShoppingCartRepository shoppingCart,
-        IApplicationUserRepository applicationUser)
-    {
-        _dbContext = dbContext;
-        Category = categoryRepository;
-        Product = productRepository;
-        Company = companyRepository;
-        ShoppingCart = shoppingCart;
-        ApplicationUser = applicationUser;
-    }
+	public UnitOfWork(ApplicationDbContext dbContext,
+		ICategoryRepository categoryRepository,
+		IProductRepository productRepository,
+		ICompanyRepository companyRepository,
+		IShoppingCartRepository shoppingCart,
+		IApplicationUserRepository applicationUser,
+		IOrderHeaderRepository orderHeader,
+		IOrderDetailRepository orderDetail)
+	{
+		_dbContext = dbContext;
+		Category = categoryRepository;
+		Product = productRepository;
+		Company = companyRepository;
+		ShoppingCart = shoppingCart;
+		ApplicationUser = applicationUser;
+		OrderHeader = orderHeader;
+		OrderDetail = orderDetail;
+	}
 
-    public ICategoryRepository CategoryRepository => Category;
+	public ICategoryRepository CategoryRepository => Category;
     public IProductRepository ProductRepository => Product;
     public ICompanyRepository CompanyRepository => Company;
     public IShoppingCartRepository ShoppingCartRepository => ShoppingCart;
     public IApplicationUserRepository ApplicationUserRepository => ApplicationUser;
 
-    public void Save()
+    public IOrderDetailRepository OrderDetailRepository => OrderDetail;
+
+    public IOrderHeaderRepository OrderHeaderRepository => OrderHeader;
+
+	public void Save()
     {
         _dbContext.SaveChanges();
     }
