@@ -1,10 +1,12 @@
-﻿using System.Security.Claims;
+﻿using System.Net;
+using System.Security.Claims;
 using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 using Bulky.Models.ViewModels;
 using Bulky.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe.Checkout;
 
 namespace BulkyWeb.Areas.Customer.Controllers;
 
@@ -168,11 +170,37 @@ public class CartController : Controller
 			return new StatusCodeResult((int)HttpStatusCode.RedirectMethod);
         }
 
-        return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartViewModel.OrderHeader.Id});
+		return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartViewModel.OrderHeader.Id });
     }
 
     public IActionResult OrderConfirmation(int id)
     {
+		OrderHeader orderHeader = _unitOfWork.OrderHeaderRepository.Get(u => u.Id == id, includeProperties: "ApplicationUser");
+
+		if (orderHeader.PaymentStatus != StaticDetails.PaymentStatusDelayedPayment)
+		{
+			// this is an order by customer
+			// because only company users pay net30 
+			// therefore if `PaymentStatus` is not equals to `PaymentStatusDelayedPayment`
+			// then this clause only applies for other than company users.
+
+			var service = new SessionService();
+			Session session = service.Get(orderHeader.SessionId);
+
+			if (session.PaymentStatus.ToLower() == "paid")
+			{
+				_unitOfWork.OrderHeaderRepository.UpdateStripePaymentID(id, session.Id, session.PaymentIntentId);
+				_unitOfWork.OrderHeaderRepository.UpdateStatus(id, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
+				_unitOfWork.Save();
+			}
+		}
+
+		List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCartRepository
+			.GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
+
+		_unitOfWork.ShoppingCartRepository.RemoveRange(shoppingCarts);
+		_unitOfWork.Save();
+
         return View(id);
     }
 
