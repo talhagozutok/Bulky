@@ -130,8 +130,42 @@ public class CartController : Controller
                 .CompanyId
                 .GetValueOrDefault() == 0)
         {
-            // it is a regular customer account and we need to capture payment
+			// regular customer account
             // stripe logic
+
+			var origin = Request.Scheme + "://" + Request.Host.Value;
+			var options = new SessionCreateOptions
+			{
+				SuccessUrl = origin + $"/Customer/Cart/OrderConfirmation?id={ShoppingCartViewModel.OrderHeader.Id}",
+				CancelUrl = origin + "/Customer/Cart/Index",
+				LineItems = new List<SessionLineItemOptions>(),
+				Mode = "payment",
+			};
+
+			foreach (var item in ShoppingCartViewModel.ShoppingCartList)
+			{
+				var sessionLineItem = new SessionLineItemOptions
+				{
+					PriceData = new SessionLineItemPriceDataOptions
+					{
+						UnitAmount = (long)(item.Price * 100), // $20.50 => 2050
+						Currency = "usd",
+						ProductData = new SessionLineItemPriceDataProductDataOptions
+						{
+							Name = item.Product.Title
+						}
+					},
+					Quantity = item.Count
+				};
+				options.LineItems.Add(sessionLineItem);
+			}
+
+			var service = new SessionService();
+			Session session = service.Create(options);
+			_unitOfWork.OrderHeaderRepository.UpdateStripePaymentID(ShoppingCartViewModel.OrderHeader.Id, session.Id, session.PaymentIntentId);
+			_unitOfWork.Save();
+			Response.Headers.Add("Location", session.Url);
+			return new StatusCodeResult((int)HttpStatusCode.RedirectMethod);
         }
 
         return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartViewModel.OrderHeader.Id});
