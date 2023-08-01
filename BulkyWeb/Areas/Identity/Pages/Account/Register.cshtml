@@ -79,14 +79,14 @@
                         <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
                     </div>
                 </form>
-                <div class="text-center">
+                <div class="text-center mt-2">
                     <span class="text-muted">Have an account already?</span>
                     <a asp-page="Login">Sign in</a>
                 </div>
             </div>
             <div class="col-md-12">
                 <section>
-                    <div class="separator pt-3">or</div>
+                    <div class="separator mt-3">OR</div>
                     <h3>Use another service to register.</h3>
                     @{
                         if ((Model.ExternalLogins?.Count ?? 0) == 0)
