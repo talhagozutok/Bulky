@@ -66,8 +66,8 @@
 
 			// do my commands
 			DeleteAlert.fire({
-				title: 'Are you sure?',
-				html: `The category '<strong>${categoryName}</strong>' will be deleted.`
+				title: 'Delete this category?',
+				html: `'<strong>${categoryName}</strong>' will be deleted.`
 			}).then((result) => {
 				if (result.isConfirmed) {
 					// then redirect

@@ -49,8 +49,8 @@ function deleteProduct(e, productName) {
 
     // do my commands
     DeleteAlert.fire({
-        title: 'Are you sure?',
-        html: `The product '<strong>${productName}</strong>' will be deleted.`
+        title: 'Delete this product?',
+        html: `'<strong>${productName}</strong>' will be deleted.`
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
