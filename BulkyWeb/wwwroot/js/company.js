@@ -57,8 +57,8 @@ function deleteCompany(e, companyName) {
 
     // do my commands
     DeleteAlert.fire({
-        title: 'Are you sure?',
-        html: `The company '<strong>${companyName}</strong>' will be deleted.`
+        title: 'Delete this company?',
+        html: `'<strong>${companyName}</strong>' will be deleted.`
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({

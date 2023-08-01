@@ -98,23 +98,6 @@ async function testSwalToasts() {
   });
 }
 
-async function testSwalDelete() {
-  await DeleteAlert.fire({
-    title: 'Are you sure?',
-    html: 'Object is going to be deleted!<br/>Do not use backdrop.',
-    hideClass: {
-        backdrop: 'swal2-backdrop-hide',
-    }
-  }).then((result) => {
-    if (result.isConfirmed) {
-      DeleteToast.fire({
-        title: 'Object is deleted.',
-        text: 'Object properties',
-      });
-    }
-  });
-}
-
 async function fireToast(iconParam, toastTitleParam, toastTextParam) {
     return Toast.fire({
         icon: iconParam,
