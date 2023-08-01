@@ -11,3 +11,10 @@
 		fireToastDelete('@TempData["delete"]', '@TempData["deleteText"]')
 	</script>
 }
+
+@if (TempData["shoppingCartAdded"] is not null)
+{
+	<script>
+		fireToastCart('@TempData["shoppingCartAdded"]', '')
+	</script>
+}

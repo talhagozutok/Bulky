@@ -37,6 +37,15 @@ const DeleteToast = Toast.mixin({
   },
 });
 
+const CartToast = Toast.mixin({
+    icon: 'success',
+    iconHtml: '<i class="bi bi-cart2"></i>',
+    customClass: {
+        popup: "colored-toast",
+        icon: "no-border",
+    },
+});
+
 const DeleteAlert = Swal.mixin({
   icon: "warning",
   showCancelButton: true,
@@ -117,6 +126,15 @@ async function fireToast(iconParam, toastTitleParam, toastTextParam) {
 async function fireToastDelete(toastTitleParam, toastTextParam) {
     return DeleteToast.fire({
         icon: 'error',
+        title: toastTitleParam,
+        text: toastTextParam,
+    });
+}
+
+
+async function fireToastCart(toastTitleParam, toastTextParam) {
+    return CartToast.fire({
+        icon: 'success',
         title: toastTitleParam,
         text: toastTextParam,
     });
