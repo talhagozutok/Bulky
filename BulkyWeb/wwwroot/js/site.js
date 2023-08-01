@@ -114,7 +114,6 @@ async function fireToastDelete(toastTitleParam, toastTextParam) {
     });
 }
 
-
 async function fireToastCart(toastTitleParam, toastTextParam) {
     return CartToast.fire({
         icon: 'success',
