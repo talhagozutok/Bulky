@@ -44,7 +44,9 @@
                                 <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
                             </p>
                             <p>
-                                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                                <div class="text-center">
+                                    <span class="text-muted">Don't have an account?</span> <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Sign up</a>
+                                </div>
                             </p>
                             <p>
                                 <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
