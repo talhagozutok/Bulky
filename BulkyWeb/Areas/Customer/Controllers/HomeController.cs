@@ -71,9 +71,9 @@ public class HomeController : Controller
         _unitOfWork.Save();
 
         var product = _unitOfWork.ProductRepository.Get(p => p.Id.Equals(cart.ProductId))!;
-        TempData["success"] = $"{product.Title} added to cart";
+        TempData["shoppingCartAdded"] = $"{product.Title} added to cart";
 
-        return RedirectToAction(nameof(Index));
+		return RedirectToAction(nameof(Index));
     }
 
     public IActionResult Privacy()
