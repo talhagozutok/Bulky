@@ -15,7 +15,7 @@ public static class StaticDetails
 
     public const string PaymentStatusPending = "Pending";
     public const string PaymentStatusApproved = "Approved";
-    public const string PaymentStatusDelayedPayment = "DelayedPayment";
+    public const string PaymentStatusDelayedPayment = "ApprovedForDelayedPayment";
     public const string PaymentStatusRejected = "Rejected";
 
     public const string AdminEmail = "admin@admin.com";

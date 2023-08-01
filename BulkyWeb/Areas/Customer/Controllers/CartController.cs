@@ -2,6 +2,7 @@
 using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 using Bulky.Models.ViewModels;
+using Bulky.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,8 @@ namespace BulkyWeb.Areas.Customer.Controllers;
 public class CartController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
+
+    [BindProperty]
     public ShoppingCartViewModel ShoppingCartViewModel { get; set; }
 
     public CartController(IUnitOfWork unitOfWork)
@@ -43,15 +46,15 @@ public class CartController : Controller
 
     public IActionResult Summary()
     {
-		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
-		ShoppingCartViewModel = new()
-		{
-			ShoppingCartList = _unitOfWork.ShoppingCartRepository
-				.GetAll(u => u.ApplicationUserId.Equals(userId),
-							 includeProperties: nameof(Product)),
-			OrderHeader = new()
-		};
+        ShoppingCartViewModel = new()
+        {
+            ShoppingCartList = _unitOfWork.ShoppingCartRepository
+                .GetAll(u => u.ApplicationUserId.Equals(userId),
+                             includeProperties: nameof(Product)),
+            OrderHeader = new()
+        };
 
         ShoppingCartViewModel.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUserRepository.Get(u => u.Id.Equals(userId))!;
 
@@ -62,13 +65,81 @@ public class CartController : Controller
         ShoppingCartViewModel.OrderHeader.State = ShoppingCartViewModel.OrderHeader.ApplicationUser.State;
         ShoppingCartViewModel.OrderHeader.PostalCode = ShoppingCartViewModel.OrderHeader.ApplicationUser.PostalCode;
 
-		foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
-		{
-			cart.Price = GetPriceBasedOnQuantity(cart);
-			ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
-		}
+        foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+        {
+            cart.Price = GetPriceBasedOnQuantity(cart);
+            ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+        }
 
-		return View(ShoppingCartViewModel);
+        return View(ShoppingCartViewModel);
+    }
+
+    [HttpPost]
+    [ActionName("Summary")]
+    public IActionResult SummaryPost()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+        ShoppingCartViewModel.ShoppingCartList = _unitOfWork.ShoppingCartRepository
+                .GetAll(u => u.ApplicationUserId.Equals(userId), includeProperties: nameof(Product));
+
+        ShoppingCartViewModel.OrderHeader.OrderDate = DateTime.Now;
+        ShoppingCartViewModel.OrderHeader.ApplicationUserId = userId;
+        
+        ApplicationUser applicationUser = _unitOfWork.ApplicationUserRepository.Get(u => u.Id.Equals(userId))!;
+
+        foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+        {
+            cart.Price = GetPriceBasedOnQuantity(cart);
+            ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+        }
+
+        if (applicationUser
+                .CompanyId
+                .GetValueOrDefault() == 0)
+        {
+            // regular customer
+            ShoppingCartViewModel.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusPending;
+            ShoppingCartViewModel.OrderHeader.OrderStatus = StaticDetails.StatusPending;
+        }
+        else
+        {
+            // company user
+            ShoppingCartViewModel.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusDelayedPayment;
+            ShoppingCartViewModel.OrderHeader.OrderStatus = StaticDetails.StatusApproved;
+        }
+
+        _unitOfWork.OrderHeaderRepository.Add(ShoppingCartViewModel.OrderHeader);
+        _unitOfWork.Save();
+
+        foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+        {
+            OrderDetail orderDetail = new()
+            {
+                ProductId = cart.ProductId,
+                OrderHeaderId = ShoppingCartViewModel.OrderHeader.Id,
+                Price = cart.Price,
+                Count = cart.Count
+            };
+
+            _unitOfWork.OrderDetailRepository.Add(orderDetail);
+            _unitOfWork.Save();
+        }
+
+        if (applicationUser
+                .CompanyId
+                .GetValueOrDefault() == 0)
+        {
+            // it is a regular customer account and we need to capture payment
+            // stripe logic
+        }
+
+        return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartViewModel.OrderHeader.Id});
+    }
+
+    public IActionResult OrderConfirmation(int id)
+    {
+        return View(id);
     }
 
     public IActionResult Plus(int cartId)
