@@ -6,4 +6,4 @@ SELECT dbo.AspNetRoles.Id as UserId,
 FROM dbo.AspNetUsers
 	JOIN dbo.AspNetUserRoles ON dbo.AspNetUserRoles.UserId = dbo.AspNetUsers.Id
 	JOIN dbo.AspNetRoles ON dbo.AspNetRoles.Id = dbo.AspNetUserRoles.RoleId
-WHERE UserName = 'admin@admin.com'
+WHERE UserName = 'admin@user.com'

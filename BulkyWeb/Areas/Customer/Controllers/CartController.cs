@@ -15,125 +15,125 @@ namespace BulkyWeb.Areas.Customer.Controllers;
 [Authorize]
 public class CartController : Controller
 {
-    private readonly IUnitOfWork _unitOfWork;
+	private readonly IUnitOfWork _unitOfWork;
 
-    [BindProperty]
-    public ShoppingCartViewModel ShoppingCartViewModel { get; set; }
+	[BindProperty]
+	public ShoppingCartViewModel ShoppingCartViewModel { get; set; }
 
-    public CartController(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
+	public CartController(IUnitOfWork unitOfWork)
+	{
+		_unitOfWork = unitOfWork;
+	}
 
-    public IActionResult Index()
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+	public IActionResult Index()
+	{
+		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
-        ShoppingCartViewModel = new()
-        {
-            ShoppingCartList = _unitOfWork.ShoppingCartRepository
-                .GetAll(u => u.ApplicationUserId.Equals(userId),
-                             includeProperties: nameof(Product)),
-            OrderHeader = new()
-        };
+		ShoppingCartViewModel = new()
+		{
+			ShoppingCartList = _unitOfWork.ShoppingCartRepository
+				.GetAll(u => u.ApplicationUserId.Equals(userId),
+							 includeProperties: nameof(Product)),
+			OrderHeader = new()
+		};
 
-        foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
-        {
-            cart.Price = GetPriceBasedOnQuantity(cart);
-            ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
-        }
+		foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+		{
+			cart.Price = GetPriceBasedOnQuantity(cart);
+			ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+		}
 
-        return View(ShoppingCartViewModel);
-    }
+		return View(ShoppingCartViewModel);
+	}
 
-    public IActionResult Summary()
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+	public IActionResult Summary()
+	{
+		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
-        ShoppingCartViewModel = new()
-        {
-            ShoppingCartList = _unitOfWork.ShoppingCartRepository
-                .GetAll(u => u.ApplicationUserId.Equals(userId),
-                             includeProperties: nameof(Product)),
-            OrderHeader = new()
-        };
+		ShoppingCartViewModel = new()
+		{
+			ShoppingCartList = _unitOfWork.ShoppingCartRepository
+				.GetAll(u => u.ApplicationUserId.Equals(userId),
+							 includeProperties: nameof(Product)),
+			OrderHeader = new()
+		};
 
-        ShoppingCartViewModel.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUserRepository.Get(u => u.Id.Equals(userId))!;
+		ShoppingCartViewModel.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUserRepository.Get(u => u.Id.Equals(userId))!;
 
-        ShoppingCartViewModel.OrderHeader.Name = ShoppingCartViewModel.OrderHeader.ApplicationUser.Name;
-        ShoppingCartViewModel.OrderHeader.PhoneNumber = ShoppingCartViewModel.OrderHeader.ApplicationUser.PhoneNumber;
-        ShoppingCartViewModel.OrderHeader.StreetAddress = ShoppingCartViewModel.OrderHeader.ApplicationUser.StreetAddress;
-        ShoppingCartViewModel.OrderHeader.City = ShoppingCartViewModel.OrderHeader.ApplicationUser.City;
-        ShoppingCartViewModel.OrderHeader.State = ShoppingCartViewModel.OrderHeader.ApplicationUser.State;
-        ShoppingCartViewModel.OrderHeader.PostalCode = ShoppingCartViewModel.OrderHeader.ApplicationUser.PostalCode;
+		ShoppingCartViewModel.OrderHeader.Name = ShoppingCartViewModel.OrderHeader.ApplicationUser.Name;
+		ShoppingCartViewModel.OrderHeader.PhoneNumber = ShoppingCartViewModel.OrderHeader.ApplicationUser.PhoneNumber;
+		ShoppingCartViewModel.OrderHeader.StreetAddress = ShoppingCartViewModel.OrderHeader.ApplicationUser.StreetAddress;
+		ShoppingCartViewModel.OrderHeader.City = ShoppingCartViewModel.OrderHeader.ApplicationUser.City;
+		ShoppingCartViewModel.OrderHeader.State = ShoppingCartViewModel.OrderHeader.ApplicationUser.State;
+		ShoppingCartViewModel.OrderHeader.PostalCode = ShoppingCartViewModel.OrderHeader.ApplicationUser.PostalCode;
 
-        foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
-        {
-            cart.Price = GetPriceBasedOnQuantity(cart);
-            ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
-        }
+		foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+		{
+			cart.Price = GetPriceBasedOnQuantity(cart);
+			ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+		}
 
-        return View(ShoppingCartViewModel);
-    }
+		return View(ShoppingCartViewModel);
+	}
 
-    [HttpPost]
-    [ActionName("Summary")]
-    public IActionResult SummaryPost()
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+	[HttpPost]
+	[ActionName("Summary")]
+	public IActionResult SummaryPost()
+	{
+		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
-        ShoppingCartViewModel.ShoppingCartList = _unitOfWork.ShoppingCartRepository
-                .GetAll(u => u.ApplicationUserId.Equals(userId), includeProperties: nameof(Product));
+		ShoppingCartViewModel.ShoppingCartList = _unitOfWork.ShoppingCartRepository
+				.GetAll(u => u.ApplicationUserId.Equals(userId), includeProperties: nameof(Product));
 
-        ShoppingCartViewModel.OrderHeader.OrderDate = DateTime.Now;
-        ShoppingCartViewModel.OrderHeader.ApplicationUserId = userId;
-        
-        ApplicationUser applicationUser = _unitOfWork.ApplicationUserRepository.Get(u => u.Id.Equals(userId))!;
+		ShoppingCartViewModel.OrderHeader.OrderDate = DateTime.Now;
+		ShoppingCartViewModel.OrderHeader.ApplicationUserId = userId;
 
-        foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
-        {
-            cart.Price = GetPriceBasedOnQuantity(cart);
-            ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
-        }
+		ApplicationUser applicationUser = _unitOfWork.ApplicationUserRepository.Get(u => u.Id.Equals(userId))!;
 
-        if (applicationUser
-                .CompanyId
-                .GetValueOrDefault() == 0)
-        {
-            // regular customer
-            ShoppingCartViewModel.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusPending;
-            ShoppingCartViewModel.OrderHeader.OrderStatus = StaticDetails.StatusPending;
-        }
-        else
-        {
-            // company user
-            ShoppingCartViewModel.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusDelayedPayment;
-            ShoppingCartViewModel.OrderHeader.OrderStatus = StaticDetails.StatusApproved;
-        }
+		foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+		{
+			cart.Price = GetPriceBasedOnQuantity(cart);
+			ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
+		}
 
-        _unitOfWork.OrderHeaderRepository.Add(ShoppingCartViewModel.OrderHeader);
-        _unitOfWork.Save();
+		if (applicationUser
+				.CompanyId
+				.GetValueOrDefault() == 0)
+		{
+			// regular customer
+			ShoppingCartViewModel.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusPending;
+			ShoppingCartViewModel.OrderHeader.OrderStatus = StaticDetails.StatusPending;
+		}
+		else
+		{
+			// company user
+			ShoppingCartViewModel.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusDelayedPayment;
+			ShoppingCartViewModel.OrderHeader.OrderStatus = StaticDetails.StatusApproved;
+		}
 
-        foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
-        {
-            OrderDetail orderDetail = new()
-            {
-                ProductId = cart.ProductId,
-                OrderHeaderId = ShoppingCartViewModel.OrderHeader.Id,
-                Price = cart.Price,
-                Count = cart.Count
-            };
+		_unitOfWork.OrderHeaderRepository.Add(ShoppingCartViewModel.OrderHeader);
+		_unitOfWork.Save();
 
-            _unitOfWork.OrderDetailRepository.Add(orderDetail);
-            _unitOfWork.Save();
-        }
+		foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
+		{
+			OrderDetail orderDetail = new()
+			{
+				ProductId = cart.ProductId,
+				OrderHeaderId = ShoppingCartViewModel.OrderHeader.Id,
+				Price = cart.Price,
+				Count = cart.Count
+			};
 
-        if (applicationUser
-                .CompanyId
-                .GetValueOrDefault() == 0)
-        {
+			_unitOfWork.OrderDetailRepository.Add(orderDetail);
+			_unitOfWork.Save();
+		}
+
+		if (applicationUser
+			.CompanyId
+			.GetValueOrDefault() == 0)
+		{
 			// regular customer account
-            // stripe logic
+			// stripe logic
 
 			var origin = Request.Scheme + "://" + Request.Host.Value;
 			var options = new SessionCreateOptions
@@ -168,13 +168,13 @@ public class CartController : Controller
 			_unitOfWork.Save();
 			Response.Headers.Add("Location", session.Url);
 			return new StatusCodeResult((int)HttpStatusCode.RedirectMethod);
-        }
+		}
 
 		return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartViewModel.OrderHeader.Id });
-    }
+	}
 
-    public IActionResult OrderConfirmation(int id)
-    {
+	public IActionResult OrderConfirmation(int id)
+	{
 		OrderHeader orderHeader = _unitOfWork.OrderHeaderRepository.Get(u => u.Id == id, includeProperties: "ApplicationUser");
 
 		if (orderHeader.PaymentStatus != StaticDetails.PaymentStatusDelayedPayment)
@@ -201,61 +201,61 @@ public class CartController : Controller
 		_unitOfWork.ShoppingCartRepository.RemoveRange(shoppingCarts);
 		_unitOfWork.Save();
 
-        return View(id);
-    }
+		return View(id);
+	}
 
-    public IActionResult Plus(int cartId)
-    {
-        var cartFromDatabase = _unitOfWork.ShoppingCartRepository.Get(u => u.Id.Equals(cartId));
-        cartFromDatabase.Count += 1;
-        _unitOfWork.ShoppingCartRepository.Update(cartFromDatabase);
-        _unitOfWork.Save();
-        return RedirectToAction(nameof(Index));
-    }
+	public IActionResult Plus(int cartId)
+	{
+		var cartFromDatabase = _unitOfWork.ShoppingCartRepository.Get(u => u.Id.Equals(cartId));
+		cartFromDatabase.Count += 1;
+		_unitOfWork.ShoppingCartRepository.Update(cartFromDatabase);
+		_unitOfWork.Save();
+		return RedirectToAction(nameof(Index));
+	}
 
-    public IActionResult Minus(int cartId)
-    {
-        var cartFromDatabase = _unitOfWork.ShoppingCartRepository.Get(u => u.Id.Equals(cartId));
+	public IActionResult Minus(int cartId)
+	{
+		var cartFromDatabase = _unitOfWork.ShoppingCartRepository.Get(u => u.Id.Equals(cartId));
 
-        if (cartFromDatabase.Count <= 1)
-        {
-            // remove that from cart
-            _unitOfWork.ShoppingCartRepository.Remove(cartFromDatabase);
-        }
-        else
-        {
-            cartFromDatabase.Count -= 1;
-            _unitOfWork.ShoppingCartRepository.Update(cartFromDatabase);
-        }
+		if (cartFromDatabase.Count <= 1)
+		{
+			// remove that from cart
+			_unitOfWork.ShoppingCartRepository.Remove(cartFromDatabase);
+		}
+		else
+		{
+			cartFromDatabase.Count -= 1;
+			_unitOfWork.ShoppingCartRepository.Update(cartFromDatabase);
+		}
 
-        _unitOfWork.Save();
-        return RedirectToAction(nameof(Index));
-    }
+		_unitOfWork.Save();
+		return RedirectToAction(nameof(Index));
+	}
 
-    public IActionResult Remove(int cartId)
-    {
-        var cartFromDatabase = _unitOfWork.ShoppingCartRepository.Get(u => u.Id.Equals(cartId));
-        _unitOfWork.ShoppingCartRepository.Remove(cartFromDatabase);
-        _unitOfWork.Save();
-        return RedirectToAction(nameof(Index));
-    }
+	public IActionResult Remove(int cartId)
+	{
+		var cartFromDatabase = _unitOfWork.ShoppingCartRepository.Get(u => u.Id.Equals(cartId));
+		_unitOfWork.ShoppingCartRepository.Remove(cartFromDatabase);
+		_unitOfWork.Save();
+		return RedirectToAction(nameof(Index));
+	}
 
-    private double GetPriceBasedOnQuantity(ShoppingCart shoppingCart)
-    {
-        if (shoppingCart.Count <= 50)
-        {
-            return shoppingCart.Product.Price;
-        }
-        else
-        {
-            if (shoppingCart.Count <= 100)
-            {
-                return shoppingCart.Product.PriceFifty;
-            }
-            else
-            {
-                return shoppingCart.Product.PriceHundredOrMore;
-            }
-        }
-    }
+	private double GetPriceBasedOnQuantity(ShoppingCart shoppingCart)
+	{
+		if (shoppingCart.Count <= 50)
+		{
+			return shoppingCart.Product.Price;
+		}
+		else
+		{
+			if (shoppingCart.Count <= 100)
+			{
+				return shoppingCart.Product.PriceFifty;
+			}
+			else
+			{
+				return shoppingCart.Product.PriceHundredOrMore;
+			}
+		}
+	}
 }
