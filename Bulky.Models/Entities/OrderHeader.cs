@@ -29,7 +29,7 @@ public class OrderHeader
     [Required]
     public string PhoneNumber { get; set; }
     [Required]
-    public string StreetAdress { get; set; }
+    public string StreetAddress { get; set; }
     [Required]
     public string City { get; set; }
     [Required]
