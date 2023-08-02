@@ -1,4 +1,5 @@
-﻿using Bulky.DataAccess.Repository.Contracts;
+﻿using System.Security.Claims;
+using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 using Bulky.Models.ViewModels;
 using Bulky.Utilities;
@@ -96,7 +97,20 @@ public class OrderController : Controller
     [HttpGet]
     public IActionResult GetAll(string status)
     {
-        IEnumerable<OrderHeader> orderHeaderList = _unitOfWork.OrderHeaderRepository.GetAll(includeProperties: nameof(ApplicationUser));
+        IEnumerable<OrderHeader> orderHeaderList;
+
+        if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
+        {
+            orderHeaderList = _unitOfWork.OrderHeaderRepository
+                .GetAll(includeProperties: nameof(ApplicationUser));
+        }
+        else
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            orderHeaderList = _unitOfWork.OrderHeaderRepository
+                .GetAll(o => o.ApplicationUserId.Equals(userId), includeProperties: nameof(ApplicationUser));   
+        }
 
         switch (status)
         {
