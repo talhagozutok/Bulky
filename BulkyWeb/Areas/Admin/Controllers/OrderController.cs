@@ -3,13 +3,11 @@ using Bulky.Models.Entities;
 using Bulky.Models.ViewModels;
 using Bulky.Utilities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Areas.Admin.Controllers;
 
 [Area(areaName: "Admin")]
-[Authorize(Roles = StaticDetails.Role_Admin)]
 public class OrderController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
