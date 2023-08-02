@@ -1,6 +1,7 @@
 ﻿@model OrderViewModel
 
 <form method="post">
+    <input asp-for="OrderHeader.Id" hidden />
     <br />
     <div class="container">
         <div class="card">
@@ -193,8 +194,7 @@
                             </div>
                             @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
                             {
-                                <input type="submit" class="btn btn-warning form-control mb-2" value="Update Order Details" />
-
+                                <input type="submit" asp-action="UpdateOrderDetail" class="btn btn-warning form-control mb-2" value="Update Order Details" />
                             }
                         </div>
                         <div class="col-12 col-lg-5 offset-lg-1">
@@ -211,8 +211,14 @@
                                     <li class="list-group-item d-flex justify-content-between p-2">
                                         <div class="row container">
                                             <div class="col-8">
-
-                                                <h6 class="my-0 text-info">@cartItem.Product.Title</h6>
+                                                @if (User.IsInRole(StaticDetails.Role_Admin))
+                                                {
+                                                    <a asp-controller="Product" asp-action="Upsert" asp-route-id="@cartItem.Product.Id" class="my-0 text-info d-block">@cartItem.Product.Title</a>
+                                                }
+                                                else
+                                                {
+                                                    <h6 class="my-0 text-info">@cartItem.Product.Title</h6>
+                                                }
                                                 <small class="text-muted">Price : @cartItem.Price</small>
                                                 <small class="text-muted">Quantity : @cartItem.Count</small>
                                             </div>

@@ -106,9 +106,9 @@ public class ProductController : Controller
 				_unitOfWork.ProductRepository.Update(viewModel.Product);
 				_unitOfWork.Save();
 				TempData["success"] = "Product updated successfully";
-			}
+            }
 
-			return RedirectToAction("Index");
+            return RedirectToAction("Index");
 		}
 		else
 		{
