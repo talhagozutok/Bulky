@@ -12,6 +12,9 @@ public class OrderController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
 
+    [BindProperty]
+    public OrderViewModel OrderViewModel { get; set; }
+
     public OrderController(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
@@ -24,13 +27,47 @@ public class OrderController : Controller
 
     public IActionResult Details(int orderId)
     {
-        OrderViewModel orderViewModel = new()
+        OrderViewModel = new()
         {
             OrderHeader = _unitOfWork.OrderHeaderRepository.Get(o => o.Id.Equals(orderId), includeProperties: nameof(ApplicationUser))!,
             OrderDetails = _unitOfWork.OrderDetailRepository.GetAll(o => o.OrderHeaderId.Equals(orderId), includeProperties: nameof(Product))
         };
 
-        return View(orderViewModel);
+        return View(OrderViewModel);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = $"{StaticDetails.Role_Admin}, {StaticDetails.Role_Employee}")]
+    public IActionResult UpdateOrderDetail()
+    {
+        var orderHeaderFromDb = _unitOfWork.OrderHeaderRepository
+            .Get(o => o.Id.Equals(OrderViewModel.OrderHeader.Id));
+
+        if (orderHeaderFromDb is not null)
+        {
+            orderHeaderFromDb.Name = OrderViewModel.OrderHeader.Name;
+            orderHeaderFromDb.PhoneNumber = OrderViewModel.OrderHeader.PhoneNumber;
+            orderHeaderFromDb.StreetAddress = OrderViewModel.OrderHeader.StreetAddress;
+            orderHeaderFromDb.City = OrderViewModel.OrderHeader.City;
+            orderHeaderFromDb.State = OrderViewModel.OrderHeader.State;
+            orderHeaderFromDb.PostalCode = OrderViewModel.OrderHeader.PostalCode;
+            if (!string.IsNullOrEmpty(OrderViewModel.OrderHeader.Carrier))
+            {
+                orderHeaderFromDb.Carrier = OrderViewModel.OrderHeader.Carrier;
+            }
+            if (!string.IsNullOrEmpty(OrderViewModel.OrderHeader.TrackingNumber))
+            {
+                orderHeaderFromDb.TrackingNumber = OrderViewModel.OrderHeader.TrackingNumber;
+            }
+
+            _unitOfWork.OrderHeaderRepository.Update(orderHeaderFromDb);
+            _unitOfWork.Save();
+            TempData["success"] = "Order details updated successfully.";
+
+            return RedirectToAction(nameof(Details), new { orderId = orderHeaderFromDb.Id }); ;
+        }
+
+        return NotFound();
     }
 
     [HttpDelete]
