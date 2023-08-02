@@ -44,7 +44,7 @@ function loadDataTable(status) {
                 // https://stackoverflow.com/a/44209012/22294307
                 render: function (data, type, row, meta) {
                     return `<div class="w-75" role="group">
-						        <a href="/admin/order/details?=orderId=${data}" class="btn btn-outline-primary">
+						        <a href="/admin/order/details?orderId=${data}" class="btn btn-outline-primary">
 							        <i class="bi bi-arrow-right"></i>
 						        </a>
 					        </div>`
