@@ -239,10 +239,32 @@
                                     </div>
                                 </li>
                             </ul>
-                            <input type="submit" class="btn btn-success form-control mb-2" value="Pay Now" />
-                            <input type="submit" class="btn btn-primary form-control mb-2" value="Start Processing" />
-                            <input type="submit" class="btn btn-primary form-control mb-2" value="Ship Order" />
-                            <input type="submit" class="btn btn-danger form-control mb-2" value="Cancel Order" />
+
+                            @if (Model.OrderHeader.PaymentStatus == StaticDetails.PaymentStatusDelayedPayment &&
+                            Model.OrderHeader.OrderStatus == StaticDetails.StatusShipped)
+                            {
+                                <button type="submit" class="btn btn-success form-control mb-2">Pay Now</button>
+                            }
+
+                            @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
+                            {
+                                @if (Model.OrderHeader.OrderStatus == StaticDetails.StatusApproved)
+                                {
+                                    <button type="submit" class="btn btn-primary form-control mb-2">Start Processing</button>
+                                }
+
+                                @if (Model.OrderHeader.OrderStatus == StaticDetails.StatusInProcess)
+                                {
+                                    <button type="submit" class="btn btn-primary form-control mb-2">Ship Order</button>
+                                }
+
+                                @if (Model.OrderHeader.OrderStatus != StaticDetails.StatusRefunded &&
+                               Model.OrderHeader.OrderStatus != StaticDetails.StatusCancelled &&
+                               Model.OrderHeader.OrderStatus != StaticDetails.StatusShipped)
+                                {
+                                    <button type="submit" class="btn btn-danger form-control mb-2">Cancel Order</button>
+                                }
+                            }
                         </div>
                     </div>
                 </div>
