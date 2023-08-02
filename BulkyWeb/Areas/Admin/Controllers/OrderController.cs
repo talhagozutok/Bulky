@@ -11,47 +11,66 @@ namespace BulkyWeb.Areas.Admin.Controllers;
 [Authorize(Roles = StaticDetails.Role_Admin)]
 public class OrderController : Controller
 {
-	private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
-	public OrderController(IUnitOfWork unitOfWork)
-	{
-		_unitOfWork = unitOfWork;
-	}
+    public OrderController(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
 
-	public IActionResult Index()
-	{
-		return View();
-	}
+    public IActionResult Index()
+    {
+        return View();
+    }
 
-	[HttpDelete]
-	public IActionResult Delete([FromRoute(Name = "id")] int? id)
-	{
-		if (id is null)
-		{
-			return NotFound();
-		}
+    [HttpDelete]
+    public IActionResult Delete([FromRoute(Name = "id")] int? id)
+    {
+        if (id is null)
+        {
+            return NotFound();
+        }
 
-		var order = _unitOfWork.OrderHeaderRepository.Get(p => p.Id.Equals(id));
+        var order = _unitOfWork.OrderHeaderRepository.Get(p => p.Id.Equals(id));
 
-		if (order is not null)
-		{
-			_unitOfWork.OrderHeaderRepository.Remove(order);
-			_unitOfWork.Save();
+        if (order is not null)
+        {
+            _unitOfWork.OrderHeaderRepository.Remove(order);
+            _unitOfWork.Save();
 
-			return RedirectToAction("Index");
-		}
+            return RedirectToAction("Index");
+        }
 
-		return NotFound();
-	}
+        return NotFound();
+    }
 
-	#region API
+    #region API
 
-	[HttpGet]
-	public IActionResult GetAll()
-	{
-		List<OrderHeader> orderHeaderList = _unitOfWork.OrderHeaderRepository.GetAll(includeProperties: nameof(ApplicationUser)).ToList();
-		return Json(new { data = orderHeaderList });
-	}
+    [HttpGet]
+    public IActionResult GetAll(string status)
+    {
+        IEnumerable<OrderHeader> orderHeaderList = _unitOfWork.OrderHeaderRepository.GetAll(includeProperties: nameof(ApplicationUser));
 
-	#endregion
+        switch (status)
+        {
+            case "paymentPending":
+                orderHeaderList = orderHeaderList.Where(o => o.PaymentStatus.Equals(StaticDetails.PaymentStatusPending));
+                break;
+            case "inProcess":
+                orderHeaderList = orderHeaderList.Where(o => o.OrderStatus.Equals(StaticDetails.StatusInProcess));
+                break;
+            case "completed":
+                orderHeaderList = orderHeaderList.Where(o => o.OrderStatus.Equals(StaticDetails.StatusShipped));
+                break;
+            case "approved":
+                orderHeaderList = orderHeaderList.Where(o => o.OrderStatus.Equals(StaticDetails.StatusApproved));
+                break;
+            default:
+                break;
+        }
+
+        return Json(new { data = orderHeaderList });
+    }
+
+    #endregion
 }
