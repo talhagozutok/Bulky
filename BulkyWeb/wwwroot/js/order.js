@@ -1,20 +1,36 @@
 var dataTable;
 
 $(document).ready(function () {
-    loadDataTable();
+    var url = window.location.search;
+
+    if (url.includes("inProcess")) {
+        loadDataTable("inProcess");
+    }
+    else if (url.includes("completed")) {
+        loadDataTable("completed");
+    }
+    else if (url.includes("paymentPending")) {
+        loadDataTable("paymentPending");
+    }
+    else if (url.includes("approved")) {
+        loadDataTable("approved");
+    }
+    else {
+        loadDataTable("all");
+    }
 });
 
-function loadDataTable() {
+function loadDataTable(status) {
     dataTable = $('#orderTable').DataTable({
         ajax: {
-            url: '/admin/order/getall',
+            url: `/admin/order/getall?status=${status}`,
             type: 'GET'
         },
         columns: [
             { data: 'id', width: '5%' },
-            { data: 'name', width: '15%' },
+            { data: 'name', width: '25%' },
             { data: 'phoneNumber', width: '20%' },
-            { data: 'applicationUser.email', width: '15%' },
+            { data: 'applicationUser.email', width: '20%' },
             { data: 'orderStatus', width: '10%' },
             {
                 data: 'orderTotal',
@@ -29,18 +45,17 @@ function loadDataTable() {
                 render: function (data, type, row, meta) {
                     return `<div class="w-75" role="group">
 						        <a href="/admin/order/details?=orderId=${data}" class="btn btn-outline-primary">
-							        <i class="bi bi-arrow-right"></i> Details
+							        <i class="bi bi-arrow-right"></i>
 						        </a>
 					        </div>`
                 },
-                title: 'Operations',
+                title: 'Details',
                 orderable: false,
-                width: '25%'
+                width: '10%'
             },
         ],
         language: {
             // url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/tr.json',
-            emptyTable: "There aren't any order in the database."
         }
     });
 }
