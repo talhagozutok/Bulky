@@ -28,7 +28,7 @@ const Toast = Swal.mixin({
 });
 
 const DeleteToast = Toast.mixin({
-  icon: 'error',
+  icon: "error",
   iconHtml: '<i class="bi bi-trash"></i>',
   timer: 3000,
   customClass: {
@@ -38,12 +38,12 @@ const DeleteToast = Toast.mixin({
 });
 
 const CartToast = Toast.mixin({
-    icon: 'success',
-    iconHtml: '<i class="bi bi-cart2"></i>',
-    customClass: {
-        popup: "colored-toast",
-        icon: "no-border",
-    },
+  icon: "success",
+  iconHtml: '<i class="bi bi-cart2"></i>',
+  customClass: {
+    popup: "colored-toast",
+    icon: "no-border",
+  },
 });
 
 const DeleteAlert = Swal.mixin({
@@ -86,7 +86,7 @@ async function testSwalToasts() {
   await Toast.fire({
     title: "Without icon / background-color",
     text: "This has subtext",
-    timer: 3000
+    timer: 3000,
   });
   await Toast.fire({
     title: "Custom background",
@@ -99,27 +99,27 @@ async function testSwalToasts() {
 }
 
 async function fireToast(iconParam, toastTitleParam, toastTextParam) {
-    return Toast.fire({
-        icon: iconParam,
-        title: toastTitleParam,
-        text: toastTextParam,
-    });
+  return Toast.fire({
+    icon: iconParam,
+    title: toastTitleParam,
+    text: toastTextParam,
+  });
 }
 
 async function fireToastDelete(toastTitleParam, toastTextParam) {
-    return DeleteToast.fire({
-        icon: 'error',
-        title: toastTitleParam,
-        text: toastTextParam,
-    });
+  return DeleteToast.fire({
+    icon: "error",
+    title: toastTitleParam,
+    text: toastTextParam,
+  });
 }
 
 async function fireToastCart(toastTitleParam, toastTextParam) {
-    return CartToast.fire({
-        icon: 'success',
-        title: toastTitleParam,
-        text: toastTextParam,
-    });
+  return CartToast.fire({
+    icon: "success",
+    title: toastTitleParam,
+    text: toastTextParam,
+  });
 }
 
 async function fireSwalDelete(alertTextParam, toastTitleParam, toastTextParam) {
@@ -128,12 +128,13 @@ async function fireSwalDelete(alertTextParam, toastTitleParam, toastTextParam) {
     text: alertTextParam,
   }).then((result) => {
     if (result.isConfirmed) {
-        DeleteToast.fire({
+      DeleteToast.fire({
         timerProgressBar: false,
         title: toastTitleParam,
-        text: toastTextParam
+        text: toastTextParam,
       });
     }
   });
 }
+
 /* #endregion SweetAlert functions */

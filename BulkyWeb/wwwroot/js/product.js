@@ -22,7 +22,7 @@ function loadDataTable() {
                 // https://datatables.net/reference/option/columns.data#:~:text=function%20data(%20row%2C%20type%2C%20set%2C%20meta%20)
                 // https://stackoverflow.com/a/44209012/22294307
                 render: function (data, type, row, meta) {
-                    return `<div class="w-75" role="group">
+                    return `<div class="btn-group" role="group">
 						        <a href="/admin/product/upsert/${data}" class="btn btn-outline-primary">
 							        <i class="bi bi-pencil-square"></i> Edit
 						        </a>

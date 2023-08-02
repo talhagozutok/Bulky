@@ -30,11 +30,14 @@ function loadDataTable() {
                 // https://datatables.net/reference/option/columns.data#:~:text=function%20data(%20row%2C%20type%2C%20set%2C%20meta%20)
                 // https://stackoverflow.com/a/44209012/22294307
                 "render": function (data, type, row, meta) {
-                    return `<div class="w-75" role="group">
-						        <a href="/admin/company/upsert/${data}" class="btn btn-outline-primary">
+                    return `<div class="btn-group" role="group">
+						        <a href="/admin/company/upsert/${data}"
+                                    class="btn btn-outline-primary">
 							        <i class="bi bi-pencil-square"></i> Edit
 						        </a>
-						        <a href="/admin/company/delete/${data}" class="btn btn-outline-danger" onclick="deleteCompany(event, '${row['name']}')">
+						        <a href="/admin/company/delete/${data}"
+                                    class="btn btn-outline-danger"
+                                    onclick="deleteCompany(event, '${row['name']}')">
 							        <i class="bi bi-trash-fill"></i> Delete
 						        </a>
 					        </div>`
@@ -45,7 +48,7 @@ function loadDataTable() {
             },
         ],
         language: {
-             //url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/tr.json',
+            //url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/tr.json',
             emptyTable: "There aren't any company in the database."
         }
     });
