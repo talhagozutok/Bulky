@@ -1,5 +1,6 @@
 ﻿using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
+using Bulky.Models.ViewModels;
 using Bulky.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +22,17 @@ public class OrderController : Controller
     public IActionResult Index()
     {
         return View();
+    }
+
+    public IActionResult Details(int orderId)
+    {
+        OrderViewModel orderViewModel = new()
+        {
+            OrderHeader = _unitOfWork.OrderHeaderRepository.Get(o => o.Id.Equals(orderId), includeProperties: nameof(ApplicationUser))!,
+            OrderDetails = _unitOfWork.OrderDetailRepository.GetAll(o => o.OrderHeaderId.Equals(orderId), includeProperties: nameof(Product))
+        };
+
+        return View(orderViewModel);
     }
 
     [HttpDelete]
