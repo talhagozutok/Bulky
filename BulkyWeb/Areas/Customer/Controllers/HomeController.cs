@@ -45,8 +45,8 @@ public class HomeController : Controller
         return NotFound();
     }
 
-	// Only authorized users are able to access
-	[HttpPost]
+    // Only authorized users are able to access
+    [HttpPost]
     [Authorize]
     public IActionResult Details(ShoppingCart cart)
     {
@@ -73,7 +73,7 @@ public class HomeController : Controller
         var product = _unitOfWork.ProductRepository.Get(p => p.Id.Equals(cart.ProductId))!;
         TempData["shoppingCartAdded"] = $"{product.Title} added to cart";
 
-		return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index));
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
