@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BulkyWeb.Areas.Admin.Controllers;
 
 [Area(areaName: "Admin")]
+[Authorize]
 public class OrderController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -52,6 +53,7 @@ public class OrderController : Controller
             orderHeaderFromDb.City = OrderViewModel.OrderHeader.City;
             orderHeaderFromDb.State = OrderViewModel.OrderHeader.State;
             orderHeaderFromDb.PostalCode = OrderViewModel.OrderHeader.PostalCode;
+
             if (!string.IsNullOrEmpty(OrderViewModel.OrderHeader.Carrier))
             {
                 orderHeaderFromDb.Carrier = OrderViewModel.OrderHeader.Carrier;
@@ -69,6 +71,43 @@ public class OrderController : Controller
         }
 
         return NotFound();
+    }
+
+    [HttpPost]
+    [Authorize(Roles = $"{StaticDetails.Role_Admin}, {StaticDetails.Role_Employee}")]
+    public IActionResult StartProcessing()
+    {
+        _unitOfWork.OrderHeaderRepository.UpdateStatus(
+            id: OrderViewModel.OrderHeader.Id,
+            orderStatus: StaticDetails.StatusInProcess);
+
+        _unitOfWork.Save();
+        TempData["success"] = "Order details updated successfully.";
+        return RedirectToAction(nameof(Details), new { orderId = OrderViewModel.OrderHeader.Id }); ;
+    }
+
+
+    [HttpPost]
+    [Authorize(Roles = $"{StaticDetails.Role_Admin}, {StaticDetails.Role_Employee}")]
+    public IActionResult ShipOrder()
+    {
+        var orderHeader = _unitOfWork.OrderHeaderRepository.Get(o => o.Id.Equals(OrderViewModel.OrderHeader.Id));
+
+        orderHeader.TrackingNumber = OrderViewModel.OrderHeader.TrackingNumber;
+        orderHeader.Carrier = OrderViewModel.OrderHeader.Carrier;
+        orderHeader.OrderStatus = StaticDetails.StatusShipped;
+        orderHeader.ShippingDate = DateTime.Now;
+
+        if (orderHeader.PaymentStatus == StaticDetails.PaymentStatusDelayedPayment)
+        {
+            orderHeader.PaymentDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(30));
+        }
+
+        _unitOfWork.OrderHeaderRepository.Update(orderHeader);
+        _unitOfWork.Save();
+
+        TempData["success"] = "Order shipped successfully.";
+        return RedirectToAction(nameof(Details), new { orderId = OrderViewModel.OrderHeader.Id }); ;
     }
 
     [HttpDelete]
@@ -109,7 +148,7 @@ public class OrderController : Controller
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             orderHeaderList = _unitOfWork.OrderHeaderRepository
-                .GetAll(o => o.ApplicationUserId.Equals(userId), includeProperties: nameof(ApplicationUser));   
+                .GetAll(o => o.ApplicationUserId.Equals(userId), includeProperties: nameof(ApplicationUser));
         }
 
         switch (status)
