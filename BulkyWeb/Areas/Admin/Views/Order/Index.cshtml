@@ -7,6 +7,26 @@
         </div>
     </div>
     <div class="card-body p-4">
+        <div class="d-flex justify-content-between pb-5 pt-2">
+            <span></span>
+            <ul class="list-group list-group-horizontal-sm">
+                <a asp-controller="Order" asp-action="Index" asp-route-status="inProcess" style="text-decoration: none;">
+                <li class="list-group-item">In Process</li>
+                </a>
+                <a asp-controller="Order" asp-action="Index" asp-route-status="paymentPending" style="text-decoration: none;">
+                <li class="list-group-item">Payment Pending</li>
+                </a>
+                <a asp-controller="Order" asp-action="Index" asp-route-status="completed" style="text-decoration: none;">
+                <li class="list-group-item">Completed</li>
+                </a>
+                <a asp-controller="Order" asp-action="Index" asp-route-status="approved" style="text-decoration: none;">
+                <li class="list-group-item">Approved</li>
+                </a>
+                <a asp-controller="Order" asp-action="Index" asp-route-status="all" style="text-decoration: none;">
+                <li class="list-group-item">All</li>
+                </a>
+            </ul>
+        </div>
         <partial name="_OrderTable" />
     </div>
 </div>
