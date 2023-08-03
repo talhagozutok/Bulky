@@ -31,30 +31,30 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly IUnitOfWork _unitOfWork;
 
-		public RegisterModel(
-			UserManager<IdentityUser> userManager,
-			IUserStore<IdentityUser> userStore,
-			SignInManager<IdentityUser> signInManager,
-			ILogger<RegisterModel> logger,
-			IEmailSender emailSender,
-			RoleManager<IdentityRole> roleManager,
-			IUnitOfWork unitOfWork)
-		{
-			_userManager = userManager;
-			_userStore = userStore;
-			_emailStore = GetEmailStore();
-			_signInManager = signInManager;
-			_logger = logger;
-			_emailSender = emailSender;
-			_roleManager = roleManager;
-			_unitOfWork = unitOfWork;
-		}
+        public RegisterModel(
+            UserManager<IdentityUser> userManager,
+            IUserStore<IdentityUser> userStore,
+            SignInManager<IdentityUser> signInManager,
+            ILogger<RegisterModel> logger,
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager,
+            IUnitOfWork unitOfWork)
+        {
+            _userManager = userManager;
+            _userStore = userStore;
+            _emailStore = GetEmailStore();
+            _signInManager = signInManager;
+            _logger = logger;
+            _emailSender = emailSender;
+            _roleManager = roleManager;
+            _unitOfWork = unitOfWork;
+        }
 
-		/// <summary>
-		///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-		///     directly from your code. This API may change or be removed in future releases.
-		/// </summary>
-		[BindProperty]
+        /// <summary>
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+        ///     directly from your code. This API may change or be removed in future releases.
+        /// </summary>
+        [BindProperty]
         public InputModel Input { get; set; }
 
         /// <summary>
@@ -115,12 +115,12 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             public string? PostalCode { get; set; }
             public string? PhoneNumber { get; set; }
 
-            [Display(Name="Company")]
+            [Display(Name = "Company")]
             public int? CompanyId { get; set; }
 
-			[ValidateNever]
-			public IEnumerable<SelectListItem> CompanyList { get; set; }
-		}
+            [ValidateNever]
+            public IEnumerable<SelectListItem> CompanyList { get; set; }
+        }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -143,14 +143,14 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                         Value = selectListItem
                     }),
 
-				CompanyList = _unitOfWork.Companies.GetAll()
+                CompanyList = _unitOfWork.Companies.GetAll()
                     .OrderBy(company => company.Id)
                     .Select(selectListItem => new SelectListItem
                     {
                         Text = selectListItem.Name,
                         Value = selectListItem.Id.ToString()
                     })
-			};
+            };
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -174,7 +174,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                 user.PostalCode = Input.PostalCode;
                 user.PhoneNumber = Input.PhoneNumber;
 
-                if ( Input.Roles.Contains(StaticDetails.Role_Company))
+                if (Input.Roles.Contains(StaticDetails.Role_Company))
                 {
                     user.CompanyId = Input.CompanyId;
                 }
@@ -212,7 +212,14 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (User.IsInRole(StaticDetails.Role_Admin))
+                        {
+                            TempData["success"] = "User created successfully";
+                        }
+                        else
+                        {
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                        }
                         return LocalRedirect(returnUrl);
                     }
                 }
