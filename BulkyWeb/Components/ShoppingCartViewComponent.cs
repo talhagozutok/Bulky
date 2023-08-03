@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Components;
 
-public class ShoppingCart : ViewComponent
+public class ShoppingCartViewComponent : ViewComponent
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public ShoppingCart(IUnitOfWork unitOfWork)
+    public ShoppingCartViewComponent(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
