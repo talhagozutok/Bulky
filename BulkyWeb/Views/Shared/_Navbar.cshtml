@@ -16,6 +16,7 @@
                     <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Order</a>
                 </li>
                 @{
+                    // Show `Content Management` if user is `Admin`
                     if (User.IsInRole(StaticDetails.Role_Admin))
                     {
                         <li class="nav-item dropdown">
@@ -37,29 +38,11 @@
                         </li>
                     }
                 }
-                @{
-                    var session = HttpContextAccessor.HttpContext.Session;
-
-                    @if (session.GetInt32(StaticDetails.SessionCart) is not null)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                <i class="bi bi-cart"></i> Cart
-                                (@(session.GetInt32(StaticDetails.SessionCart)))
-                            </a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                <i class="bi bi-cart"></i> Cart
-                                @(session.GetInt32(StaticDetails.SessionCart))
-                                (0)
-                            </a>
-                        </li>
-                    }
-                }
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                        @await Component.InvokeAsync("ShoppingCart")
+                    </a>
+                </li>
             </ul>
             <partial name="_LoginPartial" />
         </div>
