@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Net;
+using System.Security.Claims;
 using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 using Bulky.Models.ViewModels;
@@ -6,6 +7,7 @@ using Bulky.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
+using Stripe.Checkout;
 using Product = Bulky.Models.Entities.Product;
 
 namespace BulkyWeb.Areas.Admin.Controllers;
@@ -144,6 +146,77 @@ public class OrderController : Controller
         _unitOfWork.Save();
         TempData["success"] = "Order cancelled successfully.";
         return RedirectToAction(nameof(Details), new { orderId = OrderViewModel.OrderHeader.Id });
+    }
+
+    [ActionName("Details")]
+    [HttpPost]
+    public IActionResult DetailsPayNow()
+    {
+        OrderViewModel.OrderHeader = _unitOfWork.OrderHeaderRepository
+            .Get(o => o.Id.Equals(OrderViewModel.OrderHeader.Id), includeProperties: nameof(ApplicationUser))!;
+        OrderViewModel.OrderDetails = _unitOfWork.OrderDetailRepository
+            .GetAll(o => o.OrderHeaderId.Equals(OrderViewModel.OrderHeader.Id), includeProperties: nameof(Product));
+
+        // stripe logic
+        var origin = Request.Scheme + "://" + Request.Host.Value;
+        var options = new SessionCreateOptions
+        {
+            SuccessUrl = origin + $"/Admin/Order/PaymentConfirmation?orderHeaderId={OrderViewModel.OrderHeader.Id}",
+            CancelUrl = origin + $"/Admin/Order/Details?orderId={OrderViewModel.OrderHeader.Id}",
+            LineItems = new List<SessionLineItemOptions>(),
+            Mode = "payment",
+        };
+
+        foreach (var item in OrderViewModel.OrderDetails)
+        {
+            var sessionLineItem = new SessionLineItemOptions
+            {
+                PriceData = new SessionLineItemPriceDataOptions
+                {
+                    UnitAmount = (long)(item.Price * 100), // $20.50 => 2050
+                    Currency = "usd",
+                    ProductData = new SessionLineItemPriceDataProductDataOptions
+                    {
+                        Name = item.Product.Title
+                    }
+                },
+                Quantity = item.Count
+            };
+            options.LineItems.Add(sessionLineItem);
+        }
+
+        var service = new SessionService();
+        Session session = service.Create(options);
+        _unitOfWork.OrderHeaderRepository.UpdateStripePaymentID(OrderViewModel.OrderHeader.Id, session.Id, session.PaymentIntentId);
+        _unitOfWork.Save();
+        Response.Headers.Add("Location", session.Url);
+
+        return new StatusCodeResult((int)HttpStatusCode.RedirectMethod);
+    }
+
+    public IActionResult PaymentConfirmation(int orderHeaderId)
+    {
+        OrderHeader orderHeader = _unitOfWork.OrderHeaderRepository.Get(u => u.Id == orderHeaderId);
+
+        if (orderHeader.PaymentStatus == StaticDetails.PaymentStatusDelayedPayment)
+        {
+            // this is an order by company
+            // because only company users pay net30 
+            // therefore if `PaymentStatus` is equals to `PaymentStatusDelayedPayment`
+            // then this clause only applies for company users.
+
+            var service = new SessionService();
+            Session session = service.Get(orderHeader.SessionId);
+
+            if (session.PaymentStatus.Equals("paid", StringComparison.OrdinalIgnoreCase))
+            {
+                _unitOfWork.OrderHeaderRepository.UpdateStripePaymentID(orderHeaderId, session.Id, session.PaymentIntentId);
+                _unitOfWork.OrderHeaderRepository.UpdateStatus(orderHeaderId, orderHeader.OrderStatus!, StaticDetails.PaymentStatusApproved);
+                _unitOfWork.Save();
+            }
+        }
+
+        return View(orderHeaderId);
     }
 
     [HttpDelete]
