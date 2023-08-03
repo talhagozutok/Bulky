@@ -24,14 +24,6 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        if (userId is not null)
-        {
-            HttpContext.Session.SetInt32(StaticDetails.SessionCart, _unitOfWork.ShoppingCarts
-                .GetAll(u => u.ApplicationUserId.Equals(userId))!.Count());
-        }
-
         _logger.LogWarning("Navigated to /Home/Index");
 
         IEnumerable<Product> productList = _unitOfWork.Products.GetAll(includeProperties: nameof(Category));
