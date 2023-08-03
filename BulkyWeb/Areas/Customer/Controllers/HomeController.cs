@@ -2,7 +2,9 @@
 using System.Security.Claims;
 using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
+using Bulky.Utilities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Controllers;
@@ -61,14 +63,16 @@ public class HomeController : Controller
             // Shopping cart exists
             cartFromDatabase.Count += cart.Count;
             _unitOfWork.ShoppingCartRepository.Update(cartFromDatabase);
+            _unitOfWork.Save();
         }
         else
         {
             // Add cart record
             _unitOfWork.ShoppingCartRepository.Add(cart);
+            _unitOfWork.Save();
+            HttpContext.Session.SetInt32(StaticDetails.SessionCart, _unitOfWork.ShoppingCartRepository
+                .GetAll(u => u.ApplicationUserId.Equals(userId))!.Count());
         }
-
-        _unitOfWork.Save();
 
         var product = _unitOfWork.ProductRepository.Get(p => p.Id.Equals(cart.ProductId))!;
         TempData["shoppingCartAdded"] = $"{product.Title} added to cart";

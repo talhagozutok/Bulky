@@ -20,4 +20,6 @@ public static class StaticDetails
 
     public const string AdminEmail = "admin@user.com";
     public const string AdminPassword = "***REDACTED***";
+
+    public const string SessionCart = "Session.ShoppingCart";
 }
