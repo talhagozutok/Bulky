@@ -18,6 +18,11 @@ services.AddDbContext<ApplicationDbContext>(options =>
 );
 
 services.Configure<StripeSettings>(configuration.GetSection("Stripe"));
+services.AddAuthentication().AddFacebook(facebookOptions =>
+{
+    facebookOptions.AppId = configuration.GetValue<string>("Facebook:AppId");
+    facebookOptions.AppSecret = configuration.GetValue<string>("Facebook:AppSecret"); 
+});
 
 services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 services.ConfigureApplicationCookie(options =>
