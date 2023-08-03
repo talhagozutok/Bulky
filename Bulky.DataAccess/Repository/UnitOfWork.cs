@@ -33,15 +33,15 @@ public class UnitOfWork : IUnitOfWork
 		OrderDetail = orderDetail;
 	}
 
-	public ICategoryRepository CategoryRepository => Category;
-    public IProductRepository ProductRepository => Product;
-    public ICompanyRepository CompanyRepository => Company;
-    public IShoppingCartRepository ShoppingCartRepository => ShoppingCart;
-    public IApplicationUserRepository ApplicationUserRepository => ApplicationUser;
+	public ICategoryRepository Categories => Category;
+    public IProductRepository Products => Product;
+    public ICompanyRepository Companies => Company;
+    public IShoppingCartRepository ShoppingCarts => ShoppingCart;
+    public IApplicationUserRepository ApplicationUsers => ApplicationUser;
 
-    public IOrderDetailRepository OrderDetailRepository => OrderDetail;
+    public IOrderDetailRepository OrderDetails => OrderDetail;
 
-    public IOrderHeaderRepository OrderHeaderRepository => OrderHeader;
+    public IOrderHeaderRepository OrderHeaders => OrderHeader;
 
 	public void Save()
     {

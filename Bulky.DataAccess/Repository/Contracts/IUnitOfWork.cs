@@ -1,12 +1,12 @@
 ﻿namespace Bulky.DataAccess.Repository.Contracts;
 public interface IUnitOfWork
 {
-	ICategoryRepository CategoryRepository { get; }
-	IProductRepository ProductRepository { get; }
-	ICompanyRepository CompanyRepository { get; }
-	IShoppingCartRepository ShoppingCartRepository { get; }
-	IOrderDetailRepository OrderDetailRepository { get; }
-	IOrderHeaderRepository OrderHeaderRepository { get; }
-	IApplicationUserRepository ApplicationUserRepository { get; }
+	ICategoryRepository Categories { get; }
+	IProductRepository Products { get; }
+	ICompanyRepository Companies { get; }
+	IShoppingCartRepository ShoppingCarts { get; }
+	IOrderDetailRepository OrderDetails { get; }
+	IOrderHeaderRepository OrderHeaders { get; }
+	IApplicationUserRepository ApplicationUsers { get; }
 	void Save();
 }

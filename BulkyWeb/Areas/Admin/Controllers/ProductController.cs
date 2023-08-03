@@ -25,7 +25,7 @@ public class ProductController : Controller
 
 	public IActionResult Index()
 	{
-		var productList = _unitOfWork.ProductRepository.GetAll(includeProperties: nameof(Category)).ToList();
+		var productList = _unitOfWork.Products.GetAll(includeProperties: nameof(Category)).ToList();
 		return View(productList);
 	}
 
@@ -35,7 +35,7 @@ public class ProductController : Controller
 		ProductViewModel viewModel = new()
 		{
 			Product = new Product(),
-			CategoryList = _unitOfWork.CategoryRepository
+			CategoryList = _unitOfWork.Categories
 				.GetAll().Select(c => new SelectListItem
 				{
 					Text = c.Name,
@@ -50,7 +50,7 @@ public class ProductController : Controller
 		}
 
 		// Update
-		Product? product = _unitOfWork.ProductRepository.Get(p => p.Id.Equals(id));
+		Product? product = _unitOfWork.Products.Get(p => p.Id.Equals(id));
 		if (product is not null)
 		{
 			viewModel.Product = product;
@@ -97,13 +97,13 @@ public class ProductController : Controller
 
 			if (viewModel.Product.Id == 0)
 			{
-				_unitOfWork.ProductRepository.Add(viewModel.Product);
+				_unitOfWork.Products.Add(viewModel.Product);
 				_unitOfWork.Save();
 				TempData["success"] = "Product created successfully";
 			}
 			else
 			{
-				_unitOfWork.ProductRepository.Update(viewModel.Product);
+				_unitOfWork.Products.Update(viewModel.Product);
 				_unitOfWork.Save();
 				TempData["success"] = "Product updated successfully";
             }
@@ -112,7 +112,7 @@ public class ProductController : Controller
 		}
 		else
 		{
-			viewModel.CategoryList = _unitOfWork.CategoryRepository
+			viewModel.CategoryList = _unitOfWork.Categories
 				.GetAll().Select(c => new SelectListItem
 				{
 					Text = c.Name,
@@ -125,7 +125,7 @@ public class ProductController : Controller
 
 	public IActionResult Edit([FromRoute(Name = "id")] int? id)
 	{
-		var product = _unitOfWork.ProductRepository.Get(p => p.Id.Equals(id));
+		var product = _unitOfWork.Products.Get(p => p.Id.Equals(id));
 		return product is not null ? View(product) : NotFound();
 	}
 
@@ -137,7 +137,7 @@ public class ProductController : Controller
 			return NotFound();
 		}
 
-		var product = _unitOfWork.ProductRepository.Get(p => p.Id.Equals(id));
+		var product = _unitOfWork.Products.Get(p => p.Id.Equals(id));
 
 		if (product is not null)
 		{
@@ -152,7 +152,7 @@ public class ProductController : Controller
 				}
 			}
 
-			_unitOfWork.ProductRepository.Remove(product);
+			_unitOfWork.Products.Remove(product);
 			_unitOfWork.Save();
 
 			return RedirectToAction("Index");
@@ -166,7 +166,7 @@ public class ProductController : Controller
 	[HttpGet]
 	public IActionResult GetAll()
 	{
-		var productList = _unitOfWork.ProductRepository.GetAll(includeProperties: nameof(Category)).ToList();
+		var productList = _unitOfWork.Products.GetAll(includeProperties: nameof(Category)).ToList();
 		return Json(new { data = productList });
 	}
 
