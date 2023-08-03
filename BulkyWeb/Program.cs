@@ -8,42 +8,44 @@ using Bulky.Utilities;
 using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var configuration = builder.Configuration;
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+services.AddControllersWithViews();
+services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
 );
 
-builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+services.Configure<StripeSettings>(configuration.GetSection("Stripe"));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-builder.Services.ConfigureApplicationCookie(options =>
+services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = $"/Identity/Account/Login";
     options.LogoutPath = $"/Identity/Account/Logout";
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
 
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
+services.AddDistributedMemoryCache();
+services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(10);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.AddRazorPages();
+services.AddRazorPages();
 
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
-builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
-builder.Services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();
-builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
-builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
-builder.Services.AddScoped<IEmailSender, EmailSender>();
+services.AddScoped<IUnitOfWork, UnitOfWork>();
+services.AddScoped<ICategoryRepository, CategoryRepository>();
+services.AddScoped<IProductRepository, ProductRepository>();
+services.AddScoped<ICompanyRepository, CompanyRepository>();
+services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
+services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();
+services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 
@@ -58,7 +60,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
+StripeConfiguration.ApiKey = configuration.GetSection("Stripe:SecretKey").Get<string>();
 
 app.UseRouting();
 
