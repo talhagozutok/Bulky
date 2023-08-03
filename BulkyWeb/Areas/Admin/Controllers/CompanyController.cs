@@ -21,7 +21,7 @@ public class CompanyController : Controller
 
     public IActionResult Index()
     {
-        var companyList = _unitOfWork.CompanyRepository.GetAll();
+        var companyList = _unitOfWork.Companies.GetAll();
         return View(companyList);
     }
 
@@ -32,7 +32,7 @@ public class CompanyController : Controller
             return View(new Company());
         }
 
-        var company = _unitOfWork.CompanyRepository.Get(c => c.Id.Equals(id));
+        var company = _unitOfWork.Companies.Get(c => c.Id.Equals(id));
 
         return company is not null ? View(company) : NotFound();
     }
@@ -51,7 +51,7 @@ public class CompanyController : Controller
         {
             if (company.Id == 0)
             {
-                _unitOfWork.CompanyRepository.Add(company);
+                _unitOfWork.Companies.Add(company);
                 _unitOfWork.Save();
                 TempData["success"] = "Company created successfully";
 
@@ -59,7 +59,7 @@ public class CompanyController : Controller
             }
             else
             {
-                _unitOfWork.CompanyRepository.Update(company);
+                _unitOfWork.Companies.Update(company);
                 _unitOfWork.Save();
                 TempData["success"] = "Company updated successfully";
 
@@ -78,11 +78,11 @@ public class CompanyController : Controller
             return NotFound();
         }
 
-        var company = _unitOfWork.CompanyRepository.Get(c => c.Id.Equals(id));
+        var company = _unitOfWork.Companies.Get(c => c.Id.Equals(id));
 
         if (company is not null)
         {
-            _unitOfWork.CompanyRepository.Remove(company);
+            _unitOfWork.Companies.Remove(company);
             _unitOfWork.Save();
 
 			return RedirectToAction("Index");
@@ -96,7 +96,7 @@ public class CompanyController : Controller
     [HttpGet]
     public IActionResult GetAll()
     {
-        var companyList = _unitOfWork.CompanyRepository.GetAll();
+        var companyList = _unitOfWork.Companies.GetAll();
         return Json(new { data = companyList});
     }
 

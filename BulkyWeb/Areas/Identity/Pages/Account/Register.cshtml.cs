@@ -144,7 +144,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                         Value = selectListItem
                     }),
 
-				CompanyList = _unitOfWork.CompanyRepository.GetAll()
+				CompanyList = _unitOfWork.Companies.GetAll()
                     .OrderBy(company => company.Id)
                     .Select(selectListItem => new SelectListItem
                     {
@@ -233,7 +233,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                         Value = selectListItem
                     }),
 
-                CompanyList = _unitOfWork.CompanyRepository.GetAll()
+                CompanyList = _unitOfWork.Companies.GetAll()
                     .OrderBy(company => company.Id)
                     .Select(selectListItem => new SelectListItem()
                     {

@@ -24,9 +24,17 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (userId is not null)
+        {
+            HttpContext.Session.SetInt32(StaticDetails.SessionCart, _unitOfWork.ShoppingCarts
+                .GetAll(u => u.ApplicationUserId.Equals(userId))!.Count());
+        }
+
         _logger.LogWarning("Navigated to /Home/Index");
 
-        IEnumerable<Product> productList = _unitOfWork.ProductRepository.GetAll(includeProperties: nameof(Category));
+        IEnumerable<Product> productList = _unitOfWork.Products.GetAll(includeProperties: nameof(Category));
         return View(productList);
     }
 
@@ -34,7 +42,7 @@ public class HomeController : Controller
     {
         ShoppingCart cart = new()
         {
-            Product = _unitOfWork.ProductRepository.Get(p => p.Id.Equals(productId), includeProperties: nameof(Category)),
+            Product = _unitOfWork.Products.Get(p => p.Id.Equals(productId), includeProperties: nameof(Category)),
             Count = 1,
             ProductId = productId
         };
@@ -55,26 +63,26 @@ public class HomeController : Controller
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         cart.ApplicationUserId = userId;
 
-        ShoppingCart cartFromDatabase = _unitOfWork.ShoppingCartRepository
+        ShoppingCart cartFromDatabase = _unitOfWork.ShoppingCarts
             .Get(u => u.ApplicationUserId.Equals(userId) && u.ProductId.Equals(cart.ProductId))!;
 
         if (cartFromDatabase is not null)
         {
             // Shopping cart exists
             cartFromDatabase.Count += cart.Count;
-            _unitOfWork.ShoppingCartRepository.Update(cartFromDatabase);
+            _unitOfWork.ShoppingCarts.Update(cartFromDatabase);
             _unitOfWork.Save();
         }
         else
         {
             // Add cart record
-            _unitOfWork.ShoppingCartRepository.Add(cart);
+            _unitOfWork.ShoppingCarts.Add(cart);
             _unitOfWork.Save();
-            HttpContext.Session.SetInt32(StaticDetails.SessionCart, _unitOfWork.ShoppingCartRepository
+            HttpContext.Session.SetInt32(StaticDetails.SessionCart, _unitOfWork.ShoppingCarts
                 .GetAll(u => u.ApplicationUserId.Equals(userId))!.Count());
         }
 
-        var product = _unitOfWork.ProductRepository.Get(p => p.Id.Equals(cart.ProductId))!;
+        var product = _unitOfWork.Products.Get(p => p.Id.Equals(cart.ProductId))!;
         TempData["shoppingCartAdded"] = $"{product.Title} added to cart";
 
         return RedirectToAction(nameof(Index));

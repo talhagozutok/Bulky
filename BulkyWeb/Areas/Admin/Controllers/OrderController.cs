@@ -35,8 +35,8 @@ public class OrderController : Controller
     {
         OrderViewModel = new()
         {
-            OrderHeader = _unitOfWork.OrderHeaderRepository.Get(o => o.Id.Equals(orderId), includeProperties: nameof(ApplicationUser))!,
-            OrderDetails = _unitOfWork.OrderDetailRepository.GetAll(o => o.OrderHeaderId.Equals(orderId), includeProperties: nameof(Product))
+            OrderHeader = _unitOfWork.OrderHeaders.Get(o => o.Id.Equals(orderId), includeProperties: nameof(ApplicationUser))!,
+            OrderDetails = _unitOfWork.OrderDetails.GetAll(o => o.OrderHeaderId.Equals(orderId), includeProperties: nameof(Product))
         };
 
         return View(OrderViewModel);
@@ -46,7 +46,7 @@ public class OrderController : Controller
     [Authorize(Roles = $"{StaticDetails.Role_Admin}, {StaticDetails.Role_Employee}")]
     public IActionResult UpdateOrderDetail()
     {
-        var orderHeaderFromDb = _unitOfWork.OrderHeaderRepository
+        var orderHeaderFromDb = _unitOfWork.OrderHeaders
             .Get(o => o.Id.Equals(OrderViewModel.OrderHeader.Id));
 
         if (orderHeaderFromDb is not null)
@@ -67,7 +67,7 @@ public class OrderController : Controller
                 orderHeaderFromDb.TrackingNumber = OrderViewModel.OrderHeader.TrackingNumber;
             }
 
-            _unitOfWork.OrderHeaderRepository.Update(orderHeaderFromDb);
+            _unitOfWork.OrderHeaders.Update(orderHeaderFromDb);
             _unitOfWork.Save();
             TempData["success"] = "Order details updated successfully.";
 
@@ -81,7 +81,7 @@ public class OrderController : Controller
     [Authorize(Roles = $"{StaticDetails.Role_Admin}, {StaticDetails.Role_Employee}")]
     public IActionResult StartProcessing()
     {
-        _unitOfWork.OrderHeaderRepository.UpdateStatus(
+        _unitOfWork.OrderHeaders.UpdateStatus(
             id: OrderViewModel.OrderHeader.Id,
             orderStatus: StaticDetails.StatusInProcess);
 
@@ -95,7 +95,7 @@ public class OrderController : Controller
     [Authorize(Roles = $"{StaticDetails.Role_Admin}, {StaticDetails.Role_Employee}")]
     public IActionResult ShipOrder()
     {
-        var orderHeader = _unitOfWork.OrderHeaderRepository.Get(o => o.Id.Equals(OrderViewModel.OrderHeader.Id));
+        var orderHeader = _unitOfWork.OrderHeaders.Get(o => o.Id.Equals(OrderViewModel.OrderHeader.Id));
 
         orderHeader.TrackingNumber = OrderViewModel.OrderHeader.TrackingNumber;
         orderHeader.Carrier = OrderViewModel.OrderHeader.Carrier;
@@ -107,7 +107,7 @@ public class OrderController : Controller
             orderHeader.PaymentDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(30));
         }
 
-        _unitOfWork.OrderHeaderRepository.Update(orderHeader);
+        _unitOfWork.OrderHeaders.Update(orderHeader);
         _unitOfWork.Save();
 
         TempData["success"] = "Order shipped successfully.";
@@ -119,7 +119,7 @@ public class OrderController : Controller
     [Authorize(Roles = $"{StaticDetails.Role_Admin}, {StaticDetails.Role_Employee}")]
     public IActionResult CancelOrder()
     {
-        var orderHeader = _unitOfWork.OrderHeaderRepository.Get(o => o.Id.Equals(OrderViewModel.OrderHeader.Id));
+        var orderHeader = _unitOfWork.OrderHeaders.Get(o => o.Id.Equals(OrderViewModel.OrderHeader.Id));
 
         if (orderHeader.PaymentStatus == StaticDetails.PaymentStatusApproved)
         {
@@ -132,13 +132,13 @@ public class OrderController : Controller
             var service = new RefundService();
             Refund refund = service.Create(options);
 
-            _unitOfWork.OrderHeaderRepository.UpdateStatus(orderHeader.Id,
+            _unitOfWork.OrderHeaders.UpdateStatus(orderHeader.Id,
                 StaticDetails.StatusCancelled,
                 StaticDetails.StatusRefunded);
         }
         else
         {
-            _unitOfWork.OrderHeaderRepository.UpdateStatus(orderHeader.Id,
+            _unitOfWork.OrderHeaders.UpdateStatus(orderHeader.Id,
                 StaticDetails.StatusCancelled,
                 StaticDetails.StatusCancelled);
         }
@@ -152,9 +152,9 @@ public class OrderController : Controller
     [HttpPost]
     public IActionResult DetailsPayNow()
     {
-        OrderViewModel.OrderHeader = _unitOfWork.OrderHeaderRepository
+        OrderViewModel.OrderHeader = _unitOfWork.OrderHeaders
             .Get(o => o.Id.Equals(OrderViewModel.OrderHeader.Id), includeProperties: nameof(ApplicationUser))!;
-        OrderViewModel.OrderDetails = _unitOfWork.OrderDetailRepository
+        OrderViewModel.OrderDetails = _unitOfWork.OrderDetails
             .GetAll(o => o.OrderHeaderId.Equals(OrderViewModel.OrderHeader.Id), includeProperties: nameof(Product));
 
         // stripe logic
@@ -187,7 +187,7 @@ public class OrderController : Controller
 
         var service = new SessionService();
         Session session = service.Create(options);
-        _unitOfWork.OrderHeaderRepository.UpdateStripePaymentID(OrderViewModel.OrderHeader.Id, session.Id, session.PaymentIntentId);
+        _unitOfWork.OrderHeaders.UpdateStripePaymentID(OrderViewModel.OrderHeader.Id, session.Id, session.PaymentIntentId);
         _unitOfWork.Save();
         Response.Headers.Add("Location", session.Url);
 
@@ -196,7 +196,7 @@ public class OrderController : Controller
 
     public IActionResult PaymentConfirmation(int orderHeaderId)
     {
-        OrderHeader orderHeader = _unitOfWork.OrderHeaderRepository.Get(u => u.Id == orderHeaderId);
+        OrderHeader orderHeader = _unitOfWork.OrderHeaders.Get(u => u.Id == orderHeaderId);
 
         if (orderHeader.PaymentStatus == StaticDetails.PaymentStatusDelayedPayment)
         {
@@ -210,8 +210,8 @@ public class OrderController : Controller
 
             if (session.PaymentStatus.Equals("paid", StringComparison.OrdinalIgnoreCase))
             {
-                _unitOfWork.OrderHeaderRepository.UpdateStripePaymentID(orderHeaderId, session.Id, session.PaymentIntentId);
-                _unitOfWork.OrderHeaderRepository.UpdateStatus(orderHeaderId, orderHeader.OrderStatus!, StaticDetails.PaymentStatusApproved);
+                _unitOfWork.OrderHeaders.UpdateStripePaymentID(orderHeaderId, session.Id, session.PaymentIntentId);
+                _unitOfWork.OrderHeaders.UpdateStatus(orderHeaderId, orderHeader.OrderStatus!, StaticDetails.PaymentStatusApproved);
                 _unitOfWork.Save();
             }
         }
@@ -227,11 +227,11 @@ public class OrderController : Controller
             return NotFound();
         }
 
-        var order = _unitOfWork.OrderHeaderRepository.Get(p => p.Id.Equals(id));
+        var order = _unitOfWork.OrderHeaders.Get(p => p.Id.Equals(id));
 
         if (order is not null)
         {
-            _unitOfWork.OrderHeaderRepository.Remove(order);
+            _unitOfWork.OrderHeaders.Remove(order);
             _unitOfWork.Save();
 
             return RedirectToAction("Index");
@@ -249,14 +249,14 @@ public class OrderController : Controller
 
         if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_Employee))
         {
-            orderHeaderList = _unitOfWork.OrderHeaderRepository
+            orderHeaderList = _unitOfWork.OrderHeaders
                 .GetAll(includeProperties: nameof(ApplicationUser));
         }
         else
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            orderHeaderList = _unitOfWork.OrderHeaderRepository
+            orderHeaderList = _unitOfWork.OrderHeaders
                 .GetAll(o => o.ApplicationUserId.Equals(userId), includeProperties: nameof(ApplicationUser));
         }
 
