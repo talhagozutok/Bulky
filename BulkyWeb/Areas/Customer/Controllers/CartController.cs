@@ -96,6 +96,12 @@ public class CartController : Controller
 			ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
 		}
 
+		// TODO : Redesign if logic
+		// When registering as a company user
+		// user can be skip the company id
+		// there the CompanyId of the user is may be 0 or null.
+		// fix either selecting company is mandatory
+		// or use ClaimsPrincipal class
 		if (applicationUser
 				.CompanyId
 				.GetValueOrDefault() == 0)
@@ -187,7 +193,7 @@ public class CartController : Controller
 			var service = new SessionService();
 			Session session = service.Get(orderHeader.SessionId);
 
-			if (session.PaymentStatus.ToLower() == "paid")
+			if (session.PaymentStatus.Equals("paid", StringComparison.OrdinalIgnoreCase))
 			{
 				_unitOfWork.OrderHeaderRepository.UpdateStripePaymentID(id, session.Id, session.PaymentIntentId);
 				_unitOfWork.OrderHeaderRepository.UpdateStatus(id, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
