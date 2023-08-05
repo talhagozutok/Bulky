@@ -45,6 +45,38 @@ public class UserController : Controller
         return Json(new { data = userList });
     }
 
+    [HttpPost]
+    public IActionResult LockUnlock([FromBody] string id)
+    {
+        var user = _dbContext.ApplicationUsers.FirstOrDefault(u => u.Id == id);
+
+        if (user is null)
+        {
+            return Json(new { success = false, message = "Error while locking/unlocking." });
+        }
+
+        if (user.LockoutEnd is not null && user.LockoutEnd > DateTime.Now)
+        {
+            // User is currently locked
+            // we need to unlock them
+
+            user.LockoutEnd = DateTime.Now;
+            _dbContext.SaveChanges();
+
+            return Json(new { success = true, message = "User is locked" });
+        }
+        else
+        {
+            // User is already unlock
+            // we need to lock them
+
+            user.LockoutEnd = DateTime.Now.AddYears(1000);
+            _dbContext.SaveChanges();
+
+            return Json(new { success = true, message = "User is unlocked" });
+        }
+    }
+
     [HttpDelete]
     public IActionResult Delete(int? id)
     {
