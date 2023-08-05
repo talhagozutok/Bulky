@@ -260,23 +260,14 @@ public class OrderController : Controller
                 .GetAll(o => o.ApplicationUserId.Equals(userId), includeProperties: nameof(ApplicationUser));
         }
 
-        switch (status)
+        orderHeaderList = status switch
         {
-            case "paymentPending":
-                orderHeaderList = orderHeaderList.Where(o => o.PaymentStatus.Equals(StaticDetails.PaymentStatusPending));
-                break;
-            case "inProcess":
-                orderHeaderList = orderHeaderList.Where(o => o.OrderStatus.Equals(StaticDetails.StatusInProcess));
-                break;
-            case "completed":
-                orderHeaderList = orderHeaderList.Where(o => o.OrderStatus.Equals(StaticDetails.StatusShipped));
-                break;
-            case "approved":
-                orderHeaderList = orderHeaderList.Where(o => o.OrderStatus.Equals(StaticDetails.StatusApproved));
-                break;
-            default:
-                break;
-        }
+            "paymentPending" => orderHeaderList.Where(o => o.PaymentStatus.Equals(StaticDetails.PaymentStatusPending)),
+            "inProcess" => orderHeaderList.Where(o => o.OrderStatus.Equals(StaticDetails.StatusInProcess)),
+            "completed" => orderHeaderList.Where(o => o.OrderStatus.Equals(StaticDetails.StatusShipped)),
+            "approved" => orderHeaderList.Where(o => o.OrderStatus.Equals(StaticDetails.StatusApproved)),
+            _ => orderHeaderList
+        };
 
         return Json(new { data = orderHeaderList });
     }
