@@ -42,8 +42,7 @@ public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser>
                 Price = 80,
                 PriceFifty = 70,
                 PriceHundredOrMore = 60,
-                CategoryId = 1,
-                ImageUrl = "\\images\\product\\initial\\22-11-63.jpg"
+                CategoryId = 1
             },
             new Product
             {
@@ -56,8 +55,7 @@ public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser>
                 Price = 100,
                 PriceFifty = 80,
                 PriceHundredOrMore = 70,
-                CategoryId = 2,
-                ImageUrl = "\\images\\product\\initial\\alamut.jpg"
+                CategoryId = 2
             },
             new Product
             {
@@ -70,8 +68,7 @@ public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser>
                 Price = 90,
                 PriceFifty = 85,
                 PriceHundredOrMore = 80,
-                CategoryId = 2,
-                ImageUrl = "\\images\\product\\initial\\fortune of time.jpg"
+                CategoryId = 2
             },
             new Product
             {
@@ -84,8 +81,7 @@ public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser>
                 Price = 30,
                 PriceFifty = 25,
                 PriceHundredOrMore = 20,
-                CategoryId = 2,
-                ImageUrl = "\\images\\product\\initial\\dark skies.jpg"
+                CategoryId = 2
             },
             new Product
             {
@@ -98,8 +94,7 @@ public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser>
                 Price = 50,
                 PriceFifty = 40,
                 PriceHundredOrMore = 35,
-                CategoryId = 2,
-                ImageUrl = "\\images\\product\\initial\\vanish in the sunset.jpg"
+                CategoryId = 2
             },
             new Product
             {
@@ -112,8 +107,7 @@ public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser>
                 Price = 65,
                 PriceFifty = 60,
                 PriceHundredOrMore = 55,
-                CategoryId = 2,
-                ImageUrl = "\\images\\product\\initial\\cotton candy.jpg"
+                CategoryId = 2
             },
             new Product
             {
@@ -126,8 +120,7 @@ public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser>
                 Price = 27,
                 PriceFifty = 25,
                 PriceHundredOrMore = 20,
-                CategoryId = 2,
-                ImageUrl = "\\images\\product\\initial\\rock in the ocean.jpg"
+                CategoryId = 2
             },
             new Product
             {
@@ -140,8 +133,7 @@ public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser>
                 Price = 23,
                 PriceFifty = 22,
                 PriceHundredOrMore = 20,
-                CategoryId = 2,
-                ImageUrl = "\\images\\product\\initial\\leaves and wonders.jpg"
+                CategoryId = 2
             }
         );
 

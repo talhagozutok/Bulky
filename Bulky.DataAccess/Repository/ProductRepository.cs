@@ -26,8 +26,6 @@ public class ProductRepository : Repository<Product>, IProductRepository
 			productFromDb.Description = product.Description;
 			productFromDb.CategoryId = product.CategoryId;
 			productFromDb.Author = product.Author;
-
-			productFromDb.ImageUrl = product.ImageUrl;
 		}
 	}
 }
