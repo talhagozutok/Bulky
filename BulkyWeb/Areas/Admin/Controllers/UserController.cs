@@ -63,24 +63,24 @@ public class UserController : Controller
             user.LockoutEnd = DateTime.Now;
             _dbContext.SaveChanges();
 
-            return Json(new { success = true, message = "User is locked" });
+            return Json(new { success = true, message = "User unlocked successfully" });
         }
         else
         {
-            // User is already unlock
+            // User is already unlocked
             // we need to lock them
 
             user.LockoutEnd = DateTime.Now.AddYears(1000);
             _dbContext.SaveChanges();
 
-            return Json(new { success = true, message = "User is unlocked" });
+            return Json(new { success = true, message = "User locked successfully" });
         }
     }
 
     [HttpDelete]
     public IActionResult Delete(int? id)
     {
-        return Json(new { success = true, message = "Deleted successfully" });
+        return Json(new { success = true, message = "User deleted successfully" });
     }
 
     #endregion
