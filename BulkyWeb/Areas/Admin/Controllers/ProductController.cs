@@ -50,7 +50,8 @@ public class ProductController : Controller
         }
 
         // Update
-        Product? product = _unitOfWork.Products.Get(p => p.Id.Equals(id));
+        Product? product = _unitOfWork.Products.Get(p => p.Id.Equals(id),
+            includeProperties: "ProductImages");
         if (product is not null)
         {
             viewModel.Product = product;
@@ -87,8 +88,8 @@ public class ProductController : Controller
                 foreach (IFormFile file in files)
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string productPath = "product-" + viewModel.Product.Id;
-                    string productImagesPath = Path.Combine(wwwRootPath, $@"images\product\{productPath}");
+                    string productPath = @"images\products\product-" + viewModel.Product.Id;
+                    string productImagesPath = Path.Combine(wwwRootPath, productPath);
                     if (!Directory.Exists(productImagesPath))
                     {
                         Directory.CreateDirectory(productImagesPath);
@@ -131,6 +132,50 @@ public class ProductController : Controller
 
             return View(viewModel);
         }
+    }
+
+    public IActionResult DeleteImage(int imageId)
+    {
+        var image = _unitOfWork.ProductImages.Get(i => i.Id == imageId);
+
+        if (image is not null)
+        {
+            if (!string.IsNullOrEmpty(image.ImageUrl))
+            {
+                var wwwRootPath = _webHostEnvironment.WebRootPath;
+
+                // If second parameter starts with backslash(\)
+                // Path.Combine(string path1, string path2)
+                // will return second parameter because it is an absolute path.
+                // In this case image.ImageUrl.TrimStart('\\') used
+                // because second parameter contains
+                // an absolute path which is \product\..
+                // TrimStart method trims the string into product\...
+                var oldImagePath = Path.Combine(wwwRootPath, 
+                    image.ImageUrl.TrimStart('\\'));
+
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+
+                // Delete imageDirectory if no files are remaining.
+                var imageDirectory = Path.Combine(wwwRootPath,
+                    Path.GetDirectoryName(image.ImageUrl).Trim('\\'));
+                if (!Directory.EnumerateFiles(imageDirectory).Any())
+                {
+                    Directory.Delete(imageDirectory);
+                }
+
+                _unitOfWork.ProductImages.Remove(image);
+                _unitOfWork.Save();
+                TempData["delete"] = "Image deleted successfully";
+
+                return RedirectToAction(nameof(Upsert), new { id = image.ProductId });
+            }
+        }
+
+        return NotFound();
     }
 
     public IActionResult Edit([FromRoute(Name = "id")] int? id)
