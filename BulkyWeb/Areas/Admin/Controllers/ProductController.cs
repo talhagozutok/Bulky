@@ -142,7 +142,7 @@ public class ProductController : Controller
         {
             if (!string.IsNullOrEmpty(image.ImageUrl))
             {
-                var wwwRootPath = _webHostEnvironment.WebRootPath;
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
 
                 // If second parameter starts with backslash(\)
                 // Path.Combine(string path1, string path2)
@@ -151,7 +151,7 @@ public class ProductController : Controller
                 // because second parameter contains
                 // an absolute path which is \product\..
                 // TrimStart method trims the string into product\...
-                var oldImagePath = Path.Combine(wwwRootPath, 
+                string oldImagePath = Path.Combine(wwwRootPath, 
                     image.ImageUrl.TrimStart('\\'));
 
                 if (System.IO.File.Exists(oldImagePath))
@@ -160,7 +160,7 @@ public class ProductController : Controller
                 }
 
                 // Delete imageDirectory if no files are remaining.
-                var imageDirectory = Path.Combine(wwwRootPath,
+                string imageDirectory = Path.Combine(wwwRootPath,
                     Path.GetDirectoryName(image.ImageUrl).Trim('\\'));
                 if (!Directory.EnumerateFiles(imageDirectory).Any())
                 {
@@ -196,6 +196,15 @@ public class ProductController : Controller
 
         if (product is not null)
         {
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+            string imageDirectory = Path.Combine(wwwRootPath,
+                    @"images\products\product-" + id);
+
+            if (Directory.Exists(imageDirectory))
+            {
+                Directory.Delete(imageDirectory, true);
+            }
+
             _unitOfWork.Products.Remove(product);
             _unitOfWork.Save();
 
