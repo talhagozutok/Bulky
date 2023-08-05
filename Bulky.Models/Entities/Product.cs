@@ -48,4 +48,7 @@ public class Product
 	[ForeignKey(nameof(CategoryId))]
 	[ValidateNever]
 	public Category? Category { get; set; }
+
+	[ValidateNever]
+	public List<ProductImage> ProductImages { get; set; }
 }
