@@ -13,123 +13,161 @@ namespace BulkyWeb.Areas.Admin.Controllers;
 [Authorize(Roles = StaticDetails.Role_Admin)]
 public class ProductController : Controller
 {
-	private readonly IUnitOfWork _unitOfWork;
-	private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-	public ProductController(IUnitOfWork unitOfWork,
-		IWebHostEnvironment webHostEnvironment)
-	{
-		_unitOfWork = unitOfWork;
-		_webHostEnvironment = webHostEnvironment;
-	}
+    public ProductController(IUnitOfWork unitOfWork,
+        IWebHostEnvironment webHostEnvironment)
+    {
+        _unitOfWork = unitOfWork;
+        _webHostEnvironment = webHostEnvironment;
+    }
 
-	public IActionResult Index()
-	{
-		var productList = _unitOfWork.Products.GetAll(includeProperties: nameof(Category)).ToList();
-		return View(productList);
-	}
+    public IActionResult Index()
+    {
+        var productList = _unitOfWork.Products.GetAll(includeProperties: nameof(Category)).ToList();
+        return View(productList);
+    }
 
-	// [UP]date and in[SERT] functionality.
-	public IActionResult Upsert([FromRoute(Name = "id")] int? id)
-	{
-		ProductViewModel viewModel = new()
-		{
-			Product = new Product(),
-			CategoryList = _unitOfWork.Categories
-				.GetAll().Select(c => new SelectListItem
-				{
-					Text = c.Name,
-					Value = c.Id.ToString(),
-				})
-		};
+    // [UP]date and in[SERT] functionality.
+    public IActionResult Upsert([FromRoute(Name = "id")] int? id)
+    {
+        ProductViewModel viewModel = new()
+        {
+            Product = new Product(),
+            CategoryList = _unitOfWork.Categories
+                .GetAll().Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                })
+        };
 
-		if (id is null || id == 0)
-		{
-			// Create
-			return View(viewModel);
-		}
+        if (id is null || id == 0)
+        {
+            // Create
+            return View(viewModel);
+        }
 
-		// Update
-		Product? product = _unitOfWork.Products.Get(p => p.Id.Equals(id));
-		if (product is not null)
-		{
-			viewModel.Product = product;
-			return View(viewModel);
-		}
+        // Update
+        Product? product = _unitOfWork.Products.Get(p => p.Id.Equals(id));
+        if (product is not null)
+        {
+            viewModel.Product = product;
+            return View(viewModel);
+        }
 
-		return NotFound();
-	}
+        return NotFound();
+    }
 
-	[HttpPost]
-	public IActionResult Upsert(ProductViewModel viewModel, IFormFile? file)
-	{
-		if (ModelState.IsValid)
-		{
-			string wwwRootPath = _webHostEnvironment.WebRootPath;
-
-			if (viewModel.Product.Id == 0)
-			{
-				_unitOfWork.Products.Add(viewModel.Product);
-				_unitOfWork.Save();
-				TempData["success"] = "Product created successfully";
-			}
-			else
-			{
-				_unitOfWork.Products.Update(viewModel.Product);
-				_unitOfWork.Save();
-				TempData["success"] = "Product updated successfully";
+    [HttpPost]
+    public IActionResult Upsert(ProductViewModel viewModel, List<IFormFile> files)
+    {
+        if (ModelState.IsValid)
+        {
+            // We are creating/updating product first
+            // then we use its id to upload the images.
+            if (viewModel.Product.Id == 0)
+            {
+                _unitOfWork.Products.Add(viewModel.Product);
+                _unitOfWork.Save();
+                TempData["success"] = "Product created successfully";
+            }
+            else
+            {
+                _unitOfWork.Products.Update(viewModel.Product);
+                _unitOfWork.Save();
+                TempData["success"] = "Product updated successfully";
             }
 
+            if (files is not null)
+            {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+                foreach (IFormFile file in files)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = "product-" + viewModel.Product.Id;
+                    string productImagesPath = Path.Combine(wwwRootPath, $@"images\product\{productPath}");
+                    if (!Directory.Exists(productImagesPath))
+                    {
+                        Directory.CreateDirectory(productImagesPath);
+                    }
+
+                    using (var fileStream = new FileStream(Path.Combine(productImagesPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    ProductImage productImage = new()
+                    {
+                        ImageUrl = @"\" + productPath + @"\" + fileName,
+                        ProductId = viewModel.Product.Id
+                    };
+
+                    if (viewModel.Product.ProductImages is null)
+                    {
+                        viewModel.Product.ProductImages = new List<ProductImage>();
+                    }
+
+                    viewModel.Product.ProductImages.Add(productImage);
+                }
+
+                _unitOfWork.Products.Update(viewModel.Product);
+                _unitOfWork.Save();
+            }
+
+
             return RedirectToAction("Index");
-		}
-		else
-		{
-			viewModel.CategoryList = _unitOfWork.Categories
-				.GetAll().Select(c => new SelectListItem
-				{
-					Text = c.Name,
-					Value = c.Id.ToString(),
-				});
+        }
+        else
+        {
+            viewModel.CategoryList = _unitOfWork.Categories
+                .GetAll().Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                });
 
-			return View(viewModel);
-		}
-	}
+            return View(viewModel);
+        }
+    }
 
-	public IActionResult Edit([FromRoute(Name = "id")] int? id)
-	{
-		var product = _unitOfWork.Products.Get(p => p.Id.Equals(id));
-		return product is not null ? View(product) : NotFound();
-	}
+    public IActionResult Edit([FromRoute(Name = "id")] int? id)
+    {
+        var product = _unitOfWork.Products.Get(p => p.Id.Equals(id));
+        return product is not null ? View(product) : NotFound();
+    }
 
-	[HttpDelete]
-	public IActionResult Delete([FromRoute(Name = "id")] int? id)
-	{
-		if (id is null)
-		{
-			return NotFound();
-		}
+    [HttpDelete]
+    public IActionResult Delete([FromRoute(Name = "id")] int? id)
+    {
+        if (id is null)
+        {
+            return NotFound();
+        }
 
-		var product = _unitOfWork.Products.Get(p => p.Id.Equals(id));
+        var product = _unitOfWork.Products.Get(p => p.Id.Equals(id));
 
-		if (product is not null)
-		{
-			_unitOfWork.Products.Remove(product);
-			_unitOfWork.Save();
+        if (product is not null)
+        {
+            _unitOfWork.Products.Remove(product);
+            _unitOfWork.Save();
 
-			return RedirectToAction("Index");
-		}
+            return RedirectToAction("Index");
+        }
 
-		return NotFound();
-	}
+        return NotFound();
+    }
 
-	#region API
+    #region API
 
-	[HttpGet]
-	public IActionResult GetAll()
-	{
-		var productList = _unitOfWork.Products.GetAll(includeProperties: nameof(Category)).ToList();
-		return Json(new { data = productList });
-	}
+    [HttpGet]
+    public IActionResult GetAll()
+    {
+        var productList = _unitOfWork.Products.GetAll(includeProperties: nameof(Category)).ToList();
+        return Json(new { data = productList });
+    }
 
-	#endregion
+    #endregion
 }

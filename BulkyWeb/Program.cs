@@ -46,6 +46,7 @@ services.AddRazorPages();
 services.AddScoped<IUnitOfWork, UnitOfWork>();
 services.AddScoped<ICategoryRepository, CategoryRepository>();
 services.AddScoped<IProductRepository, ProductRepository>();
+services.AddScoped<IProductImageRepository, ProductImageRepository>();
 services.AddScoped<ICompanyRepository, CompanyRepository>();
 services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();
