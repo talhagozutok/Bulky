@@ -59,8 +59,4 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\product\initial\" />
-  </ItemGroup>
-
 </Project>
