@@ -15,7 +15,7 @@ function loadDataTable() {
             { data: 'email', width: '15%' },
             { data: 'phoneNumber', width: '15%' },
             { data: 'company.name', width: '15%' },
-            { data: '', width: '15%' },
+            { data: 'roles', width: '15%' },
             {
                 data: 'id',
                 render: function (data) {
@@ -25,7 +25,7 @@ function loadDataTable() {
 						        </a>
 					        </div>`
                 },
-                width: '25%',
+                width: '10%',
                 orderable: false,
                 title: 'Operations'
             }
