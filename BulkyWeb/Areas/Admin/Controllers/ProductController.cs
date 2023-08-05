@@ -67,34 +67,6 @@ public class ProductController : Controller
 		{
 			string wwwRootPath = _webHostEnvironment.WebRootPath;
 
-			if (file is not null)
-			{
-				string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-				string productImagesPath = Path.Combine(wwwRootPath, @"images\product");
-
-				if (!string.IsNullOrEmpty(viewModel.Product.ImageUrl))
-				{
-					// Delete the old image
-					var oldImagePath =
-						Path.Combine(wwwRootPath, viewModel.Product.ImageUrl.TrimStart('\\'));
-
-					if (System.IO.File.Exists(oldImagePath))
-					{
-						if (!viewModel.Product.ImageUrl.Contains("initial"))
-						{
-							System.IO.File.Delete(oldImagePath);
-						}
-					}
-				}
-
-				using (var fileStream = new FileStream(Path.Combine(productImagesPath, fileName), FileMode.Create))
-				{
-					file.CopyTo(fileStream);
-				}
-
-				viewModel.Product.ImageUrl = @"\images\product\" + fileName;
-			}
-
 			if (viewModel.Product.Id == 0)
 			{
 				_unitOfWork.Products.Add(viewModel.Product);
@@ -141,17 +113,6 @@ public class ProductController : Controller
 
 		if (product is not null)
 		{
-			if (product.ImageUrl is not null && !product.ImageUrl.Contains("initial"))
-			{
-				var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath,
-				product.ImageUrl.TrimStart('\\'));
-
-				if (System.IO.File.Exists(oldImagePath))
-				{
-					System.IO.File.Delete(oldImagePath);
-				}
-			}
-
 			_unitOfWork.Products.Remove(product);
 			_unitOfWork.Save();
 

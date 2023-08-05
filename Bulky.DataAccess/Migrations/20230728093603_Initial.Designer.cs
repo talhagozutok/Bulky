@@ -90,9 +90,6 @@ namespace Bulky.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("ListPrice")
                         .HasColumnType("float");
 
@@ -124,7 +121,6 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 1,
                             Description = "11/22/63 is a novel by Stephen King about a time traveller who attempts to prevent the assassination of United States President John F. Kennedy, which occurred on November 22, 1963.",
                             ISBN = "06A2B06C-2CC",
-                            ImageUrl = "\\images\\product\\initial\\22-11-63.jpg",
                             ListPrice = 100.0,
                             Price = 80.0,
                             PriceFifty = 70.0,
@@ -138,7 +134,6 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Alamut is a novel by Vladimir Bartol, first published in 1938 in Slovenian, dealing with the story of Hassan-i Sabbah and the Hashshashin, and named after their Alamut fortress. The maxim of the novel is \"Nothing is an absolute reality; all is permitted\". This book was one of the inspirations for the video game series Assassin's Creed.",
                             ISBN = "BF16868D-B8D",
-                            ImageUrl = "\\images\\product\\initial\\alamut.jpg",
                             ListPrice = 150.0,
                             Price = 100.0,
                             PriceFifty = 80.0,
@@ -152,7 +147,6 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "SWD9999001",
-                            ImageUrl = "\\images\\product\\initial\\fortune of time.jpg",
                             ListPrice = 99.0,
                             Price = 90.0,
                             PriceFifty = 85.0,
@@ -166,7 +160,6 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "CAW777777701",
-                            ImageUrl = "\\images\\product\\initial\\dark skies.jpg",
                             ListPrice = 40.0,
                             Price = 30.0,
                             PriceFifty = 25.0,
@@ -180,7 +173,6 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "RITO5555501",
-                            ImageUrl = "\\images\\product\\initial\\vanish in the sunset.jpg",
                             ListPrice = 55.0,
                             Price = 50.0,
                             PriceFifty = 40.0,
@@ -194,7 +186,6 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "WS3333333301",
-                            ImageUrl = "\\images\\product\\initial\\cotton candy.jpg",
                             ListPrice = 70.0,
                             Price = 65.0,
                             PriceFifty = 60.0,
@@ -208,7 +199,6 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "SOTJ1111111101",
-                            ImageUrl = "\\images\\product\\initial\\rock in the ocean.jpg",
                             ListPrice = 30.0,
                             Price = 27.0,
                             PriceFifty = 25.0,
@@ -222,7 +212,6 @@ namespace Bulky.DataAccess.Migrations
                             CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "FOT000000001",
-                            ImageUrl = "\\images\\product\\initial\\leaves and wonders.jpg",
                             ListPrice = 25.0,
                             Price = 23.0,
                             PriceFifty = 22.0,
