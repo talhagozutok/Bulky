@@ -3,7 +3,8 @@ public interface IUnitOfWork
 {
 	ICategoryRepository Categories { get; }
 	IProductRepository Products { get; }
-	ICompanyRepository Companies { get; }
+	IProductImageRepository ProductImages { get; }
+    ICompanyRepository Companies { get; }
 	IShoppingCartRepository ShoppingCarts { get; }
 	IOrderDetailRepository OrderDetails { get; }
 	IOrderHeaderRepository OrderHeaders { get; }
