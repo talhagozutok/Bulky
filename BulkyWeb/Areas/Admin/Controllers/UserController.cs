@@ -27,9 +27,9 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult GetAll()
     {
-        List<ApplicationUser> userList = _dbContext.ApplicationUsers.Include(u => u.Company).ToList();
-        List<IdentityRole> roleList = _dbContext.Roles.ToList();
-        List<IdentityUserRole<string>> userRoles = _dbContext.UserRoles.ToList();
+        List<ApplicationUser> userList = _dbContext.ApplicationUsers.AsNoTracking().Include(u => u.Company).ToList();
+        List<IdentityRole> roleList = _dbContext.Roles.AsNoTracking().ToList();
+        List<IdentityUserRole<string>> userRoles = _dbContext.UserRoles.AsNoTracking().ToList();
 
         foreach (var user in userList)
         {
