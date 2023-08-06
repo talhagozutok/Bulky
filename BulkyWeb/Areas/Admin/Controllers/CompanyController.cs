@@ -85,10 +85,10 @@ public class CompanyController : Controller
             _unitOfWork.Companies.Remove(company);
             _unitOfWork.Save();
 
-			return RedirectToAction("Index");
-		}
+            return RedirectToAction("Index");
+        }
 
-		return NotFound();
+        return NotFound();
     }
 
     #region API
@@ -97,9 +97,9 @@ public class CompanyController : Controller
     public IActionResult GetAll()
     {
         var companyList = _unitOfWork.Companies.GetAll();
-        return Json(new { data = companyList});
+        return Json(new { data = companyList });
     }
 
-	#endregion API
+    #endregion API
 
 }

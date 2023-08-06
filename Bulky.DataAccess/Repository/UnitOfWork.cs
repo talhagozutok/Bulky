@@ -24,7 +24,7 @@ public class UnitOfWork : IUnitOfWork
         IApplicationUserRepository applicationUser,
         IOrderHeaderRepository orderHeader,
         IOrderDetailRepository orderDetail)
-        
+
     {
         _dbContext = dbContext;
         Category = categoryRepository;

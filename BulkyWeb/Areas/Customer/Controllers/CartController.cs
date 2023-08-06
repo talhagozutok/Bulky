@@ -258,7 +258,7 @@ public class CartController : Controller
            _unitOfWork.ShoppingCarts
                .GetAll(c => c.ApplicationUserId == cartFromDatabase.ApplicationUserId).Count() - 1);
 
-        _unitOfWork.ShoppingCarts.Remove(cartFromDatabase);       
+        _unitOfWork.ShoppingCarts.Remove(cartFromDatabase);
         _unitOfWork.Save();
         return RedirectToAction(nameof(Index));
     }

@@ -1,11 +1,11 @@
-﻿using Bulky.DataAccess.Repository.Contracts;
+﻿using System.Data;
+using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 using Bulky.Models.ViewModels;
 using Bulky.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Data;
 
 namespace BulkyWeb.Areas.Admin.Controllers;
 
@@ -151,7 +151,7 @@ public class ProductController : Controller
                 // because second parameter contains
                 // an absolute path which is \product\..
                 // TrimStart method trims the string into product\...
-                string oldImagePath = Path.Combine(wwwRootPath, 
+                string oldImagePath = Path.Combine(wwwRootPath,
                     image.ImageUrl.TrimStart('\\'));
 
                 if (System.IO.File.Exists(oldImagePath))

@@ -1,12 +1,12 @@
 using Bulky.DataAccess.Data;
+using Bulky.DataAccess.Initializers;
 using Bulky.DataAccess.Repository;
 using Bulky.DataAccess.Repository.Contracts;
-using Microsoft.EntityFrameworkCore;
+using Bulky.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Bulky.Utilities;
+using Microsoft.EntityFrameworkCore;
 using Stripe;
-using Bulky.DataAccess.Initializers;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
