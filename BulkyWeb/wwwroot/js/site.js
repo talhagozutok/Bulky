@@ -53,7 +53,7 @@ const DeleteAlert = Swal.mixin({
   buttonsStyling: false,
   confirmButtonText: '<i class="bi bi-trash"></i> Delete',
   customClass: {
-    cancelButton: "btn btn-outline-secondary mx-2",
+    cancelButton: "btn btn-secondary mx-2",
     confirmButton: "btn btn-danger mx-2",
   },
 });

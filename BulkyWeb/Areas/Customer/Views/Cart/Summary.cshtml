@@ -12,7 +12,7 @@
                         </h5>
                     </div>
                     <div class="col-6 text-end">
-                        <a asp-action="Index" class="btn btn-outline-danger btn-sm">
+                        <a asp-action="Index" class="btn btn-danger btn-sm">
                             <i class="bi bi-arrow-left"></i> Back to Cart
                         </a>
                     </div>
@@ -97,7 +97,7 @@
                                         <span class="text-muted">@((details.Price * details.Count).ToString("c2", CultureInfo.CreateSpecificCulture("en-US")))</span>
                                     </li>
                                 }
-                                <li class="list-group-item d-flex justify-content-between bg-dark">
+                                <li class="list-group-item d-flex justify-content-between">
                                     <small>Total</small>
                                     <strong>@Model.OrderHeader.OrderTotal.ToString("c2", CultureInfo.CreateSpecificCulture("en-US"))</strong>
                                 </li>
