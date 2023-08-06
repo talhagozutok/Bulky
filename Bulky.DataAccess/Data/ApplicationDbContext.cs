@@ -1,4 +1,5 @@
 ﻿using Bulky.Models.Entities;
+using Bulky.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -136,6 +137,32 @@ public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser>
                 PriceHundredOrMore = 20,
                 CategoryId = 2
             }
+        );
+
+        modelBuilder.Entity<ProductImage>().HasData(
+            new ProductImage() { Id = 1, ProductId = 1, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\22-11-63.jpg" },
+            new ProductImage() { Id = 2, ProductId = 1, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\22-11-63 (1).jpg" },
+
+            new ProductImage() { Id = 3, ProductId = 2, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\alamut.jpg" },
+            new ProductImage() { Id = 4, ProductId = 2, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\alamut (1).jpg" },
+
+            new ProductImage() { Id = 5, ProductId = 3, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\fortune of time.jpg" },
+            new ProductImage() { Id = 6, ProductId = 3, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\fortune of time (1).jpg" },
+
+            new ProductImage() { Id = 7, ProductId = 4, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\dark skies.jpg" },
+            new ProductImage() { Id = 8, ProductId = 4, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\dark skies (1).jpg" },
+
+            new ProductImage() { Id = 9, ProductId = 5, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\vanish in the sunset.jpg" },
+            new ProductImage() { Id = 10, ProductId = 5, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\vanish in the sunset (1).jpg" },
+
+            new ProductImage() { Id = 11, ProductId = 6, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\cotton candy.jpg" },
+            new ProductImage() { Id = 12, ProductId = 6, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\cotton candy (1).jpg" },
+
+            new ProductImage() { Id = 13, ProductId = 7, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\rock in the ocean.jpg" },
+            new ProductImage() { Id = 14, ProductId = 7, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\rock in the ocean (1).jpg" },
+
+            new ProductImage() { Id = 15, ProductId = 8, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\leaves and wonders.jpg" },
+            new ProductImage() { Id = 16, ProductId = 8, ImageUrl = $"{StaticDetails.InitialImagePath}\\products\\leaves and wonders (1).jpg" }
         );
 
         modelBuilder.Entity<Company>().HasData(

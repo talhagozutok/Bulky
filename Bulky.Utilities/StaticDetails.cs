@@ -22,4 +22,6 @@ public static class StaticDetails
     public const string AdminPassword = "***REDACTED***";
 
     public const string SessionCart = "Session.ShoppingCart";
+
+    public const string InitialImagePath = "\\images\\initial";
 }
