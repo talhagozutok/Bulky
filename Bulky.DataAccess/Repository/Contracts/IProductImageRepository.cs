@@ -3,5 +3,5 @@
 namespace Bulky.DataAccess.Repository.Contracts;
 public interface IProductImageRepository : IRepository<ProductImage>
 {
-	void Update(ProductImage image);
+    void Update(ProductImage image);
 }

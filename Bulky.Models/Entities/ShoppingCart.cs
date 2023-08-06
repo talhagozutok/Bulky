@@ -20,7 +20,7 @@ public class ShoppingCart
 
     [ForeignKey("ApplicationUserId")]
     [ValidateNever]
-    public ApplicationUser ApplicationUser { get;}
+    public ApplicationUser ApplicationUser { get; }
 
     [NotMapped]
     public double Price { get; set; }

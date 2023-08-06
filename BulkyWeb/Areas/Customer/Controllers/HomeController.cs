@@ -4,7 +4,6 @@ using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 using Bulky.Utilities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Controllers;
