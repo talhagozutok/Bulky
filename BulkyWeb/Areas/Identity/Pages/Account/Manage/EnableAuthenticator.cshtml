@@ -22,9 +22,11 @@
         </li>
         <li>
             <p>Scan the QR Code or enter this key <kbd>@Model.SharedKey</kbd> into your two factor authenticator app. Spaces and casing do not matter.</p>
-            <div class="alert alert-info">Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation</a>.</div>
-            <div id="qrCode"></div>
-            <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
+            @* <div class="alert alert-info">Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation</a>.</div> *@
+            <div class="text-center">
+                <div id="qrCode" class="p-2 border rounded bg-light d-inline-block"></div>
+                <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
+            </div>
         </li>
         <li>
             <p>
@@ -50,4 +52,6 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/qrcodejs/qrcode.min.js" asp-append-version="true"></script>
+    <script src="~/js/qr.js" asp-append-version="true"></script>
 }
