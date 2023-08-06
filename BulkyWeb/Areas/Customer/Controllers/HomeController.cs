@@ -26,7 +26,8 @@ public class HomeController : Controller
     {
         _logger.LogWarning("Navigated to /Home/Index");
 
-        IEnumerable<Product> productList = _unitOfWork.Products.GetAll(includeProperties: nameof(Category));
+        IEnumerable<Product> productList = _unitOfWork.Products
+            .GetAll(includeProperties: $"{nameof(Category)},ProductImages");
         return View(productList);
     }
 
@@ -34,7 +35,8 @@ public class HomeController : Controller
     {
         ShoppingCart cart = new()
         {
-            Product = _unitOfWork.Products.Get(p => p.Id.Equals(productId), includeProperties: nameof(Category)),
+            Product = _unitOfWork.Products.Get(p => p.Id.Equals(productId),
+                includeProperties: $"{nameof(Category)},ProductImages"),
             Count = 1,
             ProductId = productId
         };
