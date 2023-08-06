@@ -37,8 +37,11 @@ public class CartController : Controller
             OrderHeader = new()
         };
 
+        IEnumerable<ProductImage> productImages = _unitOfWork.ProductImages.GetAll();
+
         foreach (var cart in ShoppingCartViewModel.ShoppingCartList)
         {
+            cart.Product.ProductImages = productImages.Where(image => image.ProductId == cart.Product.Id).ToList();
             cart.Price = GetPriceBasedOnQuantity(cart);
             ShoppingCartViewModel.OrderHeader.OrderTotal += (cart.Price * cart.Count);
         }

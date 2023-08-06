@@ -24,6 +24,16 @@
                     @foreach (var item in Model.ShoppingCartList)
                     {
                         <div class="row border-bottom pb-3">
+                            <div class="d-none d-lg-block col-lg-1 text-center py-2">
+                                @if (item.Product.ProductImages is not null && item.Product.ProductImages.Any())
+                                {
+                                    <img src="@item.Product.ProductImages.FirstOrDefault().ImageUrl" class="rounded" width="100%" />
+                                }
+                                else
+                                {
+                                    <img src="https://placehold.co/500x600/212529/white/png?text=No\nImages&font=roboto" class="rounded" width="100%" />
+                                }
+                            </div>
                             @* <div class="d-none d-lg-block col-lg-1 text-center py-2">
                                 <img src="@item.Product!.ImageUrl" class="rounded" width="100%" />
                             </div> *@
