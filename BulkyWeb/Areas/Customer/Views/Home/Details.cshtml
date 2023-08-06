@@ -43,7 +43,10 @@
                                )
                                 {
                                     <div class="carousel-item @(imageWithIndex.Index == 0 ? "active" : "")">
-                                        <img src="@imageWithIndex.Image.ImageUrl" class="d-block w-100" alt="@($"{imageWithIndex.Image.Product.Title} - ${imageWithIndex.Image.Id}")">
+                                            <img asp-append-version="true"
+                                                 src="@imageWithIndex.Image.ImageUrl"
+                                                 class="d-block w-100"
+                                                 alt="@($"{imageWithIndex.Image.Product.Title} - ${imageWithIndex.Image.Id}")">
                                     </div>
                                 }
                             </div>
