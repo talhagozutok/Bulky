@@ -13,7 +13,7 @@
                     <div class="card border-0 p-3 shadow border-top border-primary border-5 rounded">
                         @if (product.ProductImages is not null && product.ProductImages.Any())
                         {
-                            <img src="@product.ProductImages.FirstOrDefault().ImageUrl" class="card-img-top rounded" />
+                            <img asp-append-version="true" src="@product.ProductImages.FirstOrDefault().ImageUrl" class="card-img-top rounded" />
                         }
                         else
                         {
