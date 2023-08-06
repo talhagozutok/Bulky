@@ -27,8 +27,8 @@ body {
 #coloredFooterText {
   background: linear-gradient(
     195deg,
-    rgb(237, 236, 255) 15%,
-    rgb(220, 212, 246) 70%
+    #afadcf 15%,
+    #8f7ccb 70%
   );
   background-clip: text;
   -webkit-text-fill-color: transparent;
