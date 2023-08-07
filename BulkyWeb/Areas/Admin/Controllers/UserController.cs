@@ -1,10 +1,9 @@
-﻿using Bulky.DataAccess.Data;
+﻿using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 using Bulky.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BulkyWeb.Controllers;
 
@@ -12,11 +11,19 @@ namespace BulkyWeb.Controllers;
 [Authorize(Roles = StaticDetails.Role_Admin)]
 public class UserController : Controller
 {
-    private readonly ApplicationDbContext _dbContext;
-    public UserController(ApplicationDbContext db)
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly UserManager<IdentityUser> _userManager;
+
+    public UserController(IUnitOfWork unitOfWork,
+        RoleManager<IdentityRole> roleManager,
+        UserManager<IdentityUser> userManager)
     {
-        _dbContext = db;
+        _unitOfWork = unitOfWork;
+        _roleManager = roleManager;
+        _userManager = userManager;
     }
+
     public IActionResult Index()
     {
         return View();
@@ -27,19 +34,18 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult GetAll()
     {
-        List<ApplicationUser> userList = _dbContext.ApplicationUsers.AsNoTracking().Include(u => u.Company).ToList();
-        List<IdentityRole> roleList = _dbContext.Roles.AsNoTracking().ToList();
-        List<IdentityUserRole<string>> userRoles = _dbContext.UserRoles.AsNoTracking().ToList();
+        List<ApplicationUser> userList = _unitOfWork.ApplicationUsers
+            .GetAll(includeProperties: nameof(Company))
+            .ToList();
 
         foreach (var user in userList)
         {
-            var userId = user.Id;
-            var roleIds = userRoles.Where(r => r.UserId == userId);
-            foreach (var roleId in roleIds)
-            {
-                var role = roleList.Find(r => r.Id == roleId.RoleId);
-                user.Roles.Add(role.Name);
-            }
+            var userRoles = _userManager
+                .GetRolesAsync(user)
+                .GetAwaiter().GetResult()
+                .ToList();
+
+            user.Roles.AddRange(userRoles);
         }
 
         return Json(new { data = userList });
@@ -48,7 +54,9 @@ public class UserController : Controller
     [HttpPost]
     public IActionResult LockUnlock([FromBody] string id)
     {
-        var user = _dbContext.ApplicationUsers.FirstOrDefault(u => u.Id == id);
+        var user = _userManager
+            .FindByIdAsync(id)
+            .GetAwaiter().GetResult();
 
         if (user is null)
         {
@@ -61,7 +69,7 @@ public class UserController : Controller
             // we need to unlock them
 
             user.LockoutEnd = DateTime.Now;
-            _dbContext.SaveChanges();
+            _unitOfWork.Save();
 
             return Json(new { success = true, message = "User unlocked successfully" });
         }
@@ -71,7 +79,7 @@ public class UserController : Controller
             // we need to lock them
 
             user.LockoutEnd = DateTime.Now.AddYears(1000);
-            _dbContext.SaveChanges();
+            _unitOfWork.Save();
 
             return Json(new { success = true, message = "User locked successfully" });
         }
