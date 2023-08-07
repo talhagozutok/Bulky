@@ -18,11 +18,16 @@ services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
 );
 
-services.Configure<StripeSettings>(configuration.GetSection("Stripe"));
+services.Configure<StripeSettings>(configuration.GetRequiredSection("Stripe"));
 services.AddAuthentication().AddFacebook(facebookOptions =>
 {
-    facebookOptions.AppId = configuration.GetValue<string>("Facebook:AppId");
-    facebookOptions.AppSecret = configuration.GetValue<string>("Facebook:AppSecret");
+    facebookOptions.AppId = configuration["Authentication:Facebook:AppId"];
+    facebookOptions.AppSecret = configuration["Authentication:Facebook:AppSecret"];
+});
+services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
+{
+    microsoftOptions.ClientId = configuration["Authentication:Microsoft:ClientId"];
+    microsoftOptions.ClientSecret = configuration["Authentication:Microsoft:ClientSecret"];
 });
 
 services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
