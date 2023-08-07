@@ -80,19 +80,28 @@
                                             {
                                                 string style = "";
                                                 string icon = "";
+                                                string btnClass = "";
                                                 if (provider.Name.Equals("Facebook", StringComparison.OrdinalIgnoreCase))
                                                 {
                                                     style = "background-color: #3b5998;";
+                                                    btnClass = "btn-primary";
                                                     icon = "<i class=\"bi bi-facebook\"></i>";
                                                 }
+                                                if (provider.Name.Equals("Microsoft", StringComparison.OrdinalIgnoreCase))
+                                                {
+                                                    style = "";
+                                                    btnClass = "btn-secondary";
+                                                    icon = "<i class=\"bi bi-microsoft\"></i>";
+                                                }
                                                 <button type="submit"
-                                                        class="btn btn-primary"
+                                                        class="btn mb-2 @btnClass"
                                                         name="provider"
                                                         value="@provider.Name"
                                                         title="Log in using your @provider.DisplayName account"
                                                         style="@style">
                                                     @Html.Raw(@icon) Login with @provider.DisplayName
                                                 </button>
+                                                <br />
                                             }
                                         }
                                     </p>
