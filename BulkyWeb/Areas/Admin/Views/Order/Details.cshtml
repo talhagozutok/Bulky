@@ -291,7 +291,7 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
         function validateInput() {
-            if ($("#carrier").val() == "") {
+            if (document.getElementById("carrier").value == "") {
                 Swal.fire({
                     icon: 'error',
                     title: 'Carrier field cannot be empty',
@@ -303,7 +303,7 @@
                 return false;
             }
 
-            if ($("#trackingNumber").val() == "") {
+            if (document.getElementById("trackingNumber").value == "") {
                 Swal.fire({
                     icon: 'error',
                     title: 'Tracking field cannot be empty',

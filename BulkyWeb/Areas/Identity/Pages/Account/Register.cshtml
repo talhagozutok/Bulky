@@ -180,11 +180,14 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
+        document.addEventListener('DOMContentLoaded', pageReady, false);
 
-        // If selected roles contains 'Company' then show company selection dropdown.
-        $(document).ready(function () {
-            $('#Input_Roles').change(function () {
-                var selection = $('#Input_Roles Option:Selected').text();
+        function pageReady() {
+
+            var optionElem = document.getElementById('Input_Roles');
+
+            optionElem.addEventListener('change', function () {
+                var selection = optionElem.value;
 
                 if (selection.indexOf('Company') >= 0) {
                     $('#Input_CompanyId').parent().show();
@@ -192,7 +195,7 @@
                 else {
                     $('#Input_CompanyId').parent().hide();
                 }
-            })
-        });
+            });
+        }
     </script>
 }
