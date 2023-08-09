@@ -104,7 +104,7 @@ public class OrderController : Controller
 
         if (orderHeader.PaymentStatus == StaticDetails.PaymentStatusDelayedPayment)
         {
-            orderHeader.PaymentDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(30));
+            orderHeader.PaymentDueDate = DateTime.Now.AddDays(30);
         }
 
         _unitOfWork.OrderHeaders.Update(orderHeader);
