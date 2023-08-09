@@ -21,6 +21,9 @@ public static class StaticDetails
     public const string AdminEmail = "admin@user.com";
     public const string AdminPassword = "***REDACTED***";
 
+    public const string CustomerEmail = "customer@user.com";
+    public const string CustomerPassword = "Customer1.";
+
     public const string SessionCart = "Session.ShoppingCart";
 
     public const string InitialImagePath = "\\images\\initial";
