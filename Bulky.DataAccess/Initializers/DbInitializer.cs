@@ -3,6 +3,7 @@ using Bulky.Models.Entities;
 using Bulky.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Bulky.DataAccess.Initializers;
 public class DbInitializer : IDbInitializer
@@ -10,14 +11,17 @@ public class DbInitializer : IDbInitializer
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly ApplicationDbContext _dbContext;
+    private readonly IConfiguration _configuration;
 
     public DbInitializer(UserManager<IdentityUser> userManager,
         RoleManager<IdentityRole> roleManager,
-        ApplicationDbContext dbContext)
+        ApplicationDbContext dbContext,
+        IConfiguration configuration)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _dbContext = dbContext;
+        _configuration = configuration;
     }
 
     public void Initialize()
@@ -43,6 +47,8 @@ public class DbInitializer : IDbInitializer
             _roleManager.CreateAsync(new IdentityRole(StaticDetails.Role_Admin)).GetAwaiter().GetResult();
             _roleManager.CreateAsync(new IdentityRole(StaticDetails.Role_Employee)).GetAwaiter().GetResult();
 
+            var adminPassword = _configuration["Secrets:Admin:Password"];
+
             // then we will create admin user as well.
             _userManager.CreateAsync(new ApplicationUser()
             {
@@ -54,11 +60,24 @@ public class DbInitializer : IDbInitializer
                 State = "NY",
                 PostalCode = "12345",
                 City = "Buffalo"
-            }, password: StaticDetails.AdminPassword).GetAwaiter().GetResult();
+            }, password: adminPassword).GetAwaiter().GetResult();
 
-            ApplicationUser? user = _dbContext.ApplicationUsers.FirstOrDefault(
-                u => u.Email! == StaticDetails.AdminEmail);
-            _userManager.AddToRoleAsync(user, StaticDetails.Role_Admin).GetAwaiter().GetResult();
+            _userManager.CreateAsync(new ApplicationUser()
+            {
+                UserName = StaticDetails.CustomerEmail,
+                Email = StaticDetails.CustomerEmail,
+                Name = "Customer",
+                PhoneNumber = "1234567890",
+                StreetAddress = "Customer St.",
+                State = "NY",
+                PostalCode = "12345",
+                City = "Istanbul"
+            }, password: StaticDetails.CustomerPassword).GetAwaiter().GetResult();
+
+            ApplicationUser? adminUser = _dbContext.ApplicationUsers.FirstOrDefault(u => u.Email! == StaticDetails.AdminEmail);
+            ApplicationUser? customerUser = _dbContext.ApplicationUsers.FirstOrDefault(u => u.Email! == StaticDetails.CustomerEmail);
+            _userManager.AddToRoleAsync(adminUser, StaticDetails.Role_Admin).GetAwaiter().GetResult();
+            _userManager.AddToRoleAsync(customerUser, StaticDetails.Role_Customer).GetAwaiter().GetResult();
         }
     }
 }
