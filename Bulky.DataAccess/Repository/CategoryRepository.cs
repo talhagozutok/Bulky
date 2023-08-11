@@ -3,7 +3,9 @@ using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 
 namespace Bulky.DataAccess.Repository;
-public class CategoryRepository : Repository<Category>, ICategoryRepository
+public class CategoryRepository :
+    Repository<Category>,
+    ICategoryRepository
 {
     private readonly ApplicationDbContext _dbContext;
 

@@ -44,7 +44,10 @@ public class CategoryController : Controller
         {
             MemberInfo? property = typeof(Category).GetProperty(nameof(Category.Name));
             var dd = property?.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
-            ModelState.AddModelError(nameof(Category.Name), $"'Test' is an invalid value for {dd?.Name}.");
+
+            ModelState.AddModelError(
+                nameof(Category.Name),
+                $"'Test' is an invalid value for {dd?.Name}.");
         }
 
         if (ModelState.IsValid)
@@ -55,7 +58,7 @@ public class CategoryController : Controller
                 _unitOfWork.Save();
                 TempData["success"] = "Category created successfully";
 
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             else
             {
@@ -63,7 +66,7 @@ public class CategoryController : Controller
                 _unitOfWork.Save();
                 TempData["success"] = "Category updated successfully";
 
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -87,7 +90,7 @@ public class CategoryController : Controller
             TempData["delete"] = "Category deleted successfully";
             TempData["deleteText"] = $"Category name: {category.Name}";
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         return NotFound();

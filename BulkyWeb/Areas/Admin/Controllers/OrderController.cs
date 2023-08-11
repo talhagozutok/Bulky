@@ -71,7 +71,9 @@ public class OrderController : Controller
             _unitOfWork.Save();
             TempData["success"] = "Order details updated successfully.";
 
-            return RedirectToAction(nameof(Details), new { orderId = orderHeaderFromDb.Id }); ;
+            return RedirectToAction(
+                nameof(Details), 
+                new { orderId = orderHeaderFromDb.Id }); ;
         }
 
         return NotFound();
@@ -87,7 +89,9 @@ public class OrderController : Controller
 
         _unitOfWork.Save();
         TempData["success"] = "Order details updated successfully.";
-        return RedirectToAction(nameof(Details), new { orderId = OrderViewModel.OrderHeader.Id }); ;
+        return RedirectToAction(
+            nameof(Details),
+            new { orderId = OrderViewModel.OrderHeader.Id });
     }
 
 
@@ -111,7 +115,9 @@ public class OrderController : Controller
         _unitOfWork.Save();
 
         TempData["success"] = "Order shipped successfully.";
-        return RedirectToAction(nameof(Details), new { orderId = OrderViewModel.OrderHeader.Id });
+        return RedirectToAction(
+            nameof(Details),
+            new { orderId = OrderViewModel.OrderHeader.Id });
     }
 
 
@@ -145,7 +151,9 @@ public class OrderController : Controller
 
         _unitOfWork.Save();
         TempData["success"] = "Order cancelled successfully.";
-        return RedirectToAction(nameof(Details), new { orderId = OrderViewModel.OrderHeader.Id });
+        return RedirectToAction(
+            nameof(Details),
+            new { orderId = OrderViewModel.OrderHeader.Id });
     }
 
     [ActionName("Details")]
@@ -210,8 +218,17 @@ public class OrderController : Controller
 
             if (session.PaymentStatus.Equals("paid", StringComparison.OrdinalIgnoreCase))
             {
-                _unitOfWork.OrderHeaders.UpdateStripePaymentID(orderHeaderId, session.Id, session.PaymentIntentId);
-                _unitOfWork.OrderHeaders.UpdateStatus(orderHeaderId, orderHeader.OrderStatus!, StaticDetails.PaymentStatusApproved);
+
+                _unitOfWork.OrderHeaders.UpdateStripePaymentID(
+                    orderHeaderId,
+                    session.Id,
+                    session.PaymentIntentId);
+
+                _unitOfWork.OrderHeaders.UpdateStatus(
+                    orderHeaderId,
+                    orderHeader.OrderStatus!,
+                    StaticDetails.PaymentStatusApproved);
+
                 _unitOfWork.Save();
             }
         }
@@ -234,7 +251,7 @@ public class OrderController : Controller
             _unitOfWork.OrderHeaders.Remove(order);
             _unitOfWork.Save();
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         return NotFound();

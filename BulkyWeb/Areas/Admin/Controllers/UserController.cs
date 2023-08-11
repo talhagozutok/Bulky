@@ -60,7 +60,12 @@ public class UserController : Controller
 
         if (user is null)
         {
-            return Json(new { success = false, message = "Error while locking/unlocking." });
+            return Json(
+                new
+                {
+                    success = false,
+                    message = "Error while locking/unlocking."
+                });
         }
 
         if (user.LockoutEnd is not null && user.LockoutEnd > DateTime.Now)
@@ -71,7 +76,12 @@ public class UserController : Controller
             user.LockoutEnd = DateTime.Now;
             _unitOfWork.Save();
 
-            return Json(new { success = true, message = "User unlocked successfully" });
+            return Json(
+                new
+                {
+                    success = true,
+                    message = "User unlocked successfully"
+                });
         }
         else
         {
@@ -81,14 +91,24 @@ public class UserController : Controller
             user.LockoutEnd = DateTime.Now.AddYears(1000);
             _unitOfWork.Save();
 
-            return Json(new { success = true, message = "User locked successfully" });
+            return Json(
+                new
+                {
+                    success = true,
+                    message = "User locked successfully"
+                });
         }
     }
 
     [HttpDelete]
     public IActionResult Delete(int? id)
     {
-        return Json(new { success = true, message = "User deleted successfully" });
+        return Json(
+            new
+            {
+                success = true,
+                message = "User deleted successfully"
+            });
     }
 
     #endregion

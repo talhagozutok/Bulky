@@ -15,7 +15,8 @@ public class UnitOfWork : IUnitOfWork
     private IOrderHeaderRepository OrderHeader { get; }
     private IOrderDetailRepository OrderDetail { get; }
 
-    public UnitOfWork(ApplicationDbContext dbContext,
+    public UnitOfWork(
+        ApplicationDbContext dbContext,
         ICategoryRepository categoryRepository,
         IProductRepository productRepository,
         IProductImageRepository productImage,
