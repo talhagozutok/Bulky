@@ -3,7 +3,9 @@ using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 
 namespace Bulky.DataAccess.Repository;
-public class ProductRepository : Repository<Product>, IProductRepository
+public class ProductRepository :
+    Repository<Product>,
+    IProductRepository
 {
     private readonly ApplicationDbContext _dbContext;
 

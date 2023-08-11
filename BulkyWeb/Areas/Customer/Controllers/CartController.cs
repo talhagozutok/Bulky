@@ -179,7 +179,9 @@ public class CartController : Controller
             return new StatusCodeResult((int)HttpStatusCode.RedirectMethod);
         }
 
-        return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartViewModel.OrderHeader.Id });
+        return RedirectToAction(
+            nameof(OrderConfirmation),
+            new { id = ShoppingCartViewModel.OrderHeader.Id });
     }
 
     public IActionResult OrderConfirmation(int id)
@@ -253,13 +255,19 @@ public class CartController : Controller
     {
         var cartFromDatabase = _unitOfWork.ShoppingCarts.Get(u => u.Id.Equals(cartId), trackChanges: true);
 
-        HttpContext.Session.SetInt32(
-           StaticDetails.SessionCart,
-           _unitOfWork.ShoppingCarts
-               .GetAll(c => c.ApplicationUserId == cartFromDatabase.ApplicationUserId).Count() - 1);
+        if (cartFromDatabase is not null)
+        {
 
-        _unitOfWork.ShoppingCarts.Remove(cartFromDatabase);
-        _unitOfWork.Save();
+            HttpContext.Session.SetInt32(
+               StaticDetails.SessionCart,
+               _unitOfWork.ShoppingCarts
+                   .GetAll(c => c.ApplicationUserId == cartFromDatabase.ApplicationUserId).Count() - 1);
+
+            _unitOfWork.ShoppingCarts.Remove(cartFromDatabase);
+
+            _unitOfWork.Save();
+        }
+
         return RedirectToAction(nameof(Index));
     }
 

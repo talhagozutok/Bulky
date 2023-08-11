@@ -3,7 +3,9 @@ using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 
 namespace Bulky.DataAccess.Repository;
-public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderRepository
+public class OrderHeaderRepository :
+    Repository<OrderHeader>,
+    IOrderHeaderRepository
 {
     private readonly ApplicationDbContext _dbContext;
 
@@ -16,7 +18,10 @@ public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderReposi
     {
         _dbContext.OrderHeaders.Update(orderHeader);
     }
-    public void UpdateStatus(int id, string orderStatus, string? paymentStatus = null)
+    public void UpdateStatus(
+        int id,
+        string orderStatus,
+        string? paymentStatus = null)
     {
         var orderFromDb = _dbContext.OrderHeaders.FirstOrDefault(u => u.Id == id);
 
@@ -30,7 +35,10 @@ public class OrderHeaderRepository : Repository<OrderHeader>, IOrderHeaderReposi
         }
     }
 
-    public void UpdateStripePaymentID(int id, string sessionId, string paymentIntentId)
+    public void UpdateStripePaymentID(
+        int id,
+        string sessionId,
+        string paymentIntentId)
     {
         var orderFromDb = _dbContext.OrderHeaders.FirstOrDefault(u => u.Id == id);
 

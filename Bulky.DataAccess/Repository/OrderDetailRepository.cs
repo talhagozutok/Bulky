@@ -3,7 +3,9 @@ using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 
 namespace Bulky.DataAccess.Repository;
-public class OrderDetailRepository : Repository<OrderDetail>, IOrderDetailRepository
+public class OrderDetailRepository :
+    Repository<OrderDetail>,
+    IOrderDetailRepository
 {
     private readonly ApplicationDbContext _dbContext;
 

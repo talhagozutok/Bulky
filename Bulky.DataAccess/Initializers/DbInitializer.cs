@@ -13,7 +13,8 @@ public class DbInitializer : IDbInitializer
     private readonly ApplicationDbContext _dbContext;
     private readonly IConfiguration _configuration;
 
-    public DbInitializer(UserManager<IdentityUser> userManager,
+    public DbInitializer(
+        UserManager<IdentityUser> userManager,
         RoleManager<IdentityRole> roleManager,
         ApplicationDbContext dbContext,
         IConfiguration configuration)

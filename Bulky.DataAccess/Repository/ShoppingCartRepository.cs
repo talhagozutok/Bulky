@@ -3,7 +3,9 @@ using Bulky.DataAccess.Repository.Contracts;
 using Bulky.Models.Entities;
 
 namespace Bulky.DataAccess.Repository;
-public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRepository
+public class ShoppingCartRepository :
+    Repository<ShoppingCart>,
+    IShoppingCartRepository
 {
     private readonly ApplicationDbContext _dbContext;
 

@@ -115,7 +115,7 @@ public class ProductController : Controller
 			}
 
 
-			return RedirectToAction("Index");
+			return RedirectToAction(nameof(Index));
 		}
 		else
 		{
@@ -170,7 +170,9 @@ public class ProductController : Controller
 				_unitOfWork.Save();
 				TempData["delete"] = "Image deleted successfully";
 
-				return RedirectToAction(nameof(Upsert), new { id = image.ProductId });
+				return RedirectToAction(
+					nameof(Upsert), 
+					new { id = image.ProductId });
 			}
 		}
 
@@ -207,7 +209,7 @@ public class ProductController : Controller
 			_unitOfWork.Products.Remove(product);
 			_unitOfWork.Save();
 
-			return RedirectToAction("Index");
+			return RedirectToAction(nameof(Index));
 		}
 
 		return NotFound();

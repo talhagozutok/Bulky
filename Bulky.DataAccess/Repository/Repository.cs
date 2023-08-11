@@ -21,7 +21,10 @@ public class Repository<T> : IRepository<T> where T : class
         dbSet.Add(entity);
     }
 
-    public T? Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool trackChanges = false)
+    public T? Get(
+        Expression<Func<T, bool>> filter,
+        string? includeProperties = null,
+        bool trackChanges = false)
     {
         IQueryable<T> query;
 
@@ -48,7 +51,9 @@ public class Repository<T> : IRepository<T> where T : class
         return query.FirstOrDefault();
     }
 
-    public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
+    public IEnumerable<T> GetAll(
+        Expression<Func<T, bool>>? filter,
+        string? includeProperties = null)
     {
         IQueryable<T> query = dbSet;
 

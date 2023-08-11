@@ -55,7 +55,7 @@ public class CompanyController : Controller
                 _unitOfWork.Save();
                 TempData["success"] = "Company created successfully";
 
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             else
             {
@@ -63,7 +63,7 @@ public class CompanyController : Controller
                 _unitOfWork.Save();
                 TempData["success"] = "Company updated successfully";
 
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
         }
 
@@ -85,7 +85,7 @@ public class CompanyController : Controller
             _unitOfWork.Companies.Remove(company);
             _unitOfWork.Save();
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         return NotFound();
@@ -101,5 +101,4 @@ public class CompanyController : Controller
     }
 
     #endregion API
-
 }
