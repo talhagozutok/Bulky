@@ -47,12 +47,12 @@
                         <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                     </div>
                     <div class="form-floating col-6 mb-3">
-                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" value="@StaticDetails.AdminPassword" />
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" value="@StaticDetails.CustomerPassword" />
                         <label asp-for="Input.Password" class="text-muted" style="left: unset;">Password</label>
                         <span asp-validation-for="Input.Password" class="text-danger"></span>
                     </div>
                     <div class="form-floating col-6 mb-3">
-                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" value="@StaticDetails.AdminPassword" />
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" value="@StaticDetails.CustomerPassword" />
                         <label asp-for="Input.ConfirmPassword" class="text-muted" style="left: unset;">Confirm Password</label>
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     </div>
