@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Bulky.Models.Entities;
@@ -21,7 +20,6 @@ public class Product
     [Required]
     [StringLength(100, ErrorMessage = "{0} can have a max of {1} characters.")]
     public string Author { get; set; } = string.Empty;
-
 
     [Required]
     [Display(Name = "Price for 1-50")]
@@ -45,7 +43,6 @@ public class Product
     [Display(Name = "Category")]
     public int CategoryId { get; set; }
 
-    [ForeignKey(nameof(CategoryId))]
     [ValidateNever]
     public Category? Category { get; set; }
 

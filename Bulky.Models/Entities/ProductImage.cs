@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bulky.Models.Entities;
 public class ProductImage
@@ -10,6 +9,5 @@ public class ProductImage
 
     public int ProductId { get; set; }
 
-    [ForeignKey(nameof(ProductId))]
     public Product Product { get; set; }
 }

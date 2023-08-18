@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bulky.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230801163559_AddSessionIdToOrderHeader")]
-    partial class AddSessionIdToOrderHeader
+    [Migration("20230818121109_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0-preview.6.23329.4")
+                .HasAnnotation("ProductVersion", "7.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -194,8 +194,8 @@ namespace Bulky.DataAccess.Migrations
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("PaymentDueDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("PaymentDueDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentIntentId")
                         .HasColumnType("nvarchar(max)");
@@ -390,6 +390,126 @@ namespace Bulky.DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Bulky.Models.Entities.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ImageUrl = "\\images\\initial\\products\\22-11-63.jpg",
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ImageUrl = "\\images\\initial\\products\\22-11-63 (1).jpg",
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ImageUrl = "\\images\\initial\\products\\alamut.jpg",
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ImageUrl = "\\images\\initial\\products\\alamut (1).jpg",
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ImageUrl = "\\images\\initial\\products\\fortune of time.jpg",
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ImageUrl = "\\images\\initial\\products\\fortune of time (1).jpg",
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ImageUrl = "\\images\\initial\\products\\dark skies.jpg",
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ImageUrl = "\\images\\initial\\products\\dark skies (1).jpg",
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ImageUrl = "\\images\\initial\\products\\vanish in the sunset.jpg",
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ImageUrl = "\\images\\initial\\products\\vanish in the sunset (1).jpg",
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ImageUrl = "\\images\\initial\\products\\cotton candy.jpg",
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ImageUrl = "\\images\\initial\\products\\cotton candy (1).jpg",
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ImageUrl = "\\images\\initial\\products\\rock in the ocean.jpg",
+                            ProductId = 7
+                        },
+                        new
+                        {
+                            Id = 14,
+                            ImageUrl = "\\images\\initial\\products\\rock in the ocean (1).jpg",
+                            ProductId = 7
+                        },
+                        new
+                        {
+                            Id = 15,
+                            ImageUrl = "\\images\\initial\\products\\leaves and wonders.jpg",
+                            ProductId = 8
+                        },
+                        new
+                        {
+                            Id = 16,
+                            ImageUrl = "\\images\\initial\\products\\leaves and wonders (1).jpg",
+                            ProductId = 8
+                        });
+                });
+
             modelBuilder.Entity("Bulky.Models.Entities.ShoppingCart", b =>
                 {
                     b.Property<int>("Id")
@@ -481,8 +601,7 @@ namespace Bulky.DataAccess.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -630,7 +749,6 @@ namespace Bulky.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CompanyId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -685,20 +803,25 @@ namespace Bulky.DataAccess.Migrations
                 {
                     b.HasOne("Bulky.Models.Entities.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Bulky.Models.Entities.ProductImage", b =>
+                {
+                    b.HasOne("Bulky.Models.Entities.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Bulky.Models.Entities.ShoppingCart", b =>
                 {
                     b.HasOne("Bulky.Models.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
                 });
@@ -758,11 +881,14 @@ namespace Bulky.DataAccess.Migrations
                 {
                     b.HasOne("Bulky.Models.Entities.Company", "Company")
                         .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompanyId");
 
                     b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Bulky.Models.Entities.Product", b =>
+                {
+                    b.Navigation("ProductImages");
                 });
 #pragma warning restore 612, 618
         }
