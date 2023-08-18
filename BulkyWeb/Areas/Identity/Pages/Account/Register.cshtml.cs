@@ -166,7 +166,8 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                 user.PostalCode = Input.PostalCode;
                 user.PhoneNumber = Input.PhoneNumber;
 
-                if (Input.Roles.Contains(StaticDetails.Role_Company))
+                if (Input.Roles is not null &&
+                   Input.Roles.Contains(StaticDetails.Role_Company))
                 {
                     user.CompanyId = Input.CompanyId;
                 }
