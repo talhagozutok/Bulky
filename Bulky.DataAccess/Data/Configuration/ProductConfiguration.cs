@@ -7,6 +7,21 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
+        builder.HasMany(p => p.ProductImages)
+            .WithOne(p => p.Product)
+            .HasForeignKey(p => p.ProductId)
+            .IsRequired(false);
+
+        builder.HasMany<ShoppingCart>()
+            .WithOne(p => p.Product)
+            .HasForeignKey(s => s.ProductId)
+            .IsRequired(false);
+
+        builder.HasMany<OrderDetail>()
+            .WithOne(o => o.Product)
+            .HasForeignKey(o => o.ProductId)
+            .IsRequired(true);
+
         var products = new List<Product>() {
             new ()
             {

@@ -7,6 +7,11 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 {
     public void Configure(EntityTypeBuilder<Category> builder)
     {
+        builder.HasMany<Product>()
+            .WithOne(p => p.Category)
+            .HasForeignKey(p => p.CategoryId)
+            .IsRequired(false);
+
         var categories = new List<Category>()
         {
             new() { Id = 1, Name = "Action", DisplayOrder = 1 },

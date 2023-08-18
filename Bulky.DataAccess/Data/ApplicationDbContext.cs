@@ -29,5 +29,6 @@ public sealed class ApplicationDbContext : IdentityDbContext<IdentityUser>
         new ProductConfiguration().Configure(modelBuilder.Entity<Product>());
         new ProductImageConfiguration().Configure(modelBuilder.Entity<ProductImage>());
         new CompanyConfiguration().Configure(modelBuilder.Entity<Company>());
+        new OrderHeaderConfiguration().Configure(modelBuilder.Entity<OrderHeader>());
     }
 }
